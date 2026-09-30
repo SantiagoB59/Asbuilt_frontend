@@ -1,0 +1,1257 @@
+/* =========================================================
+   AS-BUILT — TOPBAR
+   LIGHT CORPORATE / INDUSTRIAL
+========================================================= */
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  width: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff 0%,
+      #f8fafc 55%,
+      #f1f4f7 100%
+    );
+
+  border-bottom: 1px solid #d9e0e7;
+
+  box-shadow:
+    0 5px 20px rgba(6, 17, 31, 0.07);
+
+  color: #06111f;
+}
+
+
+/* Línea corporativa inferior */
+
+.topbar::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: -1px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(215, 170, 50, 0.18) 20%,
+      rgba(215, 170, 50, 0.65) 50%,
+      rgba(215, 170, 50, 0.18) 80%,
+      transparent 100%
+    );
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.topbar-container {
+  width: 100%;
+  max-width: 1500px;
+
+  min-height: 78px;
+
+  margin: 0 auto;
+
+  padding: 10px 24px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 20px;
+}
+
+
+/* =========================================================
+   LEFT
+========================================================= */
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  min-width: 220px;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo-box {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px;
+
+  background: #ffffff;
+
+  border: 1px solid #d9e0e7;
+
+  border-radius: 9px;
+
+  box-shadow:
+    0 4px 12px rgba(6, 17, 31, 0.07);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.logo-box:hover {
+  transform: translateY(-1px);
+
+  border-color: rgba(215, 170, 50, 0.45);
+
+  box-shadow:
+    0 7px 18px rgba(6, 17, 31, 0.10);
+}
+
+.logo-box img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.brand-info {
+  min-width: 0;
+}
+
+.brand-title {
+  margin: 0;
+
+  color: #06111f;
+
+  font-family: "Archivo", "Inter", sans-serif;
+
+  font-size: 20px;
+
+  line-height: 1;
+
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+
+  white-space: nowrap;
+}
+
+.brand-title span {
+  color: #b58c29;
+}
+
+
+/* =========================================================
+   ONLINE STATUS
+========================================================= */
+
+.brand-status {
+  margin: 6px 0 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  color: #647284;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 9px;
+
+  line-height: 1;
+
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+
+  white-space: nowrap;
+}
+
+.brand-status i {
+  font-size: 6px;
+
+  color: #2f9e62;
+
+  filter:
+    drop-shadow(
+      0 0 3px rgba(47, 158, 98, 0.35)
+    );
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.topbar-stats {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-left: auto;
+}
+
+.stat-box {
+  min-width: 76px;
+
+  padding: 8px 12px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px solid #dce3e9;
+
+  border-radius: 7px;
+
+  box-shadow:
+    0 3px 10px rgba(6, 17, 31, 0.04);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.stat-box:hover {
+  transform: translateY(-1px);
+
+  border-color: rgba(215, 170, 50, 0.35);
+
+  box-shadow:
+    0 6px 16px rgba(6, 17, 31, 0.07);
+}
+
+.stat-value {
+  font-size: 19px;
+
+  line-height: 1;
+
+  font-weight: 800;
+}
+
+.stat-label {
+  margin-top: 5px;
+
+  color: #718092;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 8px;
+
+  line-height: 1;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.6px;
+}
+
+
+/* =========================================================
+   COLORES FUNCIONALES
+========================================================= */
+
+.stat-value.critical {
+  color: #c93636 !important;
+}
+
+.stat-value.active {
+  color: #b07a12 !important;
+}
+
+.stat-value.resolved {
+  color: #2d8a5b !important;
+}
+
+
+/* =========================================================
+   RIGHT
+========================================================= */
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+/* =========================================================
+   NOTIFICATION WRAPPER
+========================================================= */
+
+.notification-wrapper {
+  position: relative;
+}
+
+
+/* =========================================================
+   NOTIFICATION BUTTON
+========================================================= */
+
+.notification-btn {
+  position: relative;
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid #d9e0e7;
+
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #627284;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 10px rgba(6, 17, 31, 0.04);
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.notification-btn:hover {
+  background: #f8f4e9;
+
+  border-color: rgba(215, 170, 50, 0.45);
+
+  color: #b58c29;
+
+  transform: translateY(-1px);
+}
+
+.notification-btn i {
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   BADGE
+========================================================= */
+
+.notification-badge {
+  position: absolute;
+
+  top: -5px;
+  right: -5px;
+
+  min-width: 18px;
+  height: 18px;
+
+  padding: 0 5px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+
+  background: #c93636;
+
+  border: 2px solid #ffffff;
+
+  color: #ffffff;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 3px 8px rgba(201, 54, 54, 0.22);
+}
+
+
+/* =========================================================
+   NOTIFICATIONS DROPDOWN
+========================================================= */
+
+.notifications-dropdown {
+  position: absolute;
+
+  top: calc(100% + 12px);
+  right: 0;
+
+  width: 360px;
+
+  max-width: calc(100vw - 30px);
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  color: #06111f;
+
+  border: 1px solid #dce3e9;
+
+  border-radius: 9px;
+
+  box-shadow:
+    0 18px 45px rgba(6, 17, 31, 0.16);
+
+  animation: notificationDropdown 0.18s ease-out;
+}
+
+@keyframes notificationDropdown {
+
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+/* =========================================================
+   DROPDOWN HEADER
+========================================================= */
+
+.dropdown-header {
+  padding: 15px 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  background: #f7f9fa;
+
+  border-bottom: 1px solid #e1e6eb;
+}
+
+.dropdown-header h3 {
+  margin: 0;
+
+  color: #06111f;
+
+  font-size: 14px;
+
+  font-weight: 800;
+}
+
+.dropdown-header p {
+  margin: 4px 0 0;
+
+  color: #7a8795;
+
+  font-size: 10px;
+}
+
+.mark-all-btn {
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #a27b20;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.mark-all-btn:hover {
+  color: #d7aa32;
+}
+
+
+/* =========================================================
+   NOTIFICATION LIST
+========================================================= */
+
+.notifications-list {
+  max-height: 450px;
+
+  overflow-y: auto;
+}
+
+.notification-item {
+  padding: 14px 16px;
+
+  border-bottom: 1px solid #edf0f3;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.notification-item:hover {
+  background: #f8fafb;
+}
+
+.notification-item.read {
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   NOTIFICATION TOP
+========================================================= */
+
+.notification-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 8px;
+}
+
+.priority-badge {
+  padding: 4px 7px;
+
+  border-radius: 4px;
+
+  font-size: 8px;
+
+  font-weight: 800;
+}
+
+.notification-time {
+  color: #9aa5b1;
+
+  font-size: 9px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.notification-message {
+  color: #273444;
+
+  font-size: 12px;
+
+  line-height: 1.55;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.notification-footer {
+  margin-top: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  color: #84909c;
+
+  font-size: 9px;
+}
+
+.notification-footer i {
+  margin-right: 4px;
+
+  color: #a27b20;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.notifications-empty {
+  padding: 45px 20px;
+
+  text-align: center;
+
+  color: #8793a0;
+}
+
+.notifications-empty i {
+  margin-bottom: 12px;
+
+  font-size: 28px;
+
+  color: #c3cbd3;
+}
+
+.notifications-empty p {
+  margin: 0;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   USER
+========================================================= */
+
+.user-section {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding-left: 12px;
+
+  border-left: 1px solid #dce3e9;
+}
+
+.user-info {
+  text-align: right;
+}
+
+.user-name {
+  max-width: 140px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  color: #06111f;
+
+  font-size: 12px;
+
+  line-height: 1.2;
+
+  font-weight: 800;
+}
+
+.user-role {
+  margin-top: 3px;
+
+  color: #8995a2;
+
+  font-size: 9px;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+.avatar {
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 7px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0b1b2d,
+      #10243a
+    );
+
+  border: 1px solid rgba(215, 170, 50, 0.45);
+
+  color: #e5bd50;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 4px 12px rgba(6, 17, 31, 0.12);
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.logout-btn {
+  min-height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 12px;
+
+  border: 1px solid #d9e0e7;
+
+  border-radius: 7px;
+
+  background: #f7f9fa;
+
+  color: #627284;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: #fdf0f0;
+
+  border-color: #efb5b5;
+
+  color: #c93636;
+
+  transform: translateY(-1px);
+}
+
+.logout-btn i {
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+.clock-box {
+  min-height: 40px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 7px 12px;
+
+  background: #ffffff;
+
+  border: 1px solid #d9e0e7;
+
+  border-radius: 7px;
+
+  color: #06111f;
+
+  box-shadow:
+    0 3px 10px rgba(6, 17, 31, 0.04);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.clock-box:hover {
+  background: #f8fafb;
+
+  border-color: rgba(215, 170, 50, 0.40);
+}
+
+.clock-box i {
+  color: #b58c29;
+
+  font-size: 16px;
+}
+
+.clock-info {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.clock-time {
+  color: #06111f;
+
+  font-size: 15px;
+
+  line-height: 1;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.clock-date {
+  color: #788594;
+
+  font-size: 8px;
+
+  line-height: 1;
+
+  text-transform: capitalize;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1200px) {
+
+  .topbar-container {
+    padding-left: 18px;
+    padding-right: 18px;
+
+    gap: 12px;
+  }
+
+  .topbar-left {
+    min-width: 190px;
+  }
+
+  .topbar-stats {
+    gap: 6px;
+  }
+
+  .stat-box {
+    min-width: 65px;
+
+    padding: 8px 9px;
+  }
+
+  .stat-value {
+    font-size: 17px;
+  }
+
+  .brand-title {
+    font-size: 17px;
+  }
+
+  .clock-date {
+    display: none;
+  }
+
+  .clock-time {
+    font-size: 14px;
+  }
+
+  .user-info {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   TABLET PEQUEÑO
+========================================================= */
+
+@media (max-width: 950px) {
+
+  .topbar-container {
+    min-height: 70px;
+  }
+
+  .logo-box {
+    width: 44px;
+    height: 44px;
+  }
+
+  .brand-title {
+    font-size: 15px;
+  }
+
+  .brand-status {
+    font-size: 8px;
+  }
+
+  .stat-box {
+    min-width: 56px;
+
+    padding: 7px;
+  }
+
+  .stat-value {
+    font-size: 15px;
+  }
+
+  .stat-label {
+    font-size: 7px;
+  }
+
+  .clock-box {
+    padding: 7px 9px;
+  }
+
+  .clock-time {
+    font-size: 13px;
+  }
+
+  .logout-btn {
+    width: 38px;
+
+    padding: 0;
+  }
+
+  .logout-btn span {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .topbar {
+    position: sticky;
+
+    background:
+      linear-gradient(
+        90deg,
+        #ffffff,
+        #f7f9fa
+      );
+  }
+
+  .topbar-container {
+    min-height: auto;
+
+    padding: 9px 12px;
+
+    flex-wrap: wrap;
+
+    gap: 9px;
+  }
+
+
+  /* -----------------------------------------
+     OCULTAR BRAND EN MOBILE
+  ----------------------------------------- */
+
+  .topbar-left {
+    display: none;
+  }
+
+
+  /* -----------------------------------------
+     RIGHT
+  ----------------------------------------- */
+
+  .topbar-right {
+    width: 100%;
+
+    margin: 0;
+
+    justify-content: flex-end;
+
+    gap: 6px;
+  }
+
+
+  /* -----------------------------------------
+     NOTIFICATION
+  ----------------------------------------- */
+
+  .notification-btn {
+    width: 37px;
+    height: 37px;
+
+    background: #ffffff;
+
+    border-color: #d9e0e7;
+  }
+
+
+  /* -----------------------------------------
+     USER
+  ----------------------------------------- */
+
+  .user-section {
+    padding-left: 7px;
+
+    border-left: 1px solid #dce3e9;
+  }
+
+  .user-info {
+    display: none;
+  }
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+
+  /* -----------------------------------------
+     LOGOUT
+  ----------------------------------------- */
+
+  .logout-btn {
+    width: 36px;
+
+    min-height: 36px;
+
+    background: #f7f9fa;
+  }
+
+
+  /* -----------------------------------------
+     STATS
+  ----------------------------------------- */
+
+  .topbar-stats {
+    width: 100%;
+
+    order: 10;
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap: 6px;
+
+    margin: 0;
+
+    padding-top: 8px;
+
+    border-top: 1px solid #e1e6eb;
+  }
+
+  .stat-box {
+    width: 100%;
+
+    min-width: 0;
+
+    padding: 8px 4px;
+  }
+
+  .stat-value {
+    font-size: 15px;
+  }
+
+  .stat-label {
+    font-size: 7px;
+  }
+
+
+  /* -----------------------------------------
+     CLOCK
+  ----------------------------------------- */
+
+  .clock-box {
+    order: 11;
+
+    width: 100%;
+
+    justify-content: center;
+
+    min-height: 36px;
+
+    padding: 7px 10px;
+  }
+
+  .clock-time {
+    font-size: 16px;
+  }
+
+  .clock-date {
+    display: none;
+  }
+
+
+  /* -----------------------------------------
+     DROPDOWN
+  ----------------------------------------- */
+
+  .notifications-dropdown {
+    position: fixed;
+
+    top: 64px;
+
+    left: 10px;
+    right: 10px;
+
+    width: auto;
+
+    max-width: none;
+
+    border-radius: 8px;
+
+    z-index: 9999;
+  }
+}
+
+
+/* =========================================================
+   MOBILE PEQUEÑO
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .topbar-container {
+    padding: 8px 9px;
+  }
+
+  .topbar-right {
+    gap: 5px;
+  }
+
+  .notification-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .notification-btn i {
+    font-size: 14px;
+  }
+
+  .avatar {
+    width: 33px;
+    height: 33px;
+
+    font-size: 11px;
+  }
+
+  .logout-btn {
+    width: 33px;
+
+    min-height: 33px;
+  }
+
+  .clock-box {
+    min-height: 35px;
+  }
+
+  .clock-time {
+    font-size: 15px;
+  }
+
+  .stat-box {
+    padding: 7px 3px;
+  }
+
+  .stat-value {
+    font-size: 14px;
+  }
+
+  .stat-label {
+    font-size: 6px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE MUY PEQUEÑO
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .notification-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .avatar {
+    width: 31px;
+    height: 31px;
+  }
+
+  .logout-btn {
+    width: 31px;
+
+    min-height: 31px;
+  }
+
+  .stat-value {
+    font-size: 13px;
+  }
+
+  .clock-time {
+    font-size: 14px;
+  }
+}
+
+
+/* =========================================================
+   REDUCIR ANIMACIONES
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .topbar *,
+  .topbar {
+    transition: none !important;
+    animation: none !important;
+  }
+}

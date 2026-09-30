@@ -1,0 +1,1560 @@
+/* ============================================================
+   MANTENIMIENTO PLAN
+   Estilo: Corporativo / Limpio / Responsive
+============================================================ */
+
+
+/* ============================================================
+   VARIABLES
+============================================================ */
+
+$dark: #111827;
+$mid: #374151;
+$slate: #6b7280;
+
+$light: #f9fafb;
+$background: #f5f7fa;
+
+$border: #e5e7eb;
+
+$blue: #2563eb;
+$blue-dark: #1d4ed8;
+
+$red: #dc2626;
+
+$green: #059669;
+$orange: #d97706;
+
+$radius: 12px;
+$radius-sm: 9px;
+
+
+/* ============================================================
+   CONTENEDOR PRINCIPAL
+============================================================ */
+
+.mantenimiento-container {
+
+  width: 100%;
+  min-height: 100vh;
+
+  padding: 24px;
+
+  background: $background;
+
+  box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   HEADER AZUL INTELLIFEET
+========================================================= */
+
+.page-header {
+  background: #172033;
+  border: 1px solid #172033;
+  border-radius: 12px;
+
+  padding: 22px 24px;
+  margin-bottom: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
+}
+
+.page-title {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 1.55rem;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.page-subtitle {
+  margin: 7px 0 0;
+
+  color: #cbd5e1;
+
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   BOTONES DEL HEADER
+========================================================= */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+.header-actions .btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.header-actions .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.header-actions .btn-primary {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.header-actions .btn-primary:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+/* ============================================================
+   BOTONES
+============================================================ */
+
+.btn-primary,
+.btn-secondary {
+
+  min-height: 42px;
+
+  padding: 0 18px;
+
+  border-radius: $radius-sm;
+
+  font-size: .82rem;
+
+  font-weight: 700;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  cursor: pointer;
+
+  transition:
+    background .15s ease,
+    border-color .15s ease,
+    box-shadow .15s ease,
+    transform .15s ease;
+
+  white-space: nowrap;
+
+}
+
+
+.btn-primary {
+
+  color: #ffffff;
+
+  background: $blue;
+
+  border: 1px solid $blue;
+
+  box-shadow:
+    0 2px 6px rgba(37, 99, 235, .18);
+
+}
+
+
+.btn-primary:hover {
+
+  background: $blue-dark;
+
+  border-color: $blue-dark;
+
+  box-shadow:
+    0 4px 10px rgba(37, 99, 235, .22);
+
+  transform: translateY(-1px);
+
+}
+
+
+.btn-secondary {
+
+  color: $mid;
+
+  background: #ffffff;
+
+  border: 1px solid $border;
+
+}
+
+
+.btn-secondary:hover {
+
+  background: #f8fafc;
+
+  border-color: #cbd5e1;
+
+  transform: translateY(-1px);
+
+}
+
+
+/* ============================================================
+   TARJETA DEL EQUIPO
+============================================================ */
+
+.equipo-card {
+
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 24px;
+
+  padding: 20px 22px;
+
+  margin-bottom: 20px;
+
+  background: #ffffff;
+
+  border: 1px solid $border;
+
+  border-radius: $radius;
+
+  box-shadow:
+    0 2px 8px rgba(15, 23, 42, .04);
+
+  box-sizing: border-box;
+
+}
+
+
+.equipo-info {
+
+  min-width: 0;
+
+}
+
+
+.equipo-label {
+
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: $slate;
+
+  font-size: .74rem;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: .05em;
+
+}
+
+
+.equipo-title {
+
+  margin: 0;
+
+  color: $dark;
+
+  font-size: 1.1rem;
+
+  line-height: 1.3;
+
+  font-weight: 800;
+
+}
+
+
+.equipo-subtitle {
+
+  margin: 3px 0 0;
+
+  color: $slate;
+
+  font-size: .82rem;
+
+  font-weight: 500;
+
+}
+
+
+.control-actual {
+
+  min-width: 190px;
+
+  padding-left: 24px;
+
+  border-left: 1px solid $border;
+
+  text-align: right;
+
+}
+
+
+.control-value {
+
+  display: block;
+
+  color: $blue;
+
+  font-size: 1.25rem;
+
+  line-height: 1.2;
+
+  font-weight: 800;
+
+}
+
+
+.control-value small {
+
+  font-size: .78rem;
+
+  font-weight: 700;
+
+  color: $slate;
+
+}
+
+
+/* ============================================================
+   TABLA
+============================================================ */
+
+.table-card {
+
+  width: 100%;
+
+  background: #ffffff;
+
+  border: 1px solid $border;
+
+  border-radius: $radius;
+
+  box-shadow:
+    0 2px 8px rgba(15, 23, 42, .04);
+
+  overflow: hidden;
+
+}
+
+
+.table-wrapper {
+
+  width: 100%;
+
+  overflow-x: auto;
+
+  overflow-y: hidden;
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    #cbd5e1
+    transparent;
+
+}
+
+
+.table-wrapper::-webkit-scrollbar {
+
+  height: 7px;
+
+}
+
+
+.table-wrapper::-webkit-scrollbar-track {
+
+  background: #f8fafc;
+
+}
+
+
+.table-wrapper::-webkit-scrollbar-thumb {
+
+  background: #cbd5e1;
+
+  border-radius: 999px;
+
+}
+
+
+.data-table {
+
+  width: 100%;
+
+  min-width: 1050px;
+
+  border-collapse: collapse;
+
+  background: #ffffff;
+
+}
+
+
+/* ============================================================
+   CABECERA
+============================================================ */
+
+.data-table thead {
+
+  background: $dark;
+
+  color: #ffffff;
+
+}
+
+
+.data-table thead tr {
+
+  border-bottom: 1px solid #1f2937;
+
+}
+
+
+.data-table thead th {
+
+  padding: 15px 18px;
+
+  color: #ffffff;
+
+  background: $dark;
+
+  border: none;
+
+  border-bottom: 1px solid #1f2937;
+
+  font-size: .72rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: .045em;
+
+  text-align: left;
+
+  white-space: nowrap;
+
+}
+
+
+/* ============================================================
+   FILAS
+============================================================ */
+
+.data-table tbody tr {
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #eef0f3;
+
+  transition:
+    background .15s ease;
+
+}
+
+
+.data-table tbody tr:nth-child(even) {
+
+  background: #f9fafb;
+
+}
+
+
+.data-table tbody tr:hover {
+
+  background: #eff6ff;
+
+}
+
+
+.data-table tbody tr:last-child {
+
+  border-bottom: none;
+
+}
+
+
+.data-table td {
+
+  padding: 14px 18px;
+
+  vertical-align: middle;
+
+  color: $mid;
+
+  font-size: .82rem;
+
+  white-space: nowrap;
+
+}
+
+
+/* ============================================================
+   TEXTO DE TABLA
+============================================================ */
+
+.plan-name {
+
+  color: $dark;
+
+  font-size: .84rem;
+
+  font-weight: 750;
+
+}
+
+
+.text-primary {
+
+  color: $mid;
+
+  font-size: .82rem;
+
+  font-weight: 600;
+
+}
+
+
+.text-secondary {
+
+  color: $slate;
+
+  font-size: .8rem;
+
+  font-weight: 500;
+
+}
+
+
+.unit {
+
+  margin-left: 3px;
+
+  color: $slate;
+
+  font-size: .74rem;
+
+  font-weight: 500;
+
+}
+
+
+.date-value {
+
+  color: $mid;
+
+  font-size: .8rem;
+
+  font-weight: 600;
+
+}
+
+
+/* ============================================================
+   CONTROL BADGE
+============================================================ */
+
+.control-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 5px 9px;
+
+  color: $mid;
+
+  background: #f1f5f9;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 5px;
+
+  font-size: .68rem;
+
+  font-weight: 750;
+
+  letter-spacing: .03em;
+
+}
+
+
+/* ============================================================
+   ESTADOS
+============================================================ */
+
+.status-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 72px;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  font-size: .65rem;
+
+  font-weight: 750;
+
+  text-transform: uppercase;
+
+  letter-spacing: .02em;
+
+}
+
+
+/* ACTIVO */
+
+.badge-operativo {
+
+  color: #15803d;
+
+  background: #dcfce7;
+
+}
+
+
+/* TALLER */
+
+.badge-taller {
+
+  color: #c2410c;
+
+  background: #ffedd5;
+
+}
+
+
+/* INACTIVO */
+
+.badge-inactivo {
+
+  color: #b91c1c;
+
+  background: #fee2e2;
+
+}
+
+
+/* ============================================================
+   VALOR CRÍTICO
+============================================================ */
+
+.km-critico {
+
+  color: $red !important;
+
+  font-weight: 800 !important;
+
+}
+
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.empty-state {
+
+  min-height: 360px;
+
+  padding: 50px 24px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  box-sizing: border-box;
+
+}
+
+
+.empty-icon {
+
+  width: 64px;
+
+  height: 64px;
+
+  margin-bottom: 16px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: $slate;
+
+  background: #f1f5f9;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 16px;
+
+  font-size: 1.6rem;
+
+}
+
+
+.empty-state h3 {
+
+  margin: 0 0 8px;
+
+  color: $dark;
+
+  font-size: 1.1rem;
+
+  font-weight: 800;
+
+}
+
+
+.empty-state p {
+
+  max-width: 420px;
+
+  margin: 0 0 22px;
+
+  color: $slate;
+
+  font-size: .84rem;
+
+  line-height: 1.5;
+
+}
+
+
+/* ============================================================
+   MODAL BACKDROP
+============================================================ */
+
+.modal-backdrop {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(15, 23, 42, .55);
+
+  backdrop-filter: blur(5px);
+
+  overflow-y: auto;
+
+  box-sizing: border-box;
+
+}
+
+
+/* ============================================================
+   MODAL
+============================================================ */
+
+.modal-box {
+
+  width: 100%;
+
+  max-width: 650px;
+
+  max-height: calc(100vh - 40px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  background: #ffffff;
+
+  border: 1px solid $border;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 20px 60px rgba(15, 23, 42, .25);
+
+  overflow: hidden;
+
+  animation:
+    modalSlide .2s ease;
+
+}
+
+
+/* ============================================================
+   MODAL HEADER
+============================================================ */
+
+.modal-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 20px 22px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid $border;
+
+  flex-shrink: 0;
+
+}
+
+
+.modal-title {
+
+  margin: 0;
+
+  color: $dark;
+
+  font-size: 1.2rem;
+
+  line-height: 1.3;
+
+  font-weight: 800;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+}
+
+
+.modal-title i {
+
+  color: $blue;
+
+}
+
+
+.modal-subtitle {
+
+  margin: 5px 0 0;
+
+  color: $slate;
+
+  font-size: .78rem;
+
+}
+
+
+.modal-close {
+
+  width: 38px;
+
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: $slate;
+
+  background: #f8fafc;
+
+  border: 1px solid $border;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition:
+    background .15s ease,
+    color .15s ease,
+    border-color .15s ease;
+
+}
+
+
+.modal-close:hover {
+
+  color: $dark;
+
+  background: #f1f5f9;
+
+  border-color: #cbd5e1;
+
+}
+
+
+/* ============================================================
+   MODAL BODY
+============================================================ */
+
+.modal-body {
+
+  padding: 22px;
+
+  overflow-y: auto;
+
+  flex: 1;
+
+}
+
+
+/* ============================================================
+   FORMULARIOS
+============================================================ */
+
+.form-group {
+
+  margin-bottom: 20px;
+
+}
+
+
+.form-group label {
+
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: $mid;
+
+  font-size: .82rem;
+
+  font-weight: 700;
+
+}
+
+
+.form-input {
+
+  width: 100%;
+
+  min-height: 42px;
+
+  padding: 0 12px;
+
+  box-sizing: border-box;
+
+  color: $dark;
+
+  background: #ffffff;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: $radius-sm;
+
+  outline: none;
+
+  font-family: inherit;
+
+  font-size: .84rem;
+
+  transition:
+    border-color .15s ease,
+    box-shadow .15s ease;
+
+}
+
+
+.form-input:focus {
+
+  border-color: $blue;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, .10);
+
+}
+
+
+.form-input:disabled {
+
+  background: #f8fafc;
+
+  color: $slate;
+
+  cursor: not-allowed;
+
+}
+
+
+.form-textarea {
+
+  min-height: 90px;
+
+  padding: 11px 12px;
+
+  resize: vertical;
+
+  line-height: 1.5;
+
+}
+
+
+.form-help {
+
+  display: block;
+
+  margin-top: 6px;
+
+  color: $slate;
+
+  font-size: .74rem;
+
+  line-height: 1.5;
+
+}
+
+
+/* ============================================================
+   RESUMEN DE PROGRAMACIÓN
+============================================================ */
+
+.programacion-resumen {
+
+  margin: 4px 0 20px;
+
+  padding: 14px 16px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 9px;
+
+}
+
+
+.resumen-header {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 10px;
+
+  color: $mid;
+
+  font-size: .78rem;
+
+  font-weight: 750;
+
+}
+
+
+.resumen-header i {
+
+  color: $blue;
+
+}
+
+
+.resumen-content {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+
+  color: $mid;
+
+  font-size: .78rem;
+
+  line-height: 1.5;
+
+}
+
+
+.resumen-content strong {
+
+  color: $dark;
+
+  font-weight: 750;
+
+}
+
+
+.highlight-value {
+
+  color: $blue !important;
+
+}
+
+
+/* ============================================================
+   MODAL FOOTER
+============================================================ */
+
+.modal-footer {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding: 16px 22px;
+
+  background: #ffffff;
+
+  border-top: 1px solid $border;
+
+  flex-shrink: 0;
+
+}
+
+
+/* ============================================================
+   ANIMACIÓN
+============================================================ */
+
+@keyframes modalSlide {
+
+  from {
+
+    opacity: 0;
+
+    transform: translateY(10px) scale(.98);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform: translateY(0) scale(1);
+
+  }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE - TABLET
+============================================================ */
+
+@media (max-width: 768px) {
+
+  .mantenimiento-container {
+
+    padding: 14px;
+
+  }
+
+
+  .page-header {
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    padding: 18px;
+
+  }
+
+
+  .header-actions {
+
+    width: 100%;
+
+    justify-content: stretch;
+
+  }
+
+
+  .header-actions .btn-primary,
+  .header-actions .btn-secondary {
+
+    flex: 1;
+
+  }
+
+
+  .page-title {
+
+    font-size: 1.35rem;
+
+  }
+
+
+  .equipo-card {
+
+    align-items: stretch;
+
+    flex-direction: column;
+
+    gap: 16px;
+
+    padding: 18px;
+
+  }
+
+
+  .control-actual {
+
+    min-width: 0;
+
+    padding: 14px 0 0;
+
+    border-left: none;
+
+    border-top: 1px solid $border;
+
+    text-align: left;
+
+  }
+
+
+  .data-table {
+
+    min-width: 950px;
+
+  }
+
+
+  .data-table thead th {
+
+    padding: 13px 14px;
+
+    font-size: .68rem;
+
+  }
+
+
+  .data-table td {
+
+    padding: 13px 14px;
+
+    font-size: .78rem;
+
+  }
+
+
+  .modal-backdrop {
+
+    padding: 12px;
+
+  }
+
+
+  .modal-box {
+
+    max-height: calc(100vh - 24px);
+
+    border-radius: 12px;
+
+  }
+
+
+  .modal-header {
+
+    padding: 16px;
+
+  }
+
+
+  .modal-body {
+
+    padding: 16px;
+
+  }
+
+
+  .modal-footer {
+
+    padding: 14px 16px;
+
+  }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE - MOBILE
+============================================================ */
+
+@media (max-width: 480px) {
+
+  .mantenimiento-container {
+
+    padding: 10px;
+
+  }
+
+
+  .page-header {
+
+    padding: 16px;
+
+    border-radius: 10px;
+
+  }
+
+
+  .page-title {
+
+    font-size: 1.2rem;
+
+  }
+
+
+  .page-subtitle {
+
+    font-size: .78rem;
+
+  }
+
+
+  .header-actions {
+
+    flex-direction: column;
+
+  }
+
+
+  .header-actions .btn-primary,
+  .header-actions .btn-secondary {
+
+    width: 100%;
+
+    flex: none;
+
+  }
+
+
+  .equipo-card {
+
+    border-radius: 10px;
+
+  }
+
+
+  .equipo-title {
+
+    font-size: 1rem;
+
+  }
+
+
+  .control-value {
+
+    font-size: 1.1rem;
+
+  }
+
+
+  .table-card {
+
+    border-radius: 10px;
+
+  }
+
+
+  .data-table {
+
+    min-width: 900px;
+
+  }
+
+
+  .data-table thead th {
+
+    padding: 11px 12px;
+
+    font-size: .63rem;
+
+  }
+
+
+  .data-table td {
+
+    padding: 11px 12px;
+
+    font-size: .74rem;
+
+  }
+
+
+  .status-badge {
+
+    padding: 4px 8px;
+
+    font-size: .6rem;
+
+  }
+
+
+  .control-badge {
+
+    padding: 4px 7px;
+
+    font-size: .62rem;
+
+  }
+
+
+  .modal-backdrop {
+
+    padding: 8px;
+
+  }
+
+
+  .modal-box {
+
+    max-height: calc(100vh - 16px);
+
+    border-radius: 10px;
+
+  }
+
+
+  .modal-title {
+
+    font-size: 1rem;
+
+  }
+
+
+  .modal-subtitle {
+
+    font-size: .7rem;
+
+  }
+
+
+  .modal-body {
+
+    padding: 14px;
+
+  }
+
+
+  .modal-footer {
+
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+
+    padding: 14px;
+
+  }
+
+
+  .modal-footer .btn-primary,
+  .modal-footer .btn-secondary {
+
+    width: 100%;
+
+  }
+
+
+  .empty-state {
+
+    min-height: 300px;
+
+    padding: 40px 18px;
+
+  }
+
+}
+
+
+/* ============================================================
+   MOBILE MUY PEQUEÑO
+============================================================ */
+
+@media (max-width: 360px) {
+
+  .mantenimiento-container {
+
+    padding: 8px;
+
+  }
+
+
+  .page-header {
+
+    padding: 14px;
+
+  }
+
+
+  .equipo-card {
+
+    padding: 14px;
+
+  }
+
+
+  .data-table {
+
+    min-width: 850px;
+
+  }
+
+
+  .data-table thead th {
+
+    padding: 10px;
+
+  }
+
+
+  .data-table td {
+
+    padding: 10px;
+
+  }
+
+}

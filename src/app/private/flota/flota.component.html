@@ -1,0 +1,395 @@
+<main class="content-view">
+
+  <div class="page-container">
+
+    <!-- ========================================================= -->
+    <!-- HEADER -->
+    <!-- ========================================================= -->
+
+    <header class="page-header">
+
+      <div class="header-content">
+
+        <div class="header-text">
+
+          <h2>
+            Gestión de mantenimientos
+          </h2>
+
+          <p>
+            Control operativo de vehículos y maquinaria.
+          </p>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- ========================================================= -->
+    <!-- FILTROS -->
+    <!-- ========================================================= -->
+
+    <section class="filters-card">
+
+      <div class="filters-grid">
+
+        <!-- BUSCAR -->
+        <div class="filter-field search-field">
+
+          <i class="fas fa-search"></i>
+
+          <input
+            type="text"
+            [(ngModel)]="searchTerm"
+            (input)="aplicarFiltros()"
+            placeholder="Buscar placa, código, marca..."
+          >
+
+        </div>
+
+
+        <!-- TIPO -->
+        <div class="filter-field">
+
+          <select
+            [(ngModel)]="filtroTipo"
+            (change)="aplicarFiltros()"
+          >
+
+            <option value="">
+              Todos los equipos
+            </option>
+
+            <option value="VEHICULO">
+              Vehículos
+            </option>
+
+            <option value="MAQUINARIA">
+              Maquinaria
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- ESTADO -->
+        <div class="filter-field">
+
+          <select
+            [(ngModel)]="filtroEstado"
+            (change)="aplicarFiltros()"
+          >
+
+            <option value="">
+              Todos los estados
+            </option>
+
+            <option value="OPERATIVO">
+              Operativo
+            </option>
+
+            <option value="OPERATIVA">
+              Operativa
+            </option>
+
+            <option value="TALLER">
+              Taller
+            </option>
+
+            <option value="INACTIVO">
+              Inactivo
+            </option>
+
+            <option value="INACTIVA">
+              Inactiva
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- LIMPIAR -->
+        <button
+          type="button"
+          class="btn-clear"
+          (click)="limpiarFiltros()"
+        >
+
+          <i class="fas fa-eraser"></i>
+
+          <span>
+            Limpiar filtros
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <!-- CONTADOR -->
+
+      <div class="results-info">
+
+        Mostrando
+
+        <span>
+          {{ flotaFiltrada.length }}
+        </span>
+
+        registros
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================================= -->
+    <!-- TABLA -->
+    <!-- ========================================================= -->
+
+    <section class="table-card">
+
+      <div class="table-wrapper">
+
+        <table class="data-table">
+
+          <!-- =================================================== -->
+          <!-- HEADER TABLA -->
+          <!-- =================================================== -->
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Equipo
+              </th>
+
+              <th>
+                Tipo
+              </th>
+
+              <th>
+                Control
+              </th>
+
+              <th>
+                Estado
+              </th>
+
+              <th class="text-center">
+                Acción
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <!-- =================================================== -->
+          <!-- CUERPO -->
+          <!-- =================================================== -->
+
+          <tbody>
+
+            <!-- =============================================== -->
+            <!-- LOADING -->
+            <!-- =============================================== -->
+
+            <tr *ngIf="loading">
+
+              <td
+                colspan="5"
+                class="loading-row"
+              >
+
+                <div class="loading-content">
+
+                  <div class="spinner"></div>
+
+                  <span>
+                    Cargando flota...
+                  </span>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+
+            <!-- =============================================== -->
+            <!-- SIN RESULTADOS -->
+            <!-- =============================================== -->
+
+            <tr
+              *ngIf="!loading && flotaFiltrada.length === 0"
+            >
+
+              <td
+                colspan="5"
+                class="empty-row"
+              >
+
+                <i class="fas fa-truck"></i>
+
+                <p>
+                  No se encontraron registros
+                </p>
+
+              </td>
+
+            </tr>
+
+
+            <!-- =============================================== -->
+            <!-- REGISTROS -->
+            <!-- =============================================== -->
+
+            <tr
+              *ngFor="
+                let item of flotaFiltrada;
+                trackBy: trackById
+              "
+              class="table-row"
+            >
+
+              <!-- =========================================== -->
+              <!-- EQUIPO -->
+              <!-- =========================================== -->
+
+              <td>
+
+                <div class="equipo-identificador">
+
+                  <span class="identificador">
+                    {{ item.identificador }}
+                  </span>
+
+                  <span class="tipo-equipo">
+                    {{ item.tipo_equipo }}
+                  </span>
+
+                </div>
+
+              </td>
+
+
+              <!-- =========================================== -->
+              <!-- TIPO -->
+              <!-- =========================================== -->
+
+              <td class="tipo">
+
+                {{ item.tipo_nombre }}
+
+              </td>
+
+
+              <!-- =========================================== -->
+              <!-- CONTROL -->
+              <!-- =========================================== -->
+
+              <td class="control">
+
+                {{ item.valor_control | number }}
+
+                {{ item.unidad }}
+
+              </td>
+
+
+              <!-- =========================================== -->
+              <!-- ESTADO -->
+              <!-- =========================================== -->
+
+              <td>
+
+                <span
+                  class="badge"
+                  [ngClass]="estadoClass(item.estado)"
+                >
+
+                  {{ item.estado }}
+
+                </span>
+
+              </td>
+
+
+              <!-- =========================================== -->
+              <!-- ACCIONES -->
+              <!-- =========================================== -->
+
+              <td class="actions">
+
+                <div class="action-buttons">
+
+                  <!-- VER PLAN -->
+
+                  <button
+                    type="button"
+                    class="btn-plan"
+                    (click)="
+                      verPlan(
+                        item.id,
+                        item.tipo_equipo === 'VEHICULO'
+                          ? 'vehiculo'
+                          : 'maquinaria'
+                      )
+                    "
+                  >
+
+                    <i class="fas fa-tools"></i>
+
+                    <span>
+                      Ver plan
+                    </span>
+
+                  </button>
+
+
+                  <!-- INSPECCIONES -->
+
+                  <button
+                    type="button"
+                    class="btn-inspecciones"
+                    (click)="
+                      verInspecciones(
+                        item.id,
+                        item.tipo_equipo === 'VEHICULO'
+                          ? 'vehiculo'
+                          : 'maquinaria'
+                      )
+                    "
+                  >
+
+                    <i class="fas fa-clipboard-check"></i>
+
+                    <span>
+                      Inspecciones
+                    </span>
+
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>

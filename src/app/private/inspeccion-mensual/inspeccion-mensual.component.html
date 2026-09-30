@@ -1,0 +1,439 @@
+<main class="content-view">
+
+  <div class="page-container">
+
+    <!-- ========================================================= -->
+    <!-- HEADER -->
+    <!-- ========================================================= -->
+
+    <header class="page-header">
+
+      <div class="header-content">
+
+        <div>
+          <h2 class="page-title">
+            Inspecciones mensuales
+          </h2>
+
+          <p class="page-subtitle">
+            Gestión documental de inspecciones del equipo.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="header-actions">
+
+        <button
+          type="button"
+          (click)="volver()"
+          class="btn-secondary">
+
+          <i class="fas fa-arrow-left"></i>
+          <span>Volver</span>
+
+        </button>
+
+        <button
+          type="button"
+          (click)="abrirModal()"
+          class="btn-primary">
+
+          <i class="fas fa-upload"></i>
+          <span>Nueva inspección</span>
+
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- ========================================================= -->
+    <!-- INFORMACIÓN DEL EQUIPO -->
+    <!-- ========================================================= -->
+
+    <section
+      *ngIf="equipo"
+      class="equipment-card">
+
+      <div class="equipment-info">
+
+        <span class="equipment-label">
+          {{ tipo == 'vehiculo' ? 'Vehículo' : 'Maquinaria' }}
+        </span>
+
+        <h3 class="equipment-name">
+          {{ equipo.placa || equipo.codigo }}
+        </h3>
+
+        <p class="equipment-description">
+          {{ equipo.marca || equipo.tipo }}
+        </p>
+
+      </div>
+
+      <div class="inspection-counter">
+
+        <span class="counter-label">
+          Inspecciones
+        </span>
+
+        <strong class="counter-value">
+          {{ inspecciones.length }}
+        </strong>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================================= -->
+    <!-- HISTORIAL -->
+    <!-- ========================================================= -->
+
+    <section class="table-card">
+
+      <!-- HEADER DE LA TARJETA -->
+
+      <div class="table-card-header">
+
+        <div>
+
+          <h3 class="table-card-title">
+            Historial de inspecciones
+          </h3>
+
+          <p class="table-card-subtitle">
+            Registro documental de las inspecciones realizadas.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================================= -->
+      <!-- TABLA -->
+      <!-- ======================================================= -->
+
+      <div class="table-wrapper">
+
+        <table
+          class="data-table"
+          *ngIf="!loading && inspecciones.length > 0">
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Fecha
+              </th>
+
+              <th>
+                Archivo
+              </th>
+
+              <th>
+                Observaciones
+              </th>
+
+              <th class="text-center">
+                Acciones
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let item of inspecciones">
+
+              <!-- FECHA -->
+
+              <td class="date-cell">
+
+                {{ item.fecha | date:'dd/MM/yyyy' }}
+
+              </td>
+
+
+              <!-- ARCHIVO -->
+
+              <td>
+
+                <div class="file-info">
+
+                  <div class="file-icon">
+
+                    <i class="fas fa-file-pdf"></i>
+
+                  </div>
+
+                  <div class="file-content">
+
+                    <div class="file-name">
+                      {{ item.archivo }}
+                    </div>
+
+                    <div class="file-description">
+                      Documento cargado
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <!-- OBSERVACIONES -->
+
+              <td class="observations-cell">
+
+                {{ item.observaciones || '-' }}
+
+              </td>
+
+
+              <!-- ACCIONES -->
+
+              <td class="actions-cell">
+
+                <div class="table-actions">
+
+                  <button
+                    type="button"
+                    (click)="abrir(item)"
+                    class="btn-view"
+                    title="Ver inspección">
+
+                    <i class="fas fa-eye"></i>
+
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+
+        <!-- ===================================================== -->
+        <!-- LOADING -->
+        <!-- ===================================================== -->
+
+        <div
+          *ngIf="loading"
+          class="loading-state">
+
+          <div class="loading-spinner"></div>
+
+          <span>
+            Cargando inspecciones...
+          </span>
+
+        </div>
+
+
+        <!-- ===================================================== -->
+        <!-- EMPTY -->
+        <!-- ===================================================== -->
+
+        <div
+          *ngIf="!loading && inspecciones.length === 0"
+          class="empty-state">
+
+          <div class="empty-icon">
+
+            <i class="fas fa-folder-open"></i>
+
+          </div>
+
+          <h3 class="empty-title">
+            No existen inspecciones
+          </h3>
+
+          <p class="empty-text">
+            Todavía no se ha cargado ninguna inspección para este equipo.
+          </p>
+
+          <button
+            type="button"
+            (click)="abrirModal()"
+            class="btn-primary">
+
+            <i class="fas fa-upload"></i>
+            <span>Nueva inspección</span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- MODAL NUEVA INSPECCIÓN -->
+  <!-- ========================================================= -->
+
+  <div
+    *ngIf="showModal"
+    class="modal-backdrop"
+    (click)="cerrarModal()">
+
+    <div
+      class="modal-box"
+      (click)="$event.stopPropagation()">
+
+
+      <!-- ======================================================= -->
+      <!-- MODAL HEADER -->
+      <!-- ======================================================= -->
+
+      <div class="modal-header">
+
+        <div class="modal-title-wrapper">
+
+          <div class="modal-icon">
+
+            <i class="fas fa-file-upload"></i>
+
+          </div>
+
+          <div>
+
+            <h2 class="modal-title">
+              Nueva inspección
+            </h2>
+
+            <p class="modal-subtitle">
+              Cargar documento de inspección
+            </p>
+
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          (click)="cerrarModal()"
+          class="modal-close"
+          title="Cerrar">
+
+          <i class="fas fa-times"></i>
+
+        </button>
+
+      </div>
+
+
+      <!-- ======================================================= -->
+      <!-- MODAL BODY -->
+      <!-- ======================================================= -->
+
+      <div class="modal-body">
+
+
+        <!-- FECHA -->
+
+        <div class="form-group">
+
+          <label for="fecha-inspeccion">
+            Fecha de inspección
+          </label>
+
+          <input
+            id="fecha-inspeccion"
+            type="date"
+            [(ngModel)]="fecha"
+            class="form-input">
+
+        </div>
+
+
+        <!-- ARCHIVO -->
+
+        <div class="form-group">
+
+          <label for="archivo-inspeccion">
+            Archivo
+          </label>
+
+          <input
+            id="archivo-inspeccion"
+            type="file"
+            accept=".pdf,.jpg,.jpeg,.png"
+            (change)="seleccionarArchivo($event)"
+            class="form-input file-input">
+
+          <small class="form-help">
+            Formatos permitidos: PDF, JPG, JPEG o PNG.
+          </small>
+
+        </div>
+
+
+        <!-- OBSERVACIONES -->
+
+        <div class="form-group">
+
+          <label for="observaciones">
+            Observaciones
+          </label>
+
+          <textarea
+            id="observaciones"
+            rows="4"
+            [(ngModel)]="observaciones"
+            class="form-input textarea-input"
+            placeholder="Escriba una observación..."></textarea>
+
+        </div>
+
+
+      </div>
+
+
+      <!-- ======================================================= -->
+      <!-- MODAL FOOTER -->
+      <!-- ======================================================= -->
+
+      <div class="modal-footer">
+
+        <button
+          type="button"
+          (click)="cerrarModal()"
+          class="btn-secondary">
+
+          Cancelar
+
+        </button>
+
+        <button
+          type="button"
+          (click)="guardar()"
+          class="btn-primary">
+
+          <i class="fas fa-save"></i>
+          <span>Guardar inspección</span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>

@@ -1,0 +1,276 @@
+<div class="topbar">
+
+  <div class="topbar-container">
+
+    <!-- ========================================= -->
+    <!-- IZQUIERDA -->
+    <!-- ========================================= -->
+
+    <div class="topbar-left">
+
+      <div class="logo-box">
+        <img src="assets/img/logo.png" alt="AS-BUILT Logo" />
+      </div>
+
+      <div class="brand-info">
+
+        <h1 class="brand-title">
+          AS-<span>BUILT</span>
+        </h1>
+
+        <p class="brand-status" *ngIf="!esOperador">
+          <i class="fas fa-circle"></i>
+          ONLINE -
+          {{ stats.total + maquinariaTotal }}
+          equipos registrados
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- STATS -->
+    <!-- ========================================= -->
+
+    <div class="topbar-stats" *ngIf="!esOperador">
+
+      <div class="stat-box">
+
+        <div class="stat-value critical">
+          {{ estadisticasAlertas.criticas }}
+        </div>
+
+        <div class="stat-label">
+          Críticas
+        </div>
+
+      </div>
+
+
+      <div class="stat-box">
+
+        <div class="stat-value active">
+          {{ estadisticasAlertas.activas }}
+        </div>
+
+        <div class="stat-label">
+          Activas
+        </div>
+
+      </div>
+
+
+      <div class="stat-box">
+
+        <div class="stat-value resolved">
+          {{ estadisticasAlertas.resueltas }}
+        </div>
+
+        <div class="stat-label">
+          Resueltas
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- DERECHA -->
+    <!-- ========================================= -->
+
+    <div class="topbar-right">
+
+      <!-- NOTIFICACIONES -->
+
+      <div class="notification-wrapper" *ngIf="!esOperador">
+
+        <button
+          (click)="toggleNotifications()"
+          class="notification-btn"
+          type="button"
+          aria-label="Notificaciones">
+
+          <i class="fas fa-bell"></i>
+
+          <span
+            *ngIf="notificacionesNoLeidas > 0"
+            class="notification-badge">
+
+            {{ notificacionesNoLeidas }}
+
+          </span>
+
+        </button>
+
+
+        <!-- DROPDOWN -->
+
+        <div
+          *ngIf="showNotifications"
+          class="notifications-dropdown">
+
+          <div class="dropdown-header">
+
+            <div>
+
+              <h3>
+                Notificaciones
+              </h3>
+
+              <p>
+                Alertas del sistema
+              </p>
+
+            </div>
+
+            <button
+              (click)="marcarTodas()"
+              class="mark-all-btn"
+              type="button">
+
+              Marcar todas
+
+            </button>
+
+          </div>
+
+
+          <!-- LISTA -->
+
+          <div class="notifications-list">
+
+            <div
+              *ngFor="let n of notificaciones"
+              (click)="marcarComoLeida(n)"
+              class="notification-item"
+              [class.read]="n.leida">
+
+              <div class="notification-top">
+
+                <span
+                  class="priority-badge"
+                  [ngClass]="getClasePrioridad(n.prioridad)">
+
+                  {{ n.prioridad || 'INFO' }}
+
+                </span>
+
+                <span class="notification-time">
+
+                  {{ n.fecha | date:'shortTime' }}
+
+                </span>
+
+              </div>
+
+
+              <div class="notification-message">
+
+                {{ n.mensaje }}
+
+              </div>
+
+
+              <div class="notification-footer">
+
+                <span>
+                  <i class="fas fa-truck"></i>
+                  {{ n.vehiculo }}
+                </span>
+
+                <span>
+                  {{ n.tipo }}
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- VACÍO -->
+
+            <div
+              *ngIf="notificaciones.length === 0"
+              class="notifications-empty">
+
+              <i class="fas fa-bell-slash"></i>
+
+              <p>
+                Sin notificaciones
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- USUARIO -->
+
+      <div class="user-section">
+
+        <div class="user-info">
+
+          <div class="user-name">
+            {{ usuarioNombre }}
+          </div>
+
+          <div class="user-role">
+            Usuario activo
+          </div>
+
+        </div>
+
+
+        <div class="avatar">
+          {{ usuarioNombre.charAt(0) }}
+        </div>
+
+
+        <button
+          (click)="logout()"
+          class="logout-btn"
+          type="button">
+
+          <i class="fas fa-sign-out-alt"></i>
+
+          <span>
+            Salir
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <!-- RELOJ -->
+
+      <div class="clock-box">
+
+        <i class="fas fa-clock"></i>
+
+        <div class="clock-info">
+
+          <div class="clock-time">
+            {{ horaActual | date:'HH:mm:ss' }}
+          </div>
+
+          <div class="clock-date">
+            {{ horaActual | date:'EEEE d MMMM y':'':'es' }}
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

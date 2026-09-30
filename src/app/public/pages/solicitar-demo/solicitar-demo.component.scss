@@ -1,0 +1,1344 @@
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+$dark: #06111f;
+$dark-2: #081625;
+$dark-3: #0b1b2d;
+$dark-4: #10243a;
+
+$white: #f5f7f8;
+$white-soft: #dfe5ea;
+
+$gray: #91a0af;
+$gray-dark: #627284;
+
+$yellow: #d7aa32;
+$yellow-light: #e5bd50;
+
+$border: rgba(255, 255, 255, 0.09);
+$border-light: rgba(255, 255, 255, 0.14);
+
+$font-display: "Archivo", "Inter", sans-serif;
+
+
+/* =========================================================
+   HOST
+========================================================= */
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+
+/* =========================================================
+   RESET LOCAL
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.demo-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+
+  background: $dark;
+  color: $white;
+
+  font-family: $font-display;
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.demo-background {
+  position: fixed;
+  inset: 0;
+
+  z-index: 0;
+
+  pointer-events: none;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      $dark 0%,
+      $dark-2 55%,
+      $dark 100%
+    );
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.demo-grid {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0.32;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 72px 72px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.85),
+      transparent 85%
+    );
+}
+
+
+/* =========================================================
+   DECORATIVE LIGHT
+========================================================= */
+
+.demo-glow {
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  border-radius: 50%;
+
+  filter: blur(130px);
+
+  opacity: 0.045;
+}
+
+
+/* LEFT */
+
+.demo-glow-left {
+  top: 8%;
+  left: -280px;
+
+  background: $yellow;
+}
+
+
+/* RIGHT */
+
+.demo-glow-right {
+  right: -280px;
+  bottom: -220px;
+
+  background: #24415f;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.demo-main {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(
+    1220px,
+    calc(100% - 50px)
+  );
+
+  min-height:
+    calc(100vh - 78px);
+
+  margin: 0 auto;
+
+  padding:
+    88px 0
+    100px;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 0.88fr)
+    minmax(0, 1.12fr);
+
+  gap: 80px;
+
+  align-items: center;
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.demo-intro {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.demo-eyebrow {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  margin-bottom: 22px;
+
+  color: $yellow-light;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+}
+
+
+.demo-eyebrow span {
+  width: 30px;
+  height: 1px;
+
+  flex-shrink: 0;
+
+  background: $yellow;
+
+  box-shadow:
+    0 0 8px rgba(215, 170, 50, 0.2);
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.demo-intro h1 {
+  margin: 0;
+
+  color: $white;
+
+  font-size:
+    clamp(
+      44px,
+      5vw,
+      68px
+    );
+
+  line-height: 0.98;
+
+  letter-spacing: -0.045em;
+
+  font-weight: 500;
+}
+
+
+.demo-intro h1 strong {
+  display: block;
+
+  margin-top: 5px;
+
+  color: $yellow;
+
+  font-weight: 700;
+
+  text-shadow:
+    0 8px 30px rgba(215, 170, 50, 0.08);
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.demo-description {
+  max-width: 560px;
+
+  margin:
+    28px 0
+    42px;
+
+  color: $gray;
+
+  font-size: 15px;
+
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   BENEFITS
+========================================================= */
+
+.demo-benefits {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+
+.demo-benefit {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  min-width: 0;
+}
+
+
+/* =========================================================
+   BENEFIT ICON
+========================================================= */
+
+.benefit-icon {
+  width: 41px;
+  height: 41px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: $yellow;
+
+  background: $dark-3;
+
+  border: 1px solid $border;
+
+  border-radius: 2px;
+
+  font-size: 13px;
+
+  transition:
+    color 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+
+.demo-benefit:hover .benefit-icon {
+  color: $dark;
+
+  background: $yellow;
+
+  border-color: $yellow;
+
+  transform: translateX(3px);
+}
+
+
+/* =========================================================
+   BENEFIT CONTENT
+========================================================= */
+
+.benefit-content {
+  min-width: 0;
+}
+
+
+.demo-benefit strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: $white-soft;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+
+.demo-benefit span {
+  display: block;
+
+  color: $gray-dark;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORM CARD
+========================================================= */
+
+.demo-form-card {
+  position: relative;
+
+  min-width: 0;
+
+  padding: 36px 38px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(11, 27, 45, 0.98),
+      rgba(6, 17, 31, 0.99)
+    );
+
+  border: 1px solid $border;
+
+  border-radius: 3px;
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.28);
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   FORM CARD DETAIL
+========================================================= */
+
+.demo-form-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  width: 180px;
+  height: 180px;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(215, 170, 50, 0.055),
+      transparent 70%
+    );
+}
+
+
+/* =========================================================
+   TOP ACCENT
+========================================================= */
+
+.form-accent {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(215, 170, 50, 0.25) 15%,
+      $yellow 50%,
+      rgba(215, 170, 50, 0.25) 85%,
+      transparent 100%
+    );
+
+  opacity: 0.8;
+}
+
+
+/* =========================================================
+   FORM HEADER
+========================================================= */
+
+.form-header {
+  position: relative;
+
+  z-index: 1;
+
+  margin-bottom: 28px;
+
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+
+.form-header-content {
+  min-width: 0;
+}
+
+
+.form-eyebrow {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: $yellow;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+}
+
+
+.form-header h2 {
+  margin: 0 0 8px;
+
+  color: $white;
+
+  font-size: 25px;
+
+  line-height: 1.2;
+
+  font-weight: 700;
+
+  letter-spacing: -0.025em;
+}
+
+
+.form-header p {
+  margin: 0;
+
+  color: $gray-dark;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORM STATUS
+========================================================= */
+
+.form-status {
+  flex-shrink: 0;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 6px 9px;
+
+  color: $gray;
+
+  background: rgba(6, 17, 31, 0.65);
+
+  border: 1px solid $border;
+
+  border-radius: 2px;
+
+  font-size: 9px;
+
+  white-space: nowrap;
+}
+
+
+.form-status span {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: $yellow;
+
+  box-shadow:
+    0 0 8px rgba(215, 170, 50, 0.55);
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.demo-form {
+  position: relative;
+
+  z-index: 1;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 17px 15px;
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.form-group {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.form-group.full {
+  grid-column: 1 / -1;
+}
+
+
+.form-group label {
+  color: $white-soft;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   INPUT CONTAINER
+========================================================= */
+
+.input-container {
+  position: relative;
+
+  width: 100%;
+}
+
+
+.input-container > i {
+  position: absolute;
+
+  left: 14px;
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+  color: $gray-dark;
+
+  font-size: 11px;
+
+  pointer-events: none;
+
+  z-index: 2;
+
+  transition:
+    color 0.25s ease;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.input-container input,
+.input-container select,
+.form-group textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  color: $white-soft;
+
+  background: rgba(6, 17, 31, 0.78);
+
+  border: 1px solid $border;
+
+  border-radius: 2px;
+
+  outline: none;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+
+.input-container input,
+.input-container select {
+  height: 46px;
+
+  padding:
+    0 13px
+    0 38px;
+}
+
+
+.input-container input::placeholder,
+.form-group textarea::placeholder {
+  color: #566577;
+
+  opacity: 1;
+}
+
+
+/* =========================================================
+   SELECT
+========================================================= */
+
+.input-container select {
+  appearance: none;
+
+  -webkit-appearance: none;
+
+  cursor: pointer;
+
+  padding-right: 36px;
+}
+
+
+.select-container::after {
+  content: "\f078";
+
+  position: absolute;
+
+  right: 14px;
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+  color: $gray-dark;
+
+  font-family:
+    "Font Awesome 5 Free";
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  pointer-events: none;
+}
+
+
+.input-container select option {
+  color: $white-soft;
+
+  background: $dark-3;
+}
+
+
+/* =========================================================
+   TEXTAREA
+========================================================= */
+
+.form-group textarea {
+  min-height: 105px;
+
+  padding: 13px 14px;
+
+  resize: vertical;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   FOCUS
+========================================================= */
+
+.input-container:focus-within > i {
+  color: $yellow;
+}
+
+
+.input-container input:focus,
+.input-container select:focus,
+.form-group textarea:focus {
+  background: $dark-2;
+
+  border-color:
+    rgba(215, 170, 50, 0.55);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(215, 170, 50, 0.07);
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+========================================================= */
+
+.submit-button {
+  grid-column: 1 / -1;
+
+  width: 100%;
+
+  min-height: 49px;
+
+  margin-top: 3px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: $dark;
+
+  background: $yellow;
+
+  border: 1px solid $yellow;
+
+  border-radius: 2px;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.02em;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    opacity 0.25s ease;
+}
+
+
+.submit-button:hover:not(:disabled) {
+  background: $yellow-light;
+
+  border-color: $yellow-light;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 28px
+    rgba(215, 170, 50, 0.16);
+}
+
+
+.submit-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+
+.submit-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+}
+
+
+.submit-button span {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+}
+
+
+.submit-button i {
+  font-size: 10px;
+
+  transition:
+    transform 0.25s ease;
+}
+
+
+.submit-button:hover:not(:disabled) i {
+  transform: translateX(4px);
+}
+
+
+.loading-button i {
+  font-size: 12px;
+
+  transform: none !important;
+}
+
+
+/* =========================================================
+   PRIVACY
+========================================================= */
+
+.privacy-message {
+  grid-column: 1 / -1;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  margin-top: -2px;
+
+  color: $gray-dark;
+
+  font-size: 9px;
+
+  line-height: 1.5;
+
+  text-align: center;
+}
+
+
+.privacy-message i {
+  flex-shrink: 0;
+
+  color: $gray-dark;
+
+  font-size: 8px;
+}
+
+
+/* =========================================================
+   WHATSAPP
+========================================================= */
+
+.whatsapp-button {
+  position: fixed;
+
+  right: 28px;
+  bottom: 28px;
+
+  z-index: 1000;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding:
+    7px 8px
+    7px 18px;
+
+  text-decoration: none;
+
+  background: rgba(8, 22, 37, 0.96);
+
+  border: 1px solid $border;
+
+  border-radius: 50px;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.28);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+
+.whatsapp-text {
+  display: flex;
+
+  flex-direction: column;
+
+  color: $gray;
+
+  font-size: 11px;
+
+  line-height: 1.2;
+
+  white-space: nowrap;
+}
+
+
+.whatsapp-text strong {
+  margin-top: 2px;
+
+  color: $white;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+
+.whatsapp-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #25d366;
+
+  color: #ffffff;
+
+  font-size: 25px;
+
+  box-shadow:
+    0 6px 18px rgba(37, 211, 102, 0.25);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.whatsapp-button:hover {
+  transform: translateY(-4px);
+
+  border-color:
+    rgba(37, 211, 102, 0.28);
+
+  box-shadow:
+    0 16px 35px rgba(0, 0, 0, 0.32);
+}
+
+
+.whatsapp-button:hover .whatsapp-icon {
+  transform: scale(1.06);
+
+  box-shadow:
+    0 8px 24px
+    rgba(37, 211, 102, 0.35);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+
+  .demo-main {
+    gap: 55px;
+
+    width:
+      min(
+        100% - 40px,
+        1100px
+      );
+  }
+
+
+  .demo-form-card {
+    padding:
+      30px 28px;
+  }
+
+
+  .demo-intro h1 {
+    font-size: 52px;
+  }
+
+}
+
+
+/* =========================================================
+   900px
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .demo-main {
+    width:
+      calc(100% - 40px);
+
+    min-height: auto;
+
+    padding:
+      70px 0
+      85px;
+
+    grid-template-columns: 1fr;
+
+    gap: 55px;
+
+    align-items: start;
+  }
+
+
+  .demo-intro {
+    max-width: 720px;
+  }
+
+
+  .demo-description {
+    max-width: 650px;
+  }
+
+
+  .demo-form-card {
+    width: 100%;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .demo-page {
+    overflow-x: hidden;
+  }
+
+
+  .demo-main {
+    width:
+      calc(100% - 30px);
+
+    padding:
+      52px 0
+      70px;
+
+    gap: 48px;
+  }
+
+
+  .demo-eyebrow {
+    font-size: 9px;
+
+    letter-spacing: 0.14em;
+  }
+
+
+  .demo-eyebrow span {
+    width: 21px;
+  }
+
+
+  .demo-intro h1 {
+    font-size: 43px;
+
+    letter-spacing: -0.04em;
+  }
+
+
+  .demo-description {
+    margin:
+      22px 0
+      32px;
+
+    font-size: 14px;
+
+    line-height: 1.75;
+  }
+
+
+  .demo-benefits {
+    gap: 15px;
+  }
+
+
+  .demo-benefit {
+    align-items: flex-start;
+  }
+
+
+  .benefit-icon {
+    width: 36px;
+    height: 36px;
+
+    font-size: 12px;
+  }
+
+
+  .demo-benefit strong {
+    font-size: 12px;
+  }
+
+
+  .demo-benefit span {
+    font-size: 11px;
+  }
+
+
+  .demo-form-card {
+    padding:
+      26px 19px;
+
+    border-radius: 3px;
+  }
+
+
+  .form-header {
+    flex-direction: column;
+
+    gap: 14px;
+
+    margin-bottom: 24px;
+  }
+
+
+  .form-header h2 {
+    font-size: 22px;
+  }
+
+
+  .form-header p {
+    font-size: 12px;
+  }
+
+
+  .form-status {
+    align-self: flex-start;
+  }
+
+
+  .demo-form {
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+  }
+
+
+  .form-group.full,
+  .submit-button,
+  .privacy-message {
+    grid-column: auto;
+  }
+
+
+  .input-container input,
+  .input-container select {
+    height: 46px;
+  }
+
+
+  .form-group textarea {
+    min-height: 110px;
+  }
+
+
+  .submit-button {
+    min-height: 48px;
+  }
+
+
+  .privacy-message {
+    align-items: flex-start;
+
+    font-size: 8.5px;
+  }
+
+
+  .whatsapp-button {
+    right: 18px;
+    bottom: 18px;
+
+    padding: 6px;
+
+    background: #25d366;
+
+    border: none;
+
+    box-shadow:
+      0 10px 25px
+      rgba(0, 0, 0, 0.25);
+  }
+
+
+  .whatsapp-text {
+    display: none;
+  }
+
+
+  .whatsapp-icon {
+    width: 52px;
+    height: 52px;
+
+    font-size: 27px;
+
+    box-shadow: none;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .demo-main {
+    width:
+      calc(100% - 24px);
+  }
+
+
+  .demo-intro h1 {
+    font-size: 39px;
+  }
+
+
+  .demo-form-card {
+    padding:
+      22px 16px;
+  }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .back-link,
+  .benefit-icon,
+  .submit-button,
+  .submit-button i,
+  .whatsapp-button,
+  .whatsapp-icon {
+    transition: none;
+  }
+
+}

@@ -1,0 +1,1239 @@
+<main class="content-view">
+
+  <div class="page-container">
+
+    <!-- ========================================================= -->
+    <!-- HEADER -->
+    <!-- ========================================================= -->
+
+    <header class="page-header">
+
+      <div class="header-content">
+
+        <div class="header-text">
+
+          <div class="title-row">
+
+            <h1>
+              Centro de Alertas
+            </h1>
+
+            <span class="monitoring-status">
+
+              <span class="status-dot"></span>
+
+              MONITOREO ACTIVO
+
+            </span>
+
+          </div>
+
+          <p>
+            Supervisión en tiempo real de vehículos, maquinaria y mantenimientos.
+          </p>
+
+        </div>
+
+
+        <!-- ACCIONES -->
+
+        <div class="header-actions">
+
+          <button type="button" (click)="ejecutarMotor()" [disabled]="ejecutandoMotor" class="btn-primary">
+
+            <i class="fas fa-cogs"></i>
+
+            <span>
+              {{ ejecutandoMotor ? 'Ejecutando...' : 'Ejecutar motor' }}
+            </span>
+
+          </button>
+
+
+          <button type="button" (click)="cargarTodo()" class="btn-secondary-dark">
+
+            <i class="fas fa-sync-alt"></i>
+
+            <span>
+              Actualizar
+            </span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- ========================================================= -->
+    <!-- ESTADÍSTICAS -->
+    <!-- ========================================================= -->
+
+    <section class="stats-grid">
+
+      <!-- TOTAL -->
+
+      <div class="stat-card">
+
+        <div class="stat-content">
+
+          <div>
+
+            <p class="stat-label">
+              Total Alertas
+            </p>
+
+            <h2 class="stat-value stat-value-dark">
+              {{ estadisticas.total }}
+            </h2>
+
+          </div>
+
+          <div class="stat-icon stat-icon-neutral">
+
+            <i class="fas fa-bell"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ACTIVAS -->
+
+      <div class="stat-card">
+
+        <div class="stat-content">
+
+          <div>
+
+            <p class="stat-label">
+              Activas
+            </p>
+
+            <h2 class="stat-value stat-value-orange">
+              {{ estadisticas.activas }}
+            </h2>
+
+          </div>
+
+          <div class="stat-icon stat-icon-orange">
+
+            <i class="fas fa-exclamation-circle"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- RESUELTAS -->
+
+      <div class="stat-card">
+
+        <div class="stat-content">
+
+          <div>
+
+            <p class="stat-label">
+              Resueltas
+            </p>
+
+            <h2 class="stat-value stat-value-green">
+              {{ estadisticas.resueltas }}
+            </h2>
+
+          </div>
+
+          <div class="stat-icon stat-icon-green">
+
+            <i class="fas fa-check-circle"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- CRÍTICAS -->
+
+      <div class="stat-card">
+
+        <div class="stat-content">
+
+          <div>
+
+            <p class="stat-label">
+              Críticas
+            </p>
+
+            <h2 class="stat-value stat-value-red">
+              {{ estadisticas.criticas }}
+            </h2>
+
+          </div>
+
+          <div class="stat-icon stat-icon-red">
+
+            <i class="fas fa-triangle-exclamation"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================================= -->
+    <!-- FILTROS -->
+    <!-- ========================================================= -->
+
+    <section class="filters-card">
+
+      <div class="filters-grid">
+
+        <!-- BUSCAR -->
+
+        <div class="filter-field search-field">
+
+          <i class="fas fa-search"></i>
+
+          <input type="text" [(ngModel)]="filtros.busqueda" (keyup.enter)="filtrar()"
+            placeholder="Buscar placa, código u operador...">
+
+        </div>
+
+
+        <!-- PRIORIDAD -->
+
+        <div class="filter-field">
+
+          <select [(ngModel)]="filtros.prioridad">
+
+            <option value="">
+              Todas las prioridades
+            </option>
+
+            <option value="CRITICA">
+              Crítica
+            </option>
+
+            <option value="ALTA">
+              Alta
+            </option>
+
+            <option value="MEDIA">
+              Media
+            </option>
+
+            <option value="BAJA">
+              Baja
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- TIPO -->
+
+        <div class="filter-field">
+
+          <select [(ngModel)]="filtros.tipo">
+
+            <option value="">
+              Todos los tipos
+            </option>
+
+            <option value="DOCUMENTO">
+              Documentos
+            </option>
+
+            <option value="GPS">
+              GPS
+            </option>
+
+            <option value="MANTENIMIENTO">
+              Mantenimiento
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- BOTONES -->
+
+        <div class="filter-actions">
+
+          <button type="button" (click)="filtrar()" class="btn-filter">
+
+            <i class="fas fa-filter"></i>
+
+            <span>
+              Filtrar
+            </span>
+
+          </button>
+
+
+          <button type="button" (click)="limpiarFiltros()" class="btn-clear" title="Limpiar filtros">
+
+            <i class="fas fa-eraser"></i>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================================= -->
+    <!-- PESTAÑAS -->
+    <!-- ========================================================= -->
+
+    <div class="tabs-container">
+
+      <!-- POR VERIFICAR -->
+
+      <button type="button" (click)="cambiarPestana('VERIFICAR')" [ngClass]="
+          pestanaActiva === 'VERIFICAR'
+            ? 'tab-active'
+            : 'tab-inactive'
+        " class="tab-button">
+
+        <span>
+          Por Verificar
+        </span>
+
+        <span class="tab-counter">
+
+          {{ estadisticas.activas }}
+
+        </span>
+
+      </button>
+
+
+      <!-- HISTÓRICO -->
+
+      <button type="button" (click)="cambiarPestana('HISTORICO')" [ngClass]="
+          pestanaActiva === 'HISTORICO'
+            ? 'tab-active'
+            : 'tab-inactive'
+        " class="tab-button">
+
+        <span>
+          Histórico / Resueltas
+        </span>
+
+      </button>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- TABLA -->
+    <!-- ========================================================= -->
+
+    <section class="table-card">
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <!-- =================================================== -->
+          <!-- CABECERA -->
+          <!-- =================================================== -->
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Tipo
+              </th>
+
+              <th>
+                Vehiculo / Persona
+              </th>
+
+              <th>
+                Mensaje
+              </th>
+
+              <th>
+                Prioridad
+              </th>
+
+              <th>
+                Estado
+              </th>
+
+              <th>
+                Fecha
+              </th>
+
+              <th *ngIf="pestanaActiva === 'VERIFICAR'" class="text-center">
+                Acciones
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <!-- =================================================== -->
+          <!-- CUERPO -->
+          <!-- =================================================== -->
+
+          <tbody>
+
+            <!-- ================================================= -->
+            <!-- LOADING -->
+            <!-- ================================================= -->
+
+            <tr *ngIf="loading">
+
+              <td colspan="7" class="loading-row">
+
+                <div class="loading-content">
+
+                  <div class="spinner"></div>
+
+                  <span>
+                    Cargando alertas...
+                  </span>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+
+            <!-- ================================================= -->
+            <!-- EMPTY -->
+            <!-- ================================================= -->
+
+            <tr *ngIf="
+                !loading &&
+                alertasPaginadas.length === 0
+              ">
+
+              <td colspan="7" class="empty-row">
+
+                <i class="fas fa-bell-slash"></i>
+
+                <p>
+                  No hay alertas registradas
+                </p>
+
+              </td>
+
+            </tr>
+
+
+            <!-- ================================================= -->
+            <!-- DATA -->
+            <!-- ================================================= -->
+
+            <tr *ngFor="
+                let alerta of alertasPaginadas;
+                trackBy: trackByAlerta
+              " class="table-row">
+
+              <!-- ============================================= -->
+              <!-- TIPO -->
+              <!-- ============================================= -->
+
+              <td>
+
+                <div class="placa">
+
+                  {{ getIconoAlerta(alerta.tipo) }}
+
+                  {{ alerta.tipo }}
+
+                </div>
+
+                <div class="text-muted">
+
+                  {{ alerta.categoria }}
+
+                </div>
+
+              </td>
+
+
+              <!-- ============================================= -->
+              <!-- VEHÍCULO / MAQUINARIA -->
+              <!-- ============================================= -->
+
+              <td>
+
+                <!-- ================================================= -->
+                <!-- VEHÍCULO -->
+                <!-- ================================================= -->
+
+                <ng-container *ngIf="alerta.vehiculo">
+
+                  <div class="placa">
+
+                    <i class="fas fa-truck"></i>
+
+                    {{ alerta.vehiculo.placa }}
+
+                  </div>
+
+                  <div class="text-muted">
+
+                    {{ alerta.vehiculo.marca }}
+
+                  </div>
+
+                </ng-container>
+
+
+                <!-- ================================================= -->
+                <!-- MAQUINARIA -->
+                <!-- ================================================= -->
+
+                <ng-container *ngIf="alerta.maquinaria">
+
+                  <div class="placa">
+
+                    <i class="fas fa-tractor"></i>
+
+                    {{ alerta.maquinaria.codigo }}
+
+                  </div>
+
+                  <div class="text-muted">
+
+                    {{ alerta.maquinaria.marca }}
+
+                  </div>
+
+                </ng-container>
+
+
+                <!-- ================================================= -->
+                <!-- OPERADOR -->
+                <!-- ================================================= -->
+
+                <ng-container *ngIf="alerta.usuario_id">
+
+                  <div class="placa">
+
+                    <i class="fas fa-user"></i>
+
+                    {{ alerta.usuario?.nombre || 'Operador' }}
+
+                  </div>
+
+                  <div class="text-muted">
+
+                    {{ alerta.usuario?.username || 'Sin usuario' }}
+
+                  </div>
+
+                </ng-container>
+
+
+                <!-- ================================================= -->
+                <!-- SIN RECURSO -->
+                <!-- ================================================= -->
+
+                <span *ngIf="
+      !alerta.vehiculo &&
+      !alerta.maquinaria &&
+      !alerta.usuario_id
+    " class="text-muted">
+
+                  N/A
+
+                </span>
+
+              </td>
+
+
+              <!-- ============================================= -->
+              <!-- MENSAJE -->
+              <!-- ============================================= -->
+
+              <td>
+
+                <div class="message">
+
+                  {{ alerta.mensaje }}
+
+                </div>
+
+                <div *ngIf="
+                    alerta.metadata?.fecha_vencimiento
+                  " class="text-muted">
+
+                  Vence:
+                  {{ alerta.metadata.fecha_vencimiento }}
+
+                </div>
+
+              </td>
+
+
+              <!-- ============================================= -->
+              <!-- PRIORIDAD -->
+              <!-- ============================================= -->
+
+              <td>
+
+                <span class="badge" [ngClass]="
+                    getClasePrioridad(alerta.prioridad)
+                  ">
+
+                  {{ alerta.prioridad }}
+
+                </span>
+
+              </td>
+
+
+              <!-- ============================================= -->
+              <!-- ESTADO -->
+              <!-- ============================================= -->
+
+              <td>
+
+                <span class="badge" [ngClass]="
+                    getClaseEstado(alerta.estado)
+                  ">
+
+                  {{ alerta.estado }}
+
+                </span>
+
+              </td>
+
+
+              <!-- ============================================= -->
+              <!-- FECHA -->
+              <!-- ============================================= -->
+
+              <td class="fecha">
+
+                {{ alerta.created_at | date:'dd/MM/yyyy HH:mm' }}
+
+              </td>
+
+
+              <!-- ============================================= -->
+              <!-- ACCIONES -->
+              <!-- ============================================= -->
+
+              <td *ngIf="pestanaActiva === 'VERIFICAR'" class="actions">
+
+                <button *ngIf="alerta.estado === 'ACTIVA'" type="button" class="action-btn action-btn--resolve"
+                  (click)="abrirResolver(alerta)">
+
+                  Resolver
+
+                </button>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <!-- ========================================================= -->
+      <!-- PAGINACIÓN -->
+      <!-- ========================================================= -->
+
+      <div *ngIf="totalPaginas > 1" class="pagination-container">
+
+        <div class="pagination-info">
+
+          Mostrando
+
+          <span>
+            {{ (paginaActual - 1) * itemsPorPagina + 1 }}
+          </span>
+
+          -
+
+          <span>
+            {{ getFinPagina() }}
+          </span>
+
+          de
+
+          <span>
+            {{ alertas.length }}
+          </span>
+
+          alertas
+
+        </div>
+
+
+        <div class="pagination-buttons">
+
+          <!-- ANTERIOR -->
+
+          <button type="button" (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1"
+            class="pagination-arrow">
+
+            <i class="fas fa-chevron-left"></i>
+
+          </button>
+
+
+          <!-- NÚMEROS -->
+
+          <button *ngFor="let pagina of paginas" type="button" (click)="cambiarPagina(pagina)" class="pagination-number"
+            [ngClass]="
+              pagina === paginaActual
+                ? 'pagination-active'
+                : ''
+            ">
+
+            {{ pagina }}
+
+          </button>
+
+
+          <!-- SIGUIENTE -->
+
+          <button type="button" (click)="cambiarPagina(paginaActual + 1)" [disabled]="paginaActual === totalPaginas"
+            class="pagination-arrow">
+
+            <i class="fas fa-chevron-right"></i>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<!-- ============================================================= -->
+<!-- MODAL DOCUMENTO -->
+<!-- ============================================================= -->
+
+<div *ngIf="modalDocumento" class="modal-overlay">
+
+  <div class="modal-card">
+
+    <!-- HEADER MODAL -->
+
+    <div class="modal-header">
+
+      <div>
+
+        <h2>
+          Actualizar documento
+        </h2>
+
+        <p>
+          {{ alertaSeleccionada.categoria }}
+        </p>
+
+      </div>
+
+
+      <button type="button" (click)="modalDocumento = false" class="modal-close">
+
+        <i class="fas fa-times"></i>
+
+      </button>
+
+    </div>
+
+
+    <!-- INFORMACIÓN -->
+
+    <div class="document-info">
+
+      <p>
+
+        <strong>
+          Vehículo:
+        </strong>
+
+        {{ alertaSeleccionada.vehiculo?.placa ||
+        alertaSeleccionada.maquinaria?.codigo }}
+
+      </p>
+
+      <span>
+
+        {{ alertaSeleccionada.vehiculo?.marca ||
+        alertaSeleccionada.maquinaria?.marca }}
+
+      </span>
+
+    </div>
+
+
+    <!-- FECHA -->
+
+    <div class="modal-field">
+
+      <label>
+        Nueva fecha vencimiento
+      </label>
+
+      <input type="date" [(ngModel)]="nuevaFecha">
+
+    </div>
+
+
+    <!-- ARCHIVO -->
+
+    <div class="modal-field">
+
+      <label>
+        Subir documento
+      </label>
+
+      <input type="file" (change)="onFileSelected($event)">
+
+    </div>
+
+
+    <!-- ACCIONES -->
+
+    <div class="modal-actions">
+
+      <button type="button" (click)="modalDocumento = false" class="modal-btn modal-btn-cancel">
+
+        Cancelar
+
+      </button>
+
+
+      <button type="button" (click)="resolverDocumento()" class="modal-btn modal-btn-save">
+
+        <i class="fas fa-save"></i>
+
+        Guardar documento
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- MODAL DOCUMENTO DE OPERADOR -->
+<!-- ===================================================== -->
+
+<div *ngIf="modalDocumentoOperador" class="modal-overlay operator-modal-overlay">
+
+  <div class="operator-document-modal">
+
+    <!-- HEADER -->
+    <div class="operator-modal-header">
+
+      <div class="operator-modal-title">
+
+        <div class="operator-modal-icon">
+          <i class="fas fa-id-card"></i>
+        </div>
+
+        <div class="operator-modal-heading">
+
+          <span class="operator-modal-eyebrow">
+            GESTIÓN DOCUMENTAL
+          </span>
+
+          <h2>Actualizar documento</h2>
+
+          <p>
+            Actualiza la documentación del operador y resuelve la alerta.
+          </p>
+
+        </div>
+
+      </div>
+
+      <button type="button" class="operator-modal-close" (click)="modalDocumentoOperador = false"
+        [disabled]="guardandoDocumentoOperador" aria-label="Cerrar modal">
+
+        <i class="fas fa-times"></i>
+
+      </button>
+
+    </div>
+
+
+    <!-- CUERPO -->
+    <div class="operator-modal-body">
+
+      <!-- ================================================= -->
+      <!-- ALERTA -->
+      <!-- ================================================= -->
+
+      <div class="operator-alert-banner">
+
+        <div class="operator-alert-banner-icon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+
+        <div class="operator-alert-banner-content">
+
+          <strong>Documento por vencer</strong>
+
+          <span>
+            Esta alerta requiere actualización de la documentación.
+          </span>
+
+        </div>
+
+        <span class="operator-alert-priority">
+          {{ alertaOperadorSeleccionada?.prioridad || 'MEDIA' }}
+        </span>
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- INFORMACIÓN DEL OPERADOR -->
+      <!-- ================================================= -->
+
+      <section class="operator-section">
+
+        <div class="operator-section-title">
+
+          <div class="operator-section-title-left">
+            <i class="fas fa-user"></i>
+            <span>Información del operador</span>
+          </div>
+
+        </div>
+
+
+        <div class="operator-profile">
+
+          <div class="operator-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+
+          <div class="operator-profile-info">
+
+            <strong>
+              {{ alertaOperadorSeleccionada?.usuario?.nombre || 'Operador' }}
+            </strong>
+
+            <span>
+              {{ alertaOperadorSeleccionada?.usuario?.username || 'Sin usuario' }}
+            </span>
+
+          </div>
+
+          <div class="operator-profile-tag">
+            OPERADOR
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ================================================= -->
+      <!-- DOCUMENTO ACTUAL -->
+      <!-- ================================================= -->
+
+      <section class="operator-section">
+
+        <div class="operator-section-title">
+
+          <div class="operator-section-title-left">
+            <i class="fas fa-file-alt"></i>
+            <span>Documento actual</span>
+          </div>
+
+        </div>
+
+
+        <div class="document-summary">
+
+          <!-- TIPO -->
+          <div class="document-summary-item document-summary-main">
+
+            <span class="summary-label">
+              Tipo de documento
+            </span>
+
+            <strong>
+              {{
+              alertaOperadorSeleccionada?.metadata?.documento
+              || alertaOperadorSeleccionada?.categoria
+              || 'Sin especificar'
+              }}
+            </strong>
+
+          </div>
+
+
+          <!-- FECHA -->
+          <div class="document-summary-item">
+
+            <span class="summary-label">
+              Vencimiento actual
+            </span>
+
+            <strong>
+              {{
+              alertaOperadorSeleccionada?.metadata?.fecha_vencimiento
+              || 'Sin fecha'
+              }}
+            </strong>
+
+          </div>
+
+
+          <!-- ESTADO -->
+          <div class="document-summary-item">
+
+            <span class="summary-label">
+              Estado
+            </span>
+
+            <span class="document-status">
+
+              {{
+              alertaOperadorSeleccionada?.metadata?.estado
+              || 'POR_VENCER'
+              }}
+
+            </span>
+
+          </div>
+
+
+          <!-- DÍAS -->
+          <div class="document-summary-item">
+
+            <span class="summary-label">
+              Días restantes
+            </span>
+
+            <strong class="days-remaining">
+
+              <ng-container *ngIf="
+                  alertaOperadorSeleccionada?.metadata?.dias_restantes !== null &&
+                  alertaOperadorSeleccionada?.metadata?.dias_restantes !== undefined;
+                  else sinDiasRestantes
+                ">
+
+                {{ alertaOperadorSeleccionada?.metadata?.dias_restantes }}
+
+                {{
+                alertaOperadorSeleccionada?.metadata?.dias_restantes === 1
+                ? 'día'
+                : 'días'
+                }}
+
+              </ng-container>
+
+              <ng-template #sinDiasRestantes>
+                N/A
+              </ng-template>
+
+            </strong>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- DIVISOR -->
+      <div class="operator-modal-divider"></div>
+
+
+      <!-- ================================================= -->
+      <!-- ACTUALIZAR DOCUMENTACIÓN -->
+      <!-- ================================================= -->
+
+      <section class="operator-section">
+
+        <div class="operator-section-title">
+
+          <div class="operator-section-title-left">
+            <i class="fas fa-sync-alt"></i>
+
+            <div>
+              <span>Actualizar documentación</span>
+
+              <small>
+                Ingresa la nueva información
+              </small>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- CAMPOS -->
+        <div class="operator-form-grid">
+
+          <!-- FECHA -->
+          <div class="operator-field">
+
+            <label for="nuevaFechaOperador">
+              Nueva fecha de vencimiento
+              <span>*</span>
+            </label>
+
+            <div class="operator-input-wrapper">
+
+              <i class="fas fa-calendar-alt"></i>
+
+              <input id="nuevaFechaOperador" type="date" [(ngModel)]="nuevaFechaOperador"
+                [disabled]="guardandoDocumentoOperador">
+
+            </div>
+
+            <small class="operator-field-help">
+              Fecha hasta la cual estará vigente el documento.
+            </small>
+
+          </div>
+
+
+          <!-- ARCHIVO -->
+          <div class="operator-field">
+
+            <label>
+              Nuevo documento
+              <span>*</span>
+            </label>
+
+            <label class="document-upload-area" [class.has-file]="archivoDocumentoOperador"
+              [class.disabled]="guardandoDocumentoOperador">
+
+              <input type="file" accept=".pdf,.jpg,.jpeg,.png" (change)="onFileSelectedOperador($event)"
+                [disabled]="guardandoDocumentoOperador">
+
+              <!-- SIN ARCHIVO -->
+              <div *ngIf="!archivoDocumentoOperador" class="upload-empty">
+
+                <div class="upload-icon">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+
+                <strong>
+                  Seleccionar documento
+                </strong>
+
+                <span>
+                  PDF, JPG, JPEG o PNG
+                </span>
+
+              </div>
+
+
+              <!-- CON ARCHIVO -->
+              <div *ngIf="archivoDocumentoOperador" class="upload-selected">
+
+                <div class="selected-file-icon">
+                  <i class="fas fa-file-alt"></i>
+                </div>
+
+                <div class="selected-file-info">
+
+                  <strong>
+                    {{ archivoDocumentoOperador.name }}
+                  </strong>
+
+                  <span>
+                    Archivo seleccionado
+                  </span>
+
+                </div>
+
+                <div class="selected-file-check">
+                  <i class="fas fa-check"></i>
+                </div>
+
+              </div>
+
+            </label>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- FOOTER -->
+    <!-- ================================================= -->
+
+    <div class="operator-modal-footer">
+
+      <button type="button" class="operator-btn operator-btn-cancel" (click)="modalDocumentoOperador = false"
+        [disabled]="guardandoDocumentoOperador">
+
+        Cancelar
+
+      </button>
+
+
+      <button type="button" class="operator-btn operator-btn-save" (click)="resolverDocumentoOperador()"
+        [disabled]="guardandoDocumentoOperador">
+
+        <i *ngIf="!guardandoDocumentoOperador" class="fas fa-check">
+        </i>
+
+        <i *ngIf="guardandoDocumentoOperador" class="fas fa-spinner fa-spin">
+        </i>
+
+        <span>
+          {{
+          guardandoDocumentoOperador
+          ? 'Guardando...'
+          : 'Actualizar y resolver'
+          }}
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,668 @@
+<div class="asignaciones-page">
+
+    <ng-container *ngIf="!cargando">
+
+        <!-- ===================================================== -->
+        <!-- CONTENIDO PRINCIPAL -->
+        <!-- ===================================================== -->
+
+        <div class="asignaciones-content">
+
+            <!-- ================================================= -->
+            <!-- HEADER -->
+            <!-- ================================================= -->
+
+            <header class="page-header">
+
+                <div class="page-header-info">
+
+                    <div class="page-header-icon">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+
+                    <div>
+                        <h1 class="page-title">
+                            Asignación de Operadores
+                        </h1>
+
+                        <p class="page-subtitle">
+                            Administra la relación entre operadores y los
+                            vehículos o maquinaria asignados.
+                        </p>
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-primary"
+                    (click)="nuevo()">
+
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Nueva asignación</span>
+
+                </button>
+
+            </header>
+
+
+            <!-- ================================================= -->
+            <!-- LISTADO -->
+            <!-- ================================================= -->
+
+            <section class="assignments-section">
+
+                <div
+                    *ngFor="let item of asignaciones"
+                    class="assignment-card">
+
+                    <!-- ========================================= -->
+                    <!-- CABECERA DE LA ASIGNACIÓN -->
+                    <!-- ========================================= -->
+
+                    <div class="assignment-header">
+
+                        <div class="operator-info">
+
+                            <div class="operator-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+
+                            <div class="operator-data">
+
+                                <h3>
+                                    {{ item.usuario.nombre }}
+                                </h3>
+
+                                <span>
+                                    {{ item.usuario.username }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <span class="status-badge status-active">
+                            Activo
+                        </span>
+
+                    </div>
+
+
+                    <!-- ========================================= -->
+                    <!-- INFORMACIÓN -->
+                    <!-- ========================================= -->
+
+                    <div class="assignment-body">
+
+                        <div class="assignment-grid">
+
+                            <!-- TIPO -->
+
+                            <div class="info-item">
+
+                                <span class="info-label">
+                                    Tipo
+                                </span>
+
+                                <div class="info-value">
+                                    {{ item.vehiculo ? 'Vehículo' : 'Maquinaria' }}
+                                </div>
+
+                            </div>
+
+
+                            <!-- ACTIVO -->
+
+                            <div class="info-item">
+
+                                <span class="info-label">
+                                    Activo
+                                </span>
+
+                                <div class="info-value asset-value">
+
+                                    <span *ngIf="item.vehiculo">
+                                        <i class="fas fa-truck"></i>
+                                        {{ item.vehiculo.placa }}
+                                    </span>
+
+                                    <span *ngIf="item.maquinaria">
+                                        <i class="fas fa-tractor"></i>
+                                        {{ item.maquinaria.codigo }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- FECHA -->
+
+                            <div class="info-item">
+
+                                <span class="info-label">
+                                    Fecha
+                                </span>
+
+                                <div class="info-value">
+                                    {{ item.fecha_asignacion | date:'dd/MM/yyyy' }}
+                                </div>
+
+                            </div>
+
+
+                            <!-- ESTADO -->
+
+                            <div class="info-item">
+
+                                <span class="info-label">
+                                    Estado
+                                </span>
+
+                                <div
+                                    class="info-value"
+                                    [class.text-active]="item.activo"
+                                    [class.text-finished]="!item.activo">
+
+                                    {{ item.activo ? 'En servicio' : 'Finalizada' }}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ===================================== -->
+                        <!-- OBSERVACIONES -->
+                        <!-- ===================================== -->
+
+                        <div
+                            *ngIf="item.observaciones"
+                            class="observation-box">
+
+                            <div class="observation-label">
+                                <i class="fas fa-comment-alt"></i>
+                                Observaciones
+                            </div>
+
+                            <div class="observation-text">
+                                {{ item.observaciones }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ========================================= -->
+                    <!-- FOOTER -->
+                    <!-- ========================================= -->
+
+                    <div class="assignment-footer">
+
+                        <button
+                            type="button"
+                            class="action-button action-edit"
+                            (click)="editar(item)">
+
+                            <i class="fas fa-edit"></i>
+                            <span>Editar</span>
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="action-button action-delete"
+                            (click)="eliminar(item)">
+
+                            <i class="fas fa-trash"></i>
+                            <span>Eliminar</span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- SIN DATOS -->
+                <!-- ================================================= -->
+
+                <div
+                    *ngIf="asignaciones.length == 0"
+                    class="empty-state">
+
+                    <div class="empty-icon">
+                        <i class="fas fa-user-slash"></i>
+                    </div>
+
+                    <h2>
+                        No existen asignaciones
+                    </h2>
+
+                    <p>
+                        Presiona el botón
+                        <strong>Nueva asignación</strong>
+                        para crear la primera relación entre un operador
+                        y un activo.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </ng-container>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- MODAL NUEVA / EDITAR ASIGNACIÓN -->
+<!-- ========================================================= -->
+
+<div
+    *ngIf="mostrarModal"
+    class="modal-backdrop assignment-modal-backdrop">
+
+    <div class="modal-container assignment-modal">
+
+        <!-- ================================================= -->
+        <!-- HEADER DEL MODAL -->
+        <!-- ================================================= -->
+
+        <div class="modal-header">
+
+            <div class="modal-header-info">
+
+                <div class="modal-header-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+
+                <div>
+
+                    <h2>
+                        {{ editando ? 'Editar Asignación' : 'Nueva Asignación' }}
+                    </h2>
+
+                    <p>
+                        Seleccione el operador y el activo.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                (click)="cerrarModal()"
+                aria-label="Cerrar">
+
+                <i class="fas fa-times"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- BODY -->
+        <!-- ================================================= -->
+
+        <div class="modal-body">
+
+            <!-- OPERADOR -->
+
+            <div class="form-group">
+
+                <label for="usuario">
+                    Operador
+                </label>
+
+                <select
+                    id="usuario"
+                    [(ngModel)]="form.usuario_id">
+
+                    <option [ngValue]="null">
+                        Seleccione...
+                    </option>
+
+                    <option
+                        *ngFor="let usuario of usuarios"
+                        [ngValue]="usuario.id">
+
+                        {{ usuario.nombre }}
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- TIPO DE ACTIVO -->
+
+            <div class="form-group">
+
+                <label>
+                    Tipo de activo
+                </label>
+
+                <div class="asset-type-selector">
+
+                    <button
+                        type="button"
+                        class="asset-type-button"
+                        [class.selected]="tipoActivo == 'vehiculo'"
+                        (click)="seleccionarTipo('vehiculo')">
+
+                        <i class="fas fa-truck"></i>
+
+                        <span>
+                            Vehículo
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="asset-type-button"
+                        [class.selected]="tipoActivo == 'maquinaria'"
+                        (click)="seleccionarTipo('maquinaria')">
+
+                        <i class="fas fa-tractor"></i>
+
+                        <span>
+                            Maquinaria
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- VEHÍCULO -->
+
+            <div
+                *ngIf="tipoActivo == 'vehiculo'"
+                class="form-group">
+
+                <label for="vehiculo">
+                    Vehículo
+                </label>
+
+                <select
+                    id="vehiculo"
+                    [(ngModel)]="form.vehiculo_id">
+
+                    <option [ngValue]="null">
+                        Seleccione...
+                    </option>
+
+                    <option
+                        *ngFor="let vehiculo of vehiculos"
+                        [ngValue]="vehiculo.id">
+
+                        {{ vehiculo.placa }}
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- MAQUINARIA -->
+
+            <div
+                *ngIf="tipoActivo == 'maquinaria'"
+                class="form-group">
+
+                <label for="maquinaria">
+                    Maquinaria
+                </label>
+
+                <select
+                    id="maquinaria"
+                    [(ngModel)]="form.maquinaria_id">
+
+                    <option [ngValue]="null">
+                        Seleccione...
+                    </option>
+
+                    <option
+                        *ngFor="let maquinaria of maquinarias"
+                        [ngValue]="maquinaria.id">
+
+                        {{ maquinaria.codigo }}
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- OBSERVACIONES -->
+
+            <div class="form-group">
+
+                <label for="observaciones">
+                    Observaciones
+                </label>
+
+                <textarea
+                    id="observaciones"
+                    rows="4"
+                    [(ngModel)]="form.observaciones"
+                    placeholder="Observaciones de la asignación"></textarea>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- FOOTER DEL MODAL -->
+        <!-- ================================================= -->
+
+        <div class="modal-footer">
+
+            <button
+                type="button"
+                class="modal-button modal-button-cancel"
+                (click)="cerrarModal()">
+
+                <i class="fas fa-times"></i>
+                <span>Cancelar</span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="modal-button modal-button-save"
+                (click)="guardar()"
+                [disabled]="guardando">
+
+                <span *ngIf="!guardando">
+
+                    <i class="fas fa-save"></i>
+                    <span>Guardar</span>
+
+                </span>
+
+                <span
+                    *ngIf="guardando"
+                    class="button-loading">
+
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Guardando...</span>
+
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- MODAL CONFIRMAR ELIMINACIÓN -->
+<!-- ========================================================= -->
+
+<div
+    *ngIf="mostrarEliminar"
+    class="modal-backdrop delete-modal-backdrop">
+
+    <div class="modal-container delete-modal">
+
+        <!-- ================================================= -->
+        <!-- HEADER -->
+        <!-- ================================================= -->
+
+        <div class="delete-modal-header">
+
+            <div class="delete-icon">
+                <i class="fas fa-trash"></i>
+            </div>
+
+            <h2>
+                Eliminar asignación
+            </h2>
+
+            <button
+                type="button"
+                class="modal-close delete-close"
+                (click)="mostrarEliminar = false"
+                aria-label="Cerrar">
+
+                <i class="fas fa-times"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- BODY -->
+        <!-- ================================================= -->
+
+        <div class="delete-modal-body">
+
+            <p class="delete-question">
+                ¿Está seguro de eliminar esta asignación?
+            </p>
+
+
+            <div
+                *ngIf="registroEliminar"
+                class="delete-record">
+
+                <div class="delete-record-user">
+                    {{ registroEliminar.usuario.nombre }}
+                </div>
+
+                <div class="delete-record-asset">
+
+                    <span *ngIf="registroEliminar.vehiculo">
+                        <i class="fas fa-truck"></i>
+                        {{ registroEliminar.vehiculo.placa }}
+                    </span>
+
+                    <span *ngIf="registroEliminar.maquinaria">
+                        <i class="fas fa-tractor"></i>
+                        {{ registroEliminar.maquinaria.codigo }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- FOOTER -->
+        <!-- ================================================= -->
+
+        <div class="delete-modal-footer">
+
+            <button
+                type="button"
+                class="modal-button modal-button-cancel"
+                (click)="mostrarEliminar = false">
+
+                <i class="fas fa-times"></i>
+                <span>Cancelar</span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="modal-button modal-button-delete"
+                (click)="confirmarEliminar()"
+                [disabled]="eliminando">
+
+                <span *ngIf="!eliminando">
+
+                    <i class="fas fa-trash"></i>
+                    <span>Eliminar</span>
+
+                </span>
+
+                <span
+                    *ngIf="eliminando"
+                    class="button-loading">
+
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Eliminando...</span>
+
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- MENSAJE DE ÉXITO -->
+<!-- ========================================================= -->
+
+<div
+    *ngIf="mensajeVisible"
+    class="success-toast">
+
+    <div class="success-toast-icon">
+        <i class="fas fa-check"></i>
+    </div>
+
+    <div class="success-toast-content">
+
+        <strong>
+            Operación realizada
+        </strong>
+
+        <span>
+            {{ mensaje }}
+        </span>
+
+    </div>
+
+</div>

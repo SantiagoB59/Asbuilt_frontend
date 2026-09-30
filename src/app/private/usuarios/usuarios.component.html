@@ -1,0 +1,1178 @@
+<div class="usuarios-page">
+
+    <ng-container *ngIf="!cargando">
+
+        <div class="usuarios-content">
+
+            <!-- ================================================= -->
+            <!-- HEADER -->
+            <!-- ================================================= -->
+
+            <header class="page-header">
+
+                <div class="page-header-info">
+
+                    <div class="page-header-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+
+                    <div>
+                        <h1 class="page-title">
+                            Gestión de Usuarios
+                        </h1>
+
+                        <p class="page-subtitle">
+                            Administración de usuarios del sistema.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="page-header-actions">
+
+                    <button type="button" class="btn-documents" (click)="abrirDocumentosOperadores()">
+
+                        <i class="fas fa-id-card"></i>
+
+                        <span>
+                            Fechas de vencimiento operadores
+                        </span>
+
+                    </button>
+
+                    <button type="button" class="btn-primary" (click)="nuevo()">
+
+                        <i class="fas fa-user-plus"></i>
+
+                        <span>
+                            Nuevo usuario
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+            </header>
+
+
+            <!-- ================================================= -->
+            <!-- TABLA -->
+            <!-- ================================================= -->
+
+            <section class="users-section">
+
+                <div class="users-card">
+
+                    <div class="table-header">
+
+                        <div>
+                            <h2 class="table-title">
+                                <i class="fas fa-users"></i>
+                                Usuarios registrados
+                            </h2>
+
+                            <p class="table-subtitle">
+                                Gestión de usuarios y permisos del sistema.
+                            </p>
+                        </div>
+
+                        <div class="table-counter">
+                            {{ usuarios.length }} usuarios
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="users-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Nombre</th>
+                                    <th>Usuario</th>
+                                    <th>Correo</th>
+                                    <th>Teléfono</th>
+                                    <th>Rol</th>
+                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">Acciones</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                <tr *ngFor="let usuario of usuarios" class="user-row">
+
+                                    <td>
+                                        <div class="user-name">
+                                            {{ usuario.nombre }}
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="username">
+                                            {{ usuario.username }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="user-email">
+                                            {{ usuario.email || '-' }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="user-phone">
+                                            {{ usuario.telefono || '-' }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+
+                                        <span class="role-badge">
+                                            {{ usuario.rol.nombre }}
+                                        </span>
+
+                                    </td>
+
+                                    <td class="text-center">
+
+                                        <span *ngIf="usuario.activo" class="status-badge status-active">
+
+                                            Activo
+
+                                        </span>
+
+                                        <span *ngIf="!usuario.activo" class="status-badge status-inactive">
+
+                                            Inactivo
+
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <div class="actions">
+
+                                            <button type="button" class="action-btn action-btn--edit"
+                                                (click)="editar(usuario)" title="Editar">
+
+                                                <i class="fas fa-edit"></i>
+
+                                            </button>
+
+                                            <button type="button" class="action-btn action-btn--delete"
+                                                (click)="eliminar(usuario)" title="Desactivar">
+
+                                                <i class="fas fa-trash"></i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+
+                                <!-- ================================================= -->
+                                <!-- SIN USUARIOS -->
+                                <!-- ================================================= -->
+
+                                <tr *ngIf="usuarios.length == 0">
+
+                                    <td colspan="7" class="empty-row">
+
+                                        <div class="empty-content">
+
+                                            <div class="empty-icon">
+                                                <i class="fas fa-users-slash"></i>
+                                            </div>
+
+                                            <div class="empty-title">
+                                                No existen usuarios registrados
+                                            </div>
+
+                                            <div class="empty-description">
+                                                Presione
+                                                <strong>Nuevo usuario</strong>
+                                                para comenzar.
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </ng-container>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- MODAL NUEVO / EDITAR USUARIO -->
+<!-- ===================================================== -->
+
+<div *ngIf="mostrarModal" class="modal-backdrop user-modal-backdrop">
+
+    <div class="modal-container user-modal">
+
+        <!-- ================================================= -->
+        <!-- HEADER -->
+        <!-- ================================================= -->
+
+        <div class="modal-header">
+
+            <div class="modal-header-info">
+
+                <div class="modal-header-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+
+                <div>
+
+                    <h2>
+                        {{ editando ? 'Editar Usuario' : 'Nuevo Usuario' }}
+                    </h2>
+
+                    <p>
+                        Complete la información del usuario.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <button type="button" class="modal-close" (click)="cerrarModal()" aria-label="Cerrar">
+
+                <i class="fas fa-times"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- BODY -->
+        <!-- ================================================= -->
+
+        <div class="modal-body">
+
+            <!-- ================================================= -->
+            <!-- INFORMACIÓN GENERAL -->
+            <!-- ================================================= -->
+
+            <section class="form-section">
+
+                <div class="form-section-header">
+
+                    <div class="form-section-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Información del usuario
+                        </h3>
+
+                        <p>
+                            Datos básicos de acceso y contacto.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <!-- NOMBRE -->
+
+                    <div class="form-group">
+
+                        <label for="nombre">
+                            Nombre completo
+                        </label>
+
+                        <input id="nombre" type="text" [(ngModel)]="form.nombre"
+                            placeholder="Ingrese el nombre completo">
+
+                    </div>
+
+
+                    <!-- USUARIO -->
+
+                    <div class="form-group">
+
+                        <label for="username">
+                            Usuario
+                        </label>
+
+                        <input id="username" type="text" [(ngModel)]="form.username" placeholder="Nombre de usuario">
+
+                    </div>
+
+
+                    <!-- CORREO -->
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Correo electrónico
+                        </label>
+
+                        <input id="email" type="email" [(ngModel)]="form.email" placeholder="correo@empresa.com">
+
+                    </div>
+
+
+                    <!-- TELÉFONO -->
+
+                    <div class="form-group">
+
+                        <label for="telefono">
+                            Teléfono
+                        </label>
+
+                        <input id="telefono" type="text" [(ngModel)]="form.telefono" placeholder="3001234567">
+
+                    </div>
+
+
+                    <!-- CONTRASEÑA -->
+
+                    <div class="form-group">
+
+                        <label for="password">
+                            Contraseña
+                        </label>
+
+                        <input id="password" type="password" [(ngModel)]="form.password" [placeholder]="editando
+                                ? 'Dejar en blanco para no cambiar'
+                                : 'Ingrese la contraseña'">
+
+                    </div>
+
+
+                    <!-- ROL -->
+
+                    <div class="form-group">
+
+                        <label for="rol">
+                            Rol
+                        </label>
+
+                        <select id="rol" [(ngModel)]="form.rol" (ngModelChange)="cambioRol()">
+
+                            <option value="">
+                                Seleccione un rol
+                            </option>
+
+                            <option value="admin">
+                                Administrador
+                            </option>
+
+                            <option value="supervisor">
+                                Supervisor
+                            </option>
+
+                            <option value="operador">
+                                Operador
+                            </option>
+
+                            <option value="mecanico">
+                                Mecánico
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- TIPO OPERADOR -->
+
+                    <div *ngIf="esOperador()" class="form-group form-group-full">
+
+                        <label for="tipo_operador">
+                            Tipo de operador
+                        </label>
+
+                        <select id="tipo_operador" [(ngModel)]="form.tipo_operador_id"
+                            (ngModelChange)="cambioTipoOperador()">
+
+                            <option [ngValue]="null">
+                                Seleccione el tipo de operador
+                            </option>
+
+                            <option *ngFor="let tipo of tiposOperador" [ngValue]="tipo.id">
+
+                                {{ tipo.nombre }}
+
+                            </option>
+
+                        </select>
+
+                        <p class="field-help">
+                            Los documentos requeridos dependerán de este
+                            tipo de operador.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================================================= -->
+            <!-- ESTADO -->
+            <!-- ================================================= -->
+
+            <section class="status-section">
+
+                <label class="status-option">
+
+                    <input type="checkbox" [(ngModel)]="form.activo">
+
+                    <span class="status-check">
+                        <i class="fas fa-check"></i>
+                    </span>
+
+                    <span class="status-option-content">
+
+                        <strong>
+                            Usuario activo
+                        </strong>
+
+                        <small>
+                            El usuario podrá iniciar sesión en el sistema.
+                        </small>
+
+                    </span>
+
+                </label>
+
+            </section>
+
+
+            <!-- ================================================= -->
+            <!-- DOCUMENTOS DEL OPERADOR -->
+            <!-- ================================================= -->
+
+            <section *ngIf="esOperador() && form.tipo_operador_id" class="documents-section">
+
+                <div class="documents-header">
+
+                    <div class="documents-header-icon">
+                        <i class="fas fa-folder-open"></i>
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Documentos del operador
+                        </h3>
+
+                        <p>
+                            Configure las fechas de vencimiento de los
+                            documentos.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOADING -->
+
+                <div *ngIf="cargandoDocumentos" class="documents-loading">
+
+                    <i class="fas fa-spinner fa-spin"></i>
+
+                    <p>
+                        Cargando documentos...
+                    </p>
+
+                </div>
+
+
+                <!-- DOCUMENTOS -->
+
+                <div *ngIf="!cargandoDocumentos" class="documents-list">
+
+                    <div *ngFor="let documento of documentos" class="document-card">
+
+                        <!-- =============================== -->
+                        <!-- DOCUMENTO -->
+                        <!-- =============================== -->
+
+                        <div class="document-info">
+
+                            <div class="document-icon">
+
+                                <i class="fas" [ngClass]="iconoDocumento(documento.documento)">
+                                </i>
+
+                            </div>
+
+                            <div class="document-name">
+
+                                <strong>
+                                    {{ documento.documento }}
+                                </strong>
+
+                                <span>
+                                    Documento requerido
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =============================== -->
+                        <!-- FECHA -->
+                        <!-- =============================== -->
+
+                        <div class="document-date">
+
+                            <label>
+                                Fecha de vencimiento
+                            </label>
+
+                            <input type="date" [(ngModel)]="documento.fecha_vencimiento">
+
+                        </div>
+
+
+                        <!-- =============================== -->
+                        <!-- VIGENCIA -->
+                        <!-- =============================== -->
+
+                        <div class="document-validity">
+
+                            <span class="document-label">
+                                Vigencia
+                            </span>
+
+                            <ng-container *ngIf="obtenerDiasDocumento(documento) !== null">
+
+                                <strong [class.expired]="obtenerDiasDocumento(documento)! < 0">
+
+                                    <span *ngIf="obtenerDiasDocumento(documento)! >= 0">
+
+                                        {{ obtenerDiasDocumento(documento) }}
+
+                                        {{
+                                        obtenerDiasDocumento(documento) === 1
+                                        ? 'día'
+                                        : 'días'
+                                        }}
+
+                                    </span>
+
+                                    <span *ngIf="obtenerDiasDocumento(documento)! < 0">
+
+                                        Vencido hace
+                                        {{ Math.abs(obtenerDiasDocumento(documento)!) }}
+                                        días
+
+                                    </span>
+
+                                </strong>
+
+                            </ng-container>
+
+                            <span *ngIf="obtenerDiasDocumento(documento) === null" class="no-date">
+
+                                Sin fecha
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- =============================== -->
+                        <!-- ESTADO DOCUMENTO -->
+                        <!-- =============================== -->
+
+                        <div class="document-status">
+
+                            <span class="document-badge" [ngClass]="claseDocumento(documento)">
+
+                                <i class="fas fa-circle"></i>
+
+                                {{ obtenerEstadoDocumento(documento) }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SIN DOCUMENTOS -->
+
+                    <div *ngIf="documentos.length === 0" class="no-documents">
+
+                        <i class="fas fa-folder-open"></i>
+
+                        <p>
+                            No hay documentos configurados para este operador.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- FOOTER -->
+        <!-- ================================================= -->
+
+        <div class="modal-footer">
+
+            <button type="button" class="modal-button modal-button-cancel" (click)="cerrarModal()">
+
+                <i class="fas fa-times"></i>
+                <span>Cancelar</span>
+
+            </button>
+
+            <button type="button" class="modal-button modal-button-save" (click)="guardar()" [disabled]="guardando">
+
+                <span *ngIf="!guardando">
+
+                    <i class="fas fa-save"></i>
+
+                    {{ editando ? 'Actualizar' : 'Guardar' }}
+
+                </span>
+
+                <span *ngIf="guardando" class="button-loading">
+
+                    <i class="fas fa-spinner fa-spin"></i>
+
+                    Guardando...
+
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- MODAL DESACTIVAR -->
+<!-- ===================================================== -->
+
+<div *ngIf="mostrarEliminar" class="modal-backdrop delete-user-backdrop">
+
+    <div class="modal-container delete-user-modal">
+
+        <!-- HEADER -->
+
+        <div class="delete-modal-header">
+
+            <div class="delete-header-icon">
+                <i class="fas fa-trash-alt"></i>
+            </div>
+
+            <div>
+
+                <h2>
+                    Desactivar usuario
+                </h2>
+
+                <p>
+                    Esta acción no eliminará el registro de la base de datos.
+                </p>
+
+            </div>
+
+            <button type="button" class="delete-modal-close" (click)="mostrarEliminar=false" aria-label="Cerrar">
+
+                <i class="fas fa-times"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div class="delete-modal-body">
+
+            <div class="delete-warning-icon">
+
+                <i class="fas fa-exclamation-triangle"></i>
+
+            </div>
+
+            <h3>
+                ¿Desea desactivar este usuario?
+            </h3>
+
+            <p>
+
+                <strong>
+                    {{ registroEliminar?.nombre }}
+                </strong>
+
+                dejará de poder ingresar al sistema, pero su información
+                permanecerá almacenada.
+
+            </p>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="delete-modal-footer">
+
+            <button type="button" class="modal-button modal-button-cancel" (click)="mostrarEliminar=false"
+                [disabled]="eliminando">
+
+                <i class="fas fa-times"></i>
+                <span>Cancelar</span>
+
+            </button>
+
+            <button type="button" class="modal-button modal-button-delete" (click)="confirmarEliminar()"
+                [disabled]="eliminando">
+
+                <span *ngIf="!eliminando">
+
+                    <i class="fas fa-trash"></i>
+                    <span>Desactivar</span>
+
+                </span>
+
+                <span *ngIf="eliminando" class="button-loading">
+
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Desactivando...</span>
+
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- MODAL CONTROL DOCUMENTOS OPERADORES -->
+<!-- ===================================================== -->
+
+<div *ngIf="mostrarDocumentosOperadores" class="modal-backdrop operator-documents-backdrop">
+
+    <div class="modal-container operator-documents-modal">
+
+        <!-- ================================================= -->
+        <!-- HEADER -->
+        <!-- ================================================= -->
+
+        <div class="modal-header">
+
+            <div class="modal-header-info">
+
+                <div class="modal-header-icon">
+                    <i class="fas fa-id-card"></i>
+                </div>
+
+                <div>
+
+                    <h2>
+                        Documentos de operadores
+                    </h2>
+
+                    <p>
+                        Control de fechas de vencimiento de los documentos.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <button type="button" class="modal-close" (click)="cerrarDocumentosOperadores()" aria-label="Cerrar">
+
+                <i class="fas fa-times"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- LEYENDA -->
+        <!-- ================================================= -->
+
+        <div class="documents-control-legend">
+
+            <!-- VERDE -->
+
+            <div class="legend-item">
+
+                <span class="legend-dot legend-green"></span>
+
+                <span>
+                    Vigente (+15 días)
+                </span>
+
+            </div>
+
+
+            <!-- AMARILLO -->
+
+            <div class="legend-item">
+
+                <span class="legend-dot legend-yellow"></span>
+
+                <span>
+                    Por vencer (0 - 15 días)
+                </span>
+
+            </div>
+
+
+            <!-- ROJO -->
+
+            <div class="legend-item">
+
+                <span class="legend-dot legend-red"></span>
+
+                <span>
+                    Vencido
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- LOADING -->
+        <!-- ================================================= -->
+
+        <div *ngIf="cargandoDocumentosOperadores" class="operator-documents-loading">
+
+            <i class="fas fa-spinner fa-spin"></i>
+
+            <p>
+                Actualizando documentos...
+            </p>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- TABLA -->
+        <!-- ================================================= -->
+
+        <div *ngIf="
+                !cargandoDocumentosOperadores &&
+                operadoresDocumentos.length > 0
+            " class="operator-documents-table-wrapper">
+
+            <table class="operator-documents-table">
+
+                <!-- ================================================= -->
+                <!-- CABECERA -->
+                <!-- ================================================= -->
+
+                <thead>
+
+                    <tr>
+
+                        <th class="operator-column">
+                            Operador
+                        </th>
+
+                        <th class="type-column">
+                            Tipo de operador
+                        </th>
+
+                        <th *ngFor="let documento of documentosControl()" class="document-column">
+
+                            {{ documento.nombre }}
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <!-- ================================================= -->
+                <!-- CUERPO -->
+                <!-- ================================================= -->
+
+                <tbody>
+
+                    <tr *ngFor="let operador of operadoresDocumentos">
+
+                        <!-- ================================================= -->
+                        <!-- OPERADOR -->
+                        <!-- ================================================= -->
+
+                        <td class="operator-cell">
+
+                            <div class="operator-name">
+
+                                <div class="operator-avatar">
+
+                                    <i class="fas fa-user"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        {{ operador.usuario.nombre }}
+                                    </strong>
+
+                                    <span>
+                                        {{ operador.usuario.username }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- ================================================= -->
+                        <!-- TIPO DE OPERADOR -->
+                        <!-- ================================================= -->
+
+                        <td>
+
+                            <span class="operator-type-badge">
+
+                                {{
+                                operador.usuario.tipo_operador
+                                || 'Sin tipo'
+                                }}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- ================================================= -->
+                        <!-- DOCUMENTOS -->
+                        <!-- ================================================= -->
+
+                        <!-- ================================================= -->
+                        <!-- DOCUMENTOS -->
+                        <!-- ================================================= -->
+
+                        <td *ngFor="let tipoDocumento of documentosControl()" class="document-control-cell">
+
+                            <!-- ============================================= -->
+                            <!-- DOCUMENTO ENCONTRADO -->
+                            <!-- ============================================= -->
+
+                            <ng-container *ngIf="
+            obtenerDocumentoOperador(
+                operador,
+                tipoDocumento.id
+            ) as documento;
+            else documentoNoEncontrado
+        ">
+
+                                <div class="document-control-status" [ngClass]="claseEstadoDocumento(documento)"
+                                    [style.background-color]="colorFondoDocumento(documento)"
+                                    [style.color]="colorTextoDocumento(documento)"
+                                    [style.border-color]="colorBordeDocumento(documento)">
+
+                                    <!-- ICONO -->
+
+                                    <div class="document-control-icon"
+                                        [style.background-color]="colorBordeDocumento(documento)"
+                                        [style.color]="colorTextoDocumento(documento)">
+
+                                        <i class="fas" [ngClass]="
+                        iconoDocumento(
+                            documento.documento
+                        )
+                    ">
+                                        </i>
+
+                                    </div>
+
+
+                                    <!-- INFORMACIÓN -->
+
+                                    <div class="document-control-info">
+
+                                        <strong [style.color]="colorTextoDocumento(documento)">
+
+                                            {{
+                                            textoDiasDocumento(documento)
+                                            }}
+
+                                        </strong>
+
+
+                                        <!-- FECHA -->
+
+                                        <span *ngIf="documento.fecha_vencimiento"
+                                            [style.color]="colorTextoDocumento(documento)">
+
+                                            Vence:
+                                            {{
+                                            documento.fecha_vencimiento
+                                            | date:'dd/MM/yyyy'
+                                            }}
+
+                                        </span>
+
+
+                                        <!-- SIN FECHA -->
+
+                                        <span *ngIf="!documento.fecha_vencimiento"
+                                            [style.color]="colorTextoDocumento(documento)">
+
+                                            Sin fecha
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </ng-container>
+
+
+                            <!-- ============================================= -->
+                            <!-- SIN REGISTRO -->
+                            <!-- ============================================= -->
+
+                            <ng-template #documentoNoEncontrado>
+
+                                <div class="document-control-status estado-sin-fecha">
+
+                                    <div class="document-control-icon">
+
+                                        <i class="fas fa-minus"></i>
+
+                                    </div>
+
+                                    <div class="document-control-info">
+
+                                        <strong>
+                                            SIN REGISTRO
+                                        </strong>
+
+                                        <span>
+                                            Documento no registrado
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </ng-template>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- SIN OPERADORES -->
+        <!-- ================================================= -->
+
+        <div *ngIf="
+                !cargandoDocumentosOperadores &&
+                operadoresDocumentos.length === 0
+            " class="operator-documents-empty">
+
+            <div class="empty-icon">
+
+                <i class="fas fa-id-card"></i>
+
+            </div>
+
+            <h3>
+                No hay operadores registrados
+            </h3>
+
+            <p>
+                Los operadores activos aparecerán aquí
+                junto con sus documentos.
+            </p>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- FOOTER -->
+        <!-- ================================================= -->
+
+        <div class="modal-footer">
+
+            <div class="documents-update-info">
+
+                <i class="fas fa-sync-alt"></i>
+
+                Los datos se actualizan cada vez que abre esta ventana.
+
+            </div>
+
+            <button type="button" class="modal-button modal-button-cancel" (click)="cerrarDocumentosOperadores()">
+
+                <i class="fas fa-times"></i>
+
+                <span>
+                    Cerrar
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

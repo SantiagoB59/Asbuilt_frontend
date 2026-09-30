@@ -1,0 +1,652 @@
+<div class="reportes-page">
+
+    <!-- ======================================= -->
+    <!-- ALERTA DE ERROR -->
+    <!-- ======================================= -->
+
+    <div
+        *ngIf="mostrarError"
+        class="error-alert">
+
+        <div class="error-alert-content">
+
+            <div class="error-alert-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+
+            <div class="error-alert-message">
+
+                <h3>Error</h3>
+
+                <p>
+                    {{ mensajeError }}
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="error-alert-close"
+                (click)="cerrarAlertaError()">
+
+                <i class="fas fa-times"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================= -->
+    <!-- LOADING -->
+    <!-- ======================================= -->
+
+    <div
+        *ngIf="cargando"
+        class="loading-overlay">
+
+        <i class="fas fa-spinner fa-spin"></i>
+
+        <h2>
+            Generando reporte...
+        </h2>
+
+    </div>
+
+
+    <ng-container *ngIf="!cargando">
+
+        <!-- ======================================= -->
+        <!-- HEADER -->
+        <!-- ======================================= -->
+
+        <header class="page-header">
+
+            <div class="page-header-info">
+
+                <div class="page-header-icon">
+
+                    <i class="fas fa-file-alt"></i>
+
+                </div>
+
+                <div>
+
+                    <h1 class="page-title">
+                        Reportes Preoperacionales
+                    </h1>
+
+                    <p class="page-subtitle">
+                        Descargue los reportes mensuales de inspecciones
+                        preoperacionales en PDF o Excel.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ======================================= -->
+        <!-- CONTENIDO -->
+        <!-- ======================================= -->
+
+        <main class="reportes-content">
+
+
+            <!-- ======================================= -->
+            <!-- FILTROS -->
+            <!-- ======================================= -->
+
+            <section class="filters-card">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2 class="section-title">
+                            <i class="fas fa-filter"></i>
+                            Filtros
+                        </h2>
+
+                        <p class="section-description">
+                            Seleccione el período y el activo que desea consultar.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="filters-grid">
+
+                    <!-- MES -->
+
+                    <div class="form-field">
+
+                        <label>
+                            Mes
+                        </label>
+
+                        <select
+                            [(ngModel)]="filtro.mes">
+
+                            <option
+                                *ngFor="let mes of meses"
+                                [value]="mes.id">
+
+                                {{ mes.nombre }}
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- AÑO -->
+
+                    <div class="form-field">
+
+                        <label>
+                            Año
+                        </label>
+
+                        <input
+                            type="number"
+                            [(ngModel)]="filtro.anio">
+
+                    </div>
+
+
+                    <!-- TIPO DE ACTIVO -->
+
+                    <div class="form-field">
+
+                        <label>
+                            Tipo de activo
+                        </label>
+
+                        <select
+                            [(ngModel)]="tipoActivoSeleccionado"
+                            (change)="cambiarTipoActivo()">
+
+                            <option value="VEHICULO">
+                                Vehículo
+                            </option>
+
+                            <option value="MAQUINARIA">
+                                Maquinaria
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ACTIVO -->
+
+                    <div class="form-field">
+
+                        <label>
+                            {{
+                                tipoActivoSeleccionado === 'VEHICULO'
+                                    ? 'Vehículo'
+                                    : 'Maquinaria'
+                            }}
+                        </label>
+
+
+                        <!-- VEHÍCULOS -->
+
+                        <select
+                            *ngIf="tipoActivoSeleccionado === 'VEHICULO'"
+                            [(ngModel)]="filtro.vehiculo_id">
+
+                            <option value="">
+                                TODOS
+                            </option>
+
+                            <option
+                                *ngFor="let v of vehiculos"
+                                [value]="v.id">
+
+                                {{ v.placa }}
+
+                            </option>
+
+                        </select>
+
+
+                        <!-- MAQUINARIA -->
+
+                        <select
+                            *ngIf="tipoActivoSeleccionado === 'MAQUINARIA'"
+                            [(ngModel)]="filtro.maquinaria_id">
+
+                            <option value="">
+                                TODAS
+                            </option>
+
+                            <option
+                                *ngFor="let m of maquinarias"
+                                [value]="m.id">
+
+                                {{ obtenerNombreMaquinaria(m) }}
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ======================================= -->
+            <!-- REPORTES -->
+            <!-- ======================================= -->
+
+            <section class="reports-grid">
+
+
+                <!-- ======================================= -->
+                <!-- PDF RESUMEN -->
+                <!-- ======================================= -->
+
+                <article class="report-card">
+
+                    <div class="report-icon report-icon-pdf">
+
+                        <i class="fas fa-file-pdf"></i>
+
+                    </div>
+
+                    <h3>
+                        Resumen PDF
+                    </h3>
+
+                    <p>
+                        Informe consolidado del mes con información
+                        breve por vehículo.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="report-button report-button-pdf"
+                        (click)="descargarResumenPDF()">
+
+                        <i class="fas fa-download"></i>
+
+                        Descargar PDF
+
+                    </button>
+
+                </article>
+
+
+                <!-- ======================================= -->
+                <!-- PDF DETALLADO -->
+                <!-- ======================================= -->
+
+                <article class="report-card">
+
+                    <div class="report-icon report-icon-detail">
+
+                        <i class="fas fa-clipboard-list"></i>
+
+                    </div>
+
+                    <h3>
+                        Reporte Detallado Mensual
+                    </h3>
+
+                    <p>
+                        Incluye todas las inspecciones completas
+                        del mes.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="report-button report-button-detail"
+                        (click)="descargarDetallePDF()">
+
+                        <i class="fas fa-download"></i>
+
+                        Descargar PDF
+
+                    </button>
+
+                </article>
+
+
+                <!-- ======================================= -->
+                <!-- EXCEL -->
+                <!-- ======================================= -->
+
+                <article class="report-card">
+
+                    <div class="report-icon report-icon-excel">
+
+                        <i class="fas fa-file-excel"></i>
+
+                    </div>
+
+                    <h3>
+                        Reporte Detallado Excel
+                    </h3>
+
+                    <p>
+                        Libro mensual con una hoja por vehículo
+                        y el detalle diario de las inspecciones.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="report-button report-button-excel"
+                        (click)="descargarExcel()">
+
+                        <i class="fas fa-download"></i>
+
+                        Descargar Excel
+
+                    </button>
+
+                </article>
+
+
+                <!-- ======================================= -->
+                <!-- REPORTE SEMANAL -->
+                <!-- ======================================= -->
+
+                <article class="report-card report-card-weekly">
+
+                    <div class="report-icon report-icon-weekly">
+
+                        <i class="fas fa-calendar-week"></i>
+
+                    </div>
+
+                    <h3>
+                        Reporte Detallado Semanal
+                    </h3>
+
+                    <p>
+                        Genera el reporte semanal de inspecciones
+                        preoperacionales de un vehículo o maquinaria.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="report-button report-button-weekly"
+                        (click)="abrirModalSemanal()">
+
+                        <i class="fas fa-calendar-alt"></i>
+
+                        Seleccionar semana
+
+                    </button>
+
+                </article>
+
+            </section>
+
+        </main>
+
+    </ng-container>
+
+</div>
+
+
+<!-- ======================================= -->
+<!-- MODAL REPORTE SEMANAL -->
+<!-- ======================================= -->
+
+<div
+    *ngIf="mostrarModalSemanal"
+    class="weekly-modal-backdrop">
+
+    <div class="weekly-modal">
+
+
+        <!-- HEADER MODAL -->
+
+        <div class="weekly-modal-header">
+
+            <div class="weekly-modal-header-info">
+
+                <div>
+
+                    <h2>
+                        Reporte Semanal
+                    </h2>
+
+                    <p>
+                        Seleccione el activo y la semana que desea consultar
+                    </p>
+
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="weekly-modal-close"
+                (click)="cerrarModalSemanal()">
+
+                <i class="fas fa-times"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- CONTENIDO -->
+
+        <div class="weekly-modal-body">
+
+
+            <!-- TIPO DE ACTIVO -->
+
+            <div class="form-field">
+
+                <label>
+                    Tipo de activo
+                </label>
+
+                <select
+                    [(ngModel)]="reporteSemanal.tipo_activo"
+                    (change)="cambiarTipoActivoSemanal()">
+
+                    <option value="VEHICULO">
+                        Vehículo
+                    </option>
+
+                    <option value="MAQUINARIA">
+                        Maquinaria
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- VEHÍCULO -->
+
+            <div
+                *ngIf="reporteSemanal.tipo_activo === 'VEHICULO'"
+                class="form-field">
+
+                <label>
+                    Vehículo
+                </label>
+
+                <select
+                    [(ngModel)]="reporteSemanal.activo_id">
+
+                    <option value="">
+                        Seleccione un vehículo
+                    </option>
+
+                    <option
+                        *ngFor="let v of vehiculos"
+                        [value]="v.id">
+
+                        {{ v.placa }}
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- MAQUINARIA -->
+
+            <div
+                *ngIf="reporteSemanal.tipo_activo === 'MAQUINARIA'"
+                class="form-field">
+
+                <label>
+                    Maquinaria
+                </label>
+
+                <select
+                    [(ngModel)]="reporteSemanal.activo_id">
+
+                    <option value="">
+                        Seleccione una maquinaria
+                    </option>
+
+                    <option
+                        *ngFor="let m of maquinarias"
+                        [value]="m.id">
+
+                        {{ obtenerNombreMaquinaria(m) }}
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- FECHA -->
+
+            <div class="form-field">
+
+                <label>
+                    Semana
+                </label>
+
+                <input
+                    type="date"
+                    [(ngModel)]="reporteSemanal.fecha"
+                    (change)="calcularSemana()">
+
+                <p class="field-help">
+                    Seleccione cualquier día de la semana que desea generar.
+                </p>
+
+            </div>
+
+
+            <!-- RANGO DE SEMANA -->
+
+            <div
+                *ngIf="reporteSemanal.fechaInicio && reporteSemanal.fechaFin"
+                class="week-range">
+
+                <div class="week-range-icon">
+
+                    <i class="fas fa-calendar-week"></i>
+
+                </div>
+
+                <div>
+
+                    <p>
+                        Semana seleccionada
+                    </p>
+
+                    <strong>
+                        {{ reporteSemanal.fechaInicio }}
+                        -
+                        {{ reporteSemanal.fechaFin }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- SEMANA ACTUAL -->
+
+            <div
+                *ngIf="esSemanaActual()"
+                class="current-week-alert">
+
+                <div class="current-week-icon">
+
+                    <i class="fas fa-info-circle"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Semana en curso
+                    </strong>
+
+                    <p>
+                        Los días que todavía no han llegado aparecerán
+                        en blanco en el reporte.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTONES -->
+
+            <div class="weekly-modal-footer">
+
+                <button
+                    type="button"
+                    class="modal-cancel-button"
+                    (click)="cerrarModalSemanal()">
+
+                    <i class="fas fa-times"></i>
+
+                    Cancelar
+
+                </button>
+
+                <button
+                    type="button"
+                    class="modal-download-button"
+                    (click)="descargarReporteSemanal()"
+                    [disabled]="
+                        !reporteSemanal.activo_id ||
+                        !reporteSemanal.fecha ||
+                        cargando
+                    ">
+
+                    <i class="fas fa-download"></i>
+
+                    Descargar reporte
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

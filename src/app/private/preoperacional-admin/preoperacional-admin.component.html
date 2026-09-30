@@ -1,0 +1,943 @@
+<div class="preoperacional-page">
+
+    <!-- ========================================================= -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ========================================================= -->
+
+    <div *ngIf="!cargando" class="preoperacional-content">
+
+        <!-- ===================================================== -->
+        <!-- HEADER -->
+        <!-- ===================================================== -->
+
+        <header class="preoperacional-header">
+
+            <div class="header-icon">
+                <i class="fas fa-clipboard-check"></i>
+            </div>
+
+            <div class="header-info">
+
+                <h1>
+                    Gestión Preoperacional
+                </h1>
+
+                <p>
+                    Consulta y seguimiento de inspecciones realizadas
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <!-- ===================================================== -->
+        <!-- FILTROS -->
+        <!-- ===================================================== -->
+
+        <section class="filters-section">
+
+            <div class="filters-card">
+
+                <div class="section-title">
+
+                    <div class="section-title-icon">
+                        <i class="fas fa-filter"></i>
+                    </div>
+
+                    <div>
+                        <h2>
+                            Filtros de búsqueda
+                        </h2>
+                    </div>
+
+                </div>
+
+
+                <div class="filters-grid">
+
+                    <!-- ================================================= -->
+                    <!-- FECHA DESDE -->
+                    <!-- ================================================= -->
+
+                    <div class="filter-field">
+
+                        <label>
+                            Desde
+                        </label>
+
+                        <input type="date" [(ngModel)]="filtros.fecha_inicio">
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- FECHA HASTA -->
+                    <!-- ================================================= -->
+
+                    <div class="filter-field">
+
+                        <label>
+                            Hasta
+                        </label>
+
+                        <input type="date" [(ngModel)]="filtros.fecha_fin">
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- OPERADOR -->
+                    <!-- ================================================= -->
+
+                    <div class="filter-field">
+
+                        <label>
+                            Operador
+                        </label>
+
+                        <select [(ngModel)]="filtros.usuario_id">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <option *ngFor="let operador of operadores" [value]="operador.id">
+                                {{ operador.nombre }}
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- VEHÍCULO -->
+                    <!-- ================================================= -->
+
+                    <div class="filter-field">
+
+                        <label>
+                            Vehículo
+                        </label>
+
+                        <select [(ngModel)]="filtros.vehiculo_id">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <option *ngFor="let vehiculo of vehiculos" [value]="vehiculo.id">
+                                {{ vehiculo.placa }}
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- MAQUINARIA -->
+                    <!-- ================================================= -->
+
+                    <div class="filter-field">
+
+                        <label>
+                            Maquinaria
+                        </label>
+
+                        <select [(ngModel)]="filtros.maquinaria_id">
+
+                            <option value="">
+                                Todas
+                            </option>
+
+                            <option *ngFor="let maquinaria of maquinarias" [value]="maquinaria.id">
+                                {{ maquinaria.codigo_maquinaria }}
+                                -
+                                {{ maquinaria.tipo_maquinaria }}
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- ESTADO -->
+                    <!-- ================================================= -->
+
+                    <div class="filter-field">
+
+                        <label>
+                            Estado
+                        </label>
+
+                        <select [(ngModel)]="filtros.estado">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <option value="FINALIZADA">
+                                Finalizadas
+                            </option>
+
+                            <option value="BORRADOR">
+                                Borrador
+                            </option>
+
+                            <option value="ANULADA">
+                                Anuladas
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- BUSCAR -->
+                    <!-- ================================================= -->
+
+                    <div class="filter-action">
+
+                        <button type="button" class="btn-search" (click)="listar()">
+
+                            <i class="fas fa-search"></i>
+
+                            Buscar
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- LIMPIAR -->
+                    <!-- ================================================= -->
+
+                    <div class="filter-action">
+
+                        <button type="button" class="btn-clear" (click)="limpiarFiltros()">
+
+                            <i class="fas fa-times"></i>
+
+                            Limpiar
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================================== -->
+        <!-- TABLA -->
+        <!-- ===================================================== -->
+
+        <section class="inspections-section">
+
+            <div class="inspections-card">
+
+                <!-- ================================================= -->
+                <!-- ENCABEZADO TABLA -->
+                <!-- ================================================= -->
+
+                <div class="table-header">
+
+                    <div>
+
+                        <div class="table-title">
+
+                            <div class="table-title-icon">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Inspecciones realizadas
+                                </h2>
+
+                                <p>
+                                    Consulta de inspecciones preoperacionales registradas.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="table-counter">
+
+                        {{ inspecciones.length }} registros
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- TABLA -->
+                <!-- ================================================= -->
+
+                <div class="table-wrapper">
+
+                    <table class="inspections-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Fecha
+                                </th>
+
+                                <th>
+                                    <i class="fas fa-user"></i>
+                                    Operador
+                                </th>
+
+                                <th>
+                                    <i class="fas fa-truck"></i>
+                                    Activo
+                                </th>
+
+                                <th class="text-center">
+                                    <i class="fas fa-circle-check"></i>
+                                    Estado
+                                </th>
+
+                                <th class="text-center">
+                                    <i class="fas fa-gears"></i>
+                                    Acciones
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <!-- ================================================= -->
+                            <!-- REGISTROS -->
+                            <!-- ================================================= -->
+
+                            <tr *ngFor="let item of inspecciones" class="inspection-row">
+
+                                <!-- FECHA -->
+
+                                <td>
+
+                                    <div class="date-main">
+
+                                        {{ item.fecha || (item.hora_inicio | date:'dd/MM/yyyy') }}
+
+                                    </div>
+
+                                    <div class="date-time">
+
+                                        {{ item.hora_inicio | date:'HH:mm' }}
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- OPERADOR -->
+
+                                <td>
+
+                                    <div class="operator-cell">
+
+                                        <div class="operator-icon">
+
+                                            <i class="fas fa-user"></i>
+
+                                        </div>
+
+                                        <span>
+
+                                            {{ item.usuario || item.usuario?.nombre }}
+
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- ACTIVO -->
+
+                                <td>
+
+                                    <div class="asset-cell">
+
+                                        <div class="asset-icon">
+
+                                            <i class="fas fa-truck" *ngIf="!item.maquinaria_id"></i>
+
+                                            <i class="fas fa-tractor" *ngIf="item.maquinaria_id"></i>
+
+                                        </div>
+
+                                        <div class="asset-info">
+
+                                            <div class="asset-name">
+
+                                                {{
+                                                item.maquinaria_id
+                                                ? item.codigo_maquinaria
+                                                : (
+                                                item.placa ||
+                                                item.vehiculo?.placa ||
+                                                '-'
+                                                )
+                                                }}
+
+                                            </div>
+
+                                            <div *ngIf="item.maquinaria_id" class="asset-type">
+                                                {{ item.tipo_maquinaria || 'Maquinaria' }}
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- ESTADO -->
+
+                                <td class="text-center">
+
+                                    <span class="inspection-status" [ngClass]="claseEstado(item.estado)">
+                                        {{ item.estado }}
+                                    </span>
+
+                                </td>
+
+
+                                <!-- ACCIONES -->
+
+                                <td>
+
+                                    <div class="inspection-actions">
+
+                                        <!-- VER -->
+
+                                        <button type="button" class="action-btn action-view" title="Ver detalle"
+                                            (click)="verDetalle(item)">
+
+                                            <i class="fas fa-eye"></i>
+
+                                        </button>
+
+
+                                        <!-- PDF -->
+
+                                        <button type="button" class="action-btn action-pdf" title="Descargar PDF"
+                                            (click)="descargarPdf(item)">
+
+                                            <i class="fas fa-file-pdf"></i>
+
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- ================================================= -->
+                            <!-- SIN DATOS -->
+                            <!-- ================================================= -->
+
+                            <tr *ngIf="inspecciones.length === 0">
+
+                                <td colspan="5" class="empty-table-cell">
+
+                                    <div class="empty-state">
+
+                                        <div class="empty-icon">
+                                            <i class="fas fa-folder-open"></i>
+                                        </div>
+
+                                        <h3>
+                                            No hay inspecciones registradas
+                                        </h3>
+
+                                        <p>
+                                            Cuando existan inspecciones aparecerán aquí.
+                                        </p>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================= -->
+<!-- MODAL DETALLE INSPECCIÓN -->
+<!-- ============================================================= -->
+
+<div *ngIf="seleccionado" class="inspection-modal-backdrop">
+
+    <div class="inspection-modal">
+
+        <!-- ===================================================== -->
+        <!-- HEADER MODAL -->
+        <!-- ===================================================== -->
+
+        <div class="inspection-modal-header">
+
+            <div class="modal-header-info">
+
+                <div class="modal-header-icon">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+
+                <div>
+
+                    <h2>
+                        Detalle de Inspección
+                    </h2>
+
+                    <p>
+                        Información completa de la inspección realizada.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button type="button" class="modal-close-btn" (click)="cerrarDetalle()" title="Cerrar">
+
+                <i class="fas fa-times"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- ===================================================== -->
+        <!-- CONTENIDO MODAL -->
+        <!-- ===================================================== -->
+
+        <div class="inspection-modal-content">
+
+            <!-- ================================================= -->
+            <!-- INFORMACIÓN GENERAL -->
+            <!-- ================================================= -->
+
+            <div class="inspection-summary">
+
+                <!-- OPERADOR -->
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Operador
+                    </div>
+
+                    <div class="summary-value">
+
+                        <i class="fas fa-user"></i>
+
+                        {{ seleccionado.usuario }}
+
+                    </div>
+
+                </div>
+
+
+                <!-- VEHÍCULO -->
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Vehículo
+                    </div>
+
+                    <div class="summary-value">
+
+                        <i class="fas fa-truck"></i>
+
+                        {{
+                        seleccionado.placa ||
+                        seleccionado.codigo_maquinaria ||
+                        '-'
+                        }}
+
+                    </div>
+
+                </div>
+
+
+                <!-- ESTADO -->
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Estado
+                    </div>
+
+                    <span class="detail-status" [ngClass]="{
+                            'status-finalizada':
+                                seleccionado.estado === 'FINALIZADA',
+
+                            'status-proceso':
+                                seleccionado.estado === 'EN_PROCESO',
+
+                            'status-other':
+                                seleccionado.estado !== 'FINALIZADA' &&
+                                seleccionado.estado !== 'EN_PROCESO'
+                        }">
+                        {{ seleccionado.estado }}
+                    </span>
+
+                </div>
+
+
+                <!-- TOTAL PREGUNTAS -->
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Total preguntas
+                    </div>
+
+                    <div class="summary-number">
+
+                        {{ seleccionado.respuestas.length }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ================================================= -->
+            <!-- LECTURAS INICIAL / FINAL -->
+            <!-- ================================================= -->
+
+            <div class="inspection-readings">
+
+                <div class="readings-header">
+
+                    <div class="readings-header-icon">
+                        <i class="fas fa-gauge-high"></i>
+                    </div>
+
+                    <div>
+                        <h3>
+                            Lecturas de la inspección
+                        </h3>
+
+                        <p>
+                            Registro de la lectura inicial y final del activo.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="readings-grid">
+
+                    <!-- ================================================= -->
+                    <!-- LECTURA INICIAL -->
+                    <!-- ================================================= -->
+
+                    <div class="reading-card reading-initial">
+
+                        <div class="reading-icon">
+                            <i class="fas fa-arrow-right-to-bracket"></i>
+                        </div>
+
+                        <div class="reading-info">
+
+                            <span class="reading-label">
+
+                                {{
+                                seleccionado.tipo_medicion === 'KILOMETRAJE'
+                                ? 'Kilometraje inicial'
+                                : seleccionado.tipo_medicion === 'HOROMETRO'
+                                ? 'Horómetro inicial'
+                                : 'Lectura inicial'
+
+                                }}
+
+                            </span>
+
+                            <strong class="reading-value">
+
+                                {{
+                                seleccionado.lectura_inicial ??
+                                seleccionado.contador_inicial ??
+                                '-'
+                                }}
+
+                                <small *ngIf="seleccionado.tipo_medicion === 'KILOMETRAJE'">
+                                    km
+                                </small>
+
+                                <small *ngIf="seleccionado.tipo_medicion === 'HOROMETRO'">
+                                    h
+                                </small>
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- LECTURA FINAL -->
+                    <!-- ================================================= -->
+
+                    <div class="reading-card reading-final">
+
+                        <div class="reading-icon">
+                            <i class="fas fa-arrow-right-from-bracket"></i>
+                        </div>
+
+                        <div class="reading-info">
+
+                            <span class="reading-label">
+
+                                {{
+                                seleccionado.tipo_medicion === 'KILOMETRAJE'
+                                ? 'Kilometraje final'
+                                : seleccionado.tipo_medicion === 'HOROMETRO'
+                                ? 'Horómetro final'
+                                : 'Lectura final'
+
+                                }}
+
+                            </span>
+
+                            <strong class="reading-value">
+
+                                {{
+                                seleccionado.lectura_final ??
+                                seleccionado.contador_final ??
+                                '-'
+                                }}
+
+                                <small *ngIf="seleccionado.tipo_medicion === 'KILOMETRAJE'">
+                                    km
+                                </small>
+
+                                <small *ngIf="seleccionado.tipo_medicion === 'HOROMETRO'">
+                                    h
+                                </small>
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- RECORRIDO / DIFERENCIA -->
+                    <!-- ================================================= -->
+
+                    <div *ngIf="
+                seleccionado.lectura_inicial != null &&
+                seleccionado.lectura_final != null
+            " class="reading-card reading-difference">
+
+                        <div class="reading-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+
+                        <div class="reading-info">
+
+                            <span class="reading-label">
+
+                                {{
+                                seleccionado.tipo_medicion === 'KILOMETRAJE'
+                                ? 'Kilómetros recorridos'
+                                : seleccionado.tipo_medicion === 'HOROMETRO'
+                                ? 'Horas trabajadas'
+                                : 'Diferencia'
+
+                                }}
+
+                            </span>
+
+                            <strong class="reading-value">
+
+                                {{
+                                (
+                                seleccionado.lectura_final -
+                                seleccionado.lectura_inicial
+                                ) | number:'1.0-2'
+                                }}
+
+                                <small *ngIf="seleccionado.tipo_medicion === 'KILOMETRAJE'">
+                                    km
+                                </small>
+
+                                <small *ngIf="seleccionado.tipo_medicion === 'HOROMETRO'">
+                                    h
+                                </small>
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- ================================================= -->
+            <!-- RESPUESTAS POR CATEGORÍA -->
+            <!-- ================================================= -->
+
+            <div *ngFor="let categoria of seleccionado.plantilla?.categorias" class="inspection-category">
+
+                <!-- CATEGORÍA -->
+
+                <div class="category-header">
+
+                    <h3>
+
+                        <i class="fas fa-folder-open"></i>
+
+                        {{ categoria.nombre }}
+
+                    </h3>
+
+                </div>
+
+
+                <!-- ITEMS -->
+
+                <div *ngFor="let item of categoria.items" class="inspection-item">
+
+                    <!-- PREGUNTA -->
+
+                    <div class="question-row">
+
+                        <div class="question-text">
+
+                            {{ item.descripcion }}
+
+                        </div>
+
+
+                        <!-- RESPUESTA -->
+
+                        <span class="answer-badge" [ngClass]="{
+
+                                'answer-si':
+                                    obtenerRespuesta(item.id)?.valor === 'SI',
+
+                                'answer-no':
+                                    obtenerRespuesta(item.id)?.valor === 'NO',
+
+                                'answer-na':
+                                    obtenerRespuesta(item.id)?.valor === 'NA',
+
+                                'answer-empty':
+                                    !obtenerRespuesta(item.id)?.valor
+                            }">
+
+                            {{ obtenerRespuesta(item.id)?.valor || '-' }}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- OBSERVACIÓN -->
+                    <!-- ================================================= -->
+
+                    <div *ngIf="obtenerRespuesta(item.id)?.observacion" class="observation-box">
+
+                        <div class="observation-title">
+
+                            <i class="fas fa-comment-dots"></i>
+
+                            Observación
+
+                        </div>
+
+                        <div class="observation-text">
+
+                            {{ obtenerRespuesta(item.id)?.observacion }}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- FOTOGRAFÍAS -->
+                    <!-- ================================================= -->
+
+                    <div *ngIf="obtenerRespuesta(item.id)?.fotos?.length" class="evidence-section">
+
+                        <div class="evidence-title">
+
+                            <i class="fas fa-camera"></i>
+
+                            Evidencias Fotográficas
+
+                        </div>
+
+
+                        <div class="evidence-grid">
+
+                            <a *ngFor="let foto of obtenerRespuesta(item.id)?.fotos" class="evidence-link"
+                                [href]="'http://127.0.0.1:5000/' + foto.archivo" target="_blank">
+
+                                <img [src]="'http://127.0.0.1:5000/' + foto.archivo" alt="Evidencia de inspección"
+                                    class="evidence-image">
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

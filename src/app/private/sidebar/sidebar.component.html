@@ -1,0 +1,257 @@
+<!-- =========================
+     SIDEBAR DESKTOP/TABLET
+========================= -->
+
+<div
+  class="sidebar-container h-screen flex flex-col transition-all duration-300"
+  [ngClass]="{
+    'w-64 expanded': !isCollapsed,
+    'w-20 collapsed': isCollapsed
+  }"
+>
+
+  <!-- HEADER -->
+  <div
+    class="header-section flex items-center justify-between min-h-[80px]"
+  >
+
+    <div
+      *ngIf="!isCollapsed"
+      class="logo-expanded flex items-center"
+    >
+
+      <span class="brand-name">
+        AS-<strong>BUILT</strong>
+      </span>
+
+    </div>
+
+    <button
+      (click)="toggleCollapse()"
+      class="toggle-btn"
+    >
+
+      <i
+        *ngIf="!isCollapsed"
+        class="fas fa-times"
+      ></i>
+
+      <i
+        *ngIf="isCollapsed"
+        class="fas fa-chevron-right"
+      ></i>
+
+    </button>
+
+  </div>
+
+
+  <!-- CONTENT -->
+  <div
+    class="content-section flex-1 overflow-y-auto px-4 pt-6 pb-8"
+  >
+
+    <div class="menu-items">
+
+      <ng-container *ngFor="let item of menuVisible">
+
+        <!-- SIN HIJOS -->
+        <button
+          *ngIf="!item.children"
+          (click)="setSection(item)"
+          class="menu-btn w-full"
+          [ngClass]="getClass(item.key)"
+        >
+
+          <i [class]="item.icon + ' text-2xl'"></i>
+
+          <span
+            *ngIf="!isCollapsed"
+            class="menu-label"
+          >
+            {{ item.label }}
+          </span>
+
+        </button>
+
+
+        <!-- CON HIJOS -->
+        <div
+          *ngIf="item.children"
+          class="menu-group"
+        >
+
+          <!-- PADRE -->
+          <button
+            (click)="toggleMenu(item.key)"
+            class="menu-btn w-full"
+            [ngClass]="{
+              'justify-center': isCollapsed,
+              'parent-active': isParentActive(item)
+            }"
+          >
+
+            <i [class]="item.icon + ' text-2xl'"></i>
+
+            <span
+              *ngIf="!isCollapsed"
+              class="menu-label"
+            >
+              {{ item.label }}
+            </span>
+
+          </button>
+
+
+          <!-- SUBMENU -->
+          <div
+            *ngIf="openMenu === item.key && !isCollapsed"
+            class="submenu"
+          >
+
+            <button
+              *ngFor="let child of item.children"
+              (click)="setSection(child)"
+              class="menu-btn submenu-btn w-full"
+              [ngClass]="getClass(child.key)"
+            >
+
+              <i [class]="child.icon"></i>
+
+              <span>
+                {{ child.label }}
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </ng-container>
+
+    </div>
+
+
+    <!-- DIVIDER -->
+    <div class="sidebar-divider"></div>
+
+
+    <!-- LOGOUT -->
+    <div class="logout-section">
+
+      <button
+        class="logout-btn w-full"
+        (click)="logout()"
+      >
+
+        <i class="fas fa-sign-out-alt text-2xl"></i>
+
+        <span
+          *ngIf="!isCollapsed"
+          class="logout-label"
+        >
+          Salir
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     MOBILE BOTTOM NAV
+========================= -->
+
+<div class="mobile-bottom-nav">
+
+  <ng-container *ngFor="let item of menuVisible">
+
+    <!-- ITEM NORMAL -->
+    <button
+      *ngIf="!item.children"
+      (click)="setSection(item)"
+      class="bottom-btn"
+      [ngClass]="getClass(item.key)"
+    >
+
+      <i [class]="item.icon"></i>
+
+      <span>
+        {{ item.label }}
+      </span>
+
+    </button>
+
+
+    <!-- ITEM CON HIJOS -->
+    <div
+      *ngIf="item.children"
+      class="mobile-parent"
+    >
+
+      <!-- BOTÓN PADRE -->
+      <button
+        (click)="toggleMenu(item.key)"
+        class="bottom-btn"
+        [ngClass]="{
+          'parent-active': isParentActive(item)
+        }"
+      >
+
+        <i [class]="item.icon"></i>
+
+        <span>
+          {{ item.label }}
+        </span>
+
+      </button>
+
+
+      <!-- SUBMENU MOBILE -->
+      <div
+        *ngIf="openMenu === item.key"
+        class="mobile-submenu"
+      >
+
+        <button
+          *ngFor="let child of item.children"
+          (click)="setSection(child)"
+          class="mobile-submenu-btn"
+          [ngClass]="getClass(child.key)"
+        >
+
+          <i [class]="child.icon"></i>
+
+          <span>
+            {{ child.label }}
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </ng-container>
+
+
+  <!-- LOGOUT -->
+  <button
+    class="bottom-btn logout-mobile"
+    (click)="logout()"
+  >
+
+    <i class="fas fa-sign-out-alt"></i>
+
+    <span>
+      Salir
+    </span>
+
+  </button>
+
+</div>
