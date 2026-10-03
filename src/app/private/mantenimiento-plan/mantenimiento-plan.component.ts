@@ -287,125 +287,217 @@ export class MantenimientoPlanComponent implements OnInit {
   // CATÁLOGO PLAN ITEMS
   // =========================================================
 
-  cargarPlanItems(): void {
+cargarPlanItems(): void {
 
-    // =======================================================
-    // VEHÍCULO
-    // =======================================================
+  // =======================================================
+  // VEHÍCULO
+  // =======================================================
 
-    if (this.tipo === 'vehiculo') {
+  if (this.tipo === 'vehiculo') {
 
-      if (!this.vehiculo) {
+    if (!this.vehiculo) {
+      console.error(
+        'No existe información del vehículo.'
+      );
+      this.planItems = [];
+      return;
+    }
 
-        console.error(
-          'No existe información del vehículo.'
-        );
+    // =====================================================
+    // OBTENER TIPO DE VEHÍCULO
+    // =====================================================
 
-        return;
-      }
+    const tipoVehiculoId = Number(
+      this.vehiculo.tipo_vehiculo_id ??
+      this.vehiculo.tipo_vehiculo?.id
+    );
 
-      // Intentamos obtener el ID directamente.
-      //
-      // Ejemplo:
-      // tipo_vehiculo_id = 3
-      //
-      // También soportamos una respuesta anidada:
-      // tipo_vehiculo: { id: 3 }
-      const tipoVehiculoId =
-        this.vehiculo.tipo_vehiculo_id ??
-        this.vehiculo.tipo_vehiculo?.id;
+    console.log('================================');
+    console.log('VEHÍCULO ACTUAL');
+    console.log('ID:', this.vehiculo.id);
+    console.log('PLACA:', this.vehiculo.placa);
+    console.log('TIPO:', this.vehiculo.tipo_vehiculo);
+    console.log(
+      'TIPO VEHÍCULO ID:',
+      tipoVehiculoId
+    );
+    console.log('================================');
 
-      console.log(
-        'TIPO VEHÍCULO ID:',
-        tipoVehiculoId
+    if (!tipoVehiculoId) {
+
+      console.error(
+        'El vehículo no tiene un tipo_vehiculo_id válido.'
       );
 
-      this.service
-        .getPlanItems(
-          'VEHICULO',
-          tipoVehiculoId
-        )
-        .subscribe({
-
-          next: (res) => {
-
-            this.planItems = res;
-
-            console.log(
-              'PLAN ITEMS VEHÍCULO:',
-              res
-            );
-          },
-
-          error: (err) => {
-
-            console.error(
-              'Error cargando plan items del vehículo:',
-              err
-            );
-          }
-        });
+      this.planItems = [];
 
       return;
     }
 
-    // =======================================================
-    // MAQUINARIA
-    // =======================================================
+    // =====================================================
+    // CONSULTAR PLANES
+    // =====================================================
 
-    if (this.tipo === 'maquinaria') {
+    this.service
+      .getPlanItems(
+        'VEHICULO',
+        tipoVehiculoId
+      )
+      .subscribe({
 
-      if (!this.maquinaria) {
+        next: (res) => {
 
-        console.error(
-          'No existe información de la maquinaria.'
-        );
+          console.log(
+            'PLAN ITEMS RECIBIDOS:',
+            res
+          );
 
-        return;
-      }
+          // =================================================
+          // FILTRAR POR TIPO DE VEHÍCULO
+          // =================================================
 
-      // Ejemplo:
-      // tipo_maquinaria_id = 6
-      //
-      // También soportamos:
-      // tipo_maquinaria: { id: 6 }
-      const tipoMaquinariaId =
-        this.maquinaria.tipo_maquinaria_id ??
-        this.maquinaria.tipo_maquinaria?.id;
+          this.planItems = res.filter(
+            (p: any) => {
 
-      console.log(
-        'TIPO MAQUINARIA ID:',
-        tipoMaquinariaId
-      );
+              return (
+                p.tipo_activo === 'VEHICULO' &&
+                Number(p.tipo_vehiculo_id) === tipoVehiculoId
+              );
 
-      this.service
-        .getPlanItems(
-          'MAQUINARIA',
-          tipoMaquinariaId
-        )
-        .subscribe({
+            }
+          );
 
-          next: (res) => {
+          console.log(
+            'PLAN ITEMS PARA ESTE VEHÍCULO:',
+            this.planItems
+          );
 
-            this.planItems = res;
+        },
 
-            console.log(
-              'PLAN ITEMS MAQUINARIA:',
-              res
-            );
-          },
+        error: (err) => {
 
-          error: (err) => {
+          console.error(
+            'Error cargando plan items del vehículo:',
+            err
+          );
 
-            console.error(
-              'Error cargando plan items de maquinaria:',
-              err
-            );
-          }
-        });
-    }
+          this.planItems = [];
+
+        }
+
+      });
+
+    return;
   }
 
+
+  // =======================================================
+  // MAQUINARIA
+  // =======================================================
+
+  if (this.tipo === 'maquinaria') {
+
+    if (!this.maquinaria) {
+
+      console.error(
+        'No existe información de la maquinaria.'
+      );
+
+      this.planItems = [];
+
+      return;
+    }
+
+    // =====================================================
+    // OBTENER TIPO DE MAQUINARIA
+    // =====================================================
+
+    const tipoMaquinariaId = Number(
+      this.maquinaria.tipo_maquinaria_id ??
+      this.maquinaria.tipo_maquinaria?.id
+    );
+
+    console.log('================================');
+    console.log('MAQUINARIA ACTUAL');
+    console.log(
+      'ID:',
+      this.maquinaria.id
+    );
+    console.log(
+      'CÓDIGO:',
+      this.maquinaria.codigo
+    );
+    console.log(
+      'TIPO MAQUINARIA ID:',
+      tipoMaquinariaId
+    );
+    console.log('================================');
+
+    if (!tipoMaquinariaId) {
+
+      console.error(
+        'La maquinaria no tiene un tipo_maquinaria_id válido.'
+      );
+
+      this.planItems = [];
+
+      return;
+    }
+
+    // =====================================================
+    // CONSULTAR PLANES
+    // =====================================================
+
+    this.service
+      .getPlanItems(
+        'MAQUINARIA',
+        tipoMaquinariaId
+      )
+      .subscribe({
+
+        next: (res) => {
+
+          console.log(
+            'PLAN ITEMS MAQUINARIA RECIBIDOS:',
+            res
+          );
+
+          // =================================================
+          // FILTRAR POR TIPO DE MAQUINARIA
+          // =================================================
+
+          this.planItems = res.filter(
+            (p: any) => {
+
+              return (
+                p.tipo_activo === 'MAQUINARIA' &&
+                Number(p.tipo_maquinaria_id) === tipoMaquinariaId
+              );
+
+            }
+          );
+
+          console.log(
+            'PLAN ITEMS PARA ESTA MAQUINARIA:',
+            this.planItems
+          );
+
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Error cargando plan items de maquinaria:',
+            err
+          );
+
+          this.planItems = [];
+
+        }
+
+      });
+  }
+}
   // =========================================================
   // MODAL
   // =========================================================

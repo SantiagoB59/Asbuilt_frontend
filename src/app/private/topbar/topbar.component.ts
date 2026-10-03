@@ -25,7 +25,15 @@ interface Notificacion {
 
   tipo?: string;
 
-  vehiculo?: string;
+  categoria?: string;
+
+  titulo?: string;
+
+  activo?: string;
+
+  tipoActivo?: string;
+
+  icono?: string;
 
 }
 
@@ -331,68 +339,148 @@ export class TopbarComponent implements OnInit, OnDestroy {
   // =========================================
   // 🚨 ALERTAS + NOTIFICACIONES
   // =========================================
+cargarAlertas(): void {
 
-  cargarAlertas(): void {
+  // =========================================
+  // 📊 ESTADÍSTICAS
+  // =========================================
 
+  this.alertasService
+    .obtenerEstadisticas()
+    .subscribe({
 
-    // =========================================
-    // 📊 ESTADÍSTICAS
-    // =========================================
+      next: (data) => {
 
-    this.alertasService
-      .obtenerEstadisticas()
-      .subscribe({
+        this.estadisticasAlertas = data;
 
-        next: (data) => {
+      },
 
-          this.estadisticasAlertas = data;
+      error: (err) => {
 
-        },
+        console.error(
+          'Error estadísticas alertas',
+          err
+        );
 
-        error: (err) => {
+      }
 
-          console.error(
-            'Error estadísticas alertas',
-            err
-          );
-
-        }
-
-      });
+    });
 
 
-    // =========================================
-    // 🔔 NOTIFICACIONES
-    // =========================================
+  // =========================================
+  // 🔔 NOTIFICACIONES
+  // =========================================
 
-    this.alertasService
-      .obtenerActivas()
-      .subscribe({
+  this.alertasService
+    .obtenerActivas()
+    .subscribe({
 
-        next: (alertas: Alerta[]) => {
+      next: (alertas: Alerta[]) => {
 
-          this.notificaciones = alertas
+        this.notificaciones = alertas
 
-            .sort((a, b) =>
+          // =========================================
+          // 🚫 EXCLUIR DOCUMENTOS DE OPERADORES
+          // =========================================
+          .filter((a) => {
 
-              new Date(b.created_at).getTime()
-              -
-              new Date(a.created_at).getTime()
+            return !(
+              a.tipo === 'DOCUMENTO' &&
+              a.usuario_id
+            );
 
-            )
+          })
 
-            .slice(0, 10)
+          // =========================================
+          // 🕐 ORDENAR MÁS RECIENTES PRIMERO
+          // =========================================
+          .sort((a, b) =>
 
-            .map((a) => ({
+            new Date(b.created_at).getTime()
+            -
+            new Date(a.created_at).getTime()
+
+          )
+
+          // =========================================
+          // 🔟 SOLO LAS 10 MÁS RECIENTES
+          // =========================================
+          .slice(0, 10)
+
+          // =========================================
+          // 🔄 TRANSFORMAR PARA EL TOPBAR
+          // =========================================
+          .map((a) => {
+
+            let activo = 'Sin activo';
+
+            let tipoActivo = 'SISTEMA';
+
+            let icono = '🔔';
+
+
+            // =========================================
+            // 🚛 VEHÍCULO
+            // =========================================
+
+            if (a.vehiculo) {
+
+              activo =
+                a.vehiculo.placa ||
+                a.vehiculo.placa ||
+                `Vehículo #${a.vehiculo.id}`;
+
+              tipoActivo = 'VEHÍCULO';
+
+              icono = '🚛';
+
+            }
+
+
+            // =========================================
+            // 🚜 MAQUINARIA
+            // =========================================
+
+            else if (a.maquinaria) {
+
+              activo =
+                a.maquinaria.codigo || a.maquinaria.codigo ||
+                `Maquinaria #${a.maquinaria.id}`;
+
+              tipoActivo = 'MAQUINARIA';
+
+              icono = '🚜';
+
+            }
+
+
+            // =========================================
+            // 🔔 SIN ACTIVO
+            // =========================================
+
+            else {
+
+              activo = 'Sistema';
+
+              tipoActivo = 'SISTEMA';
+
+              icono = '🔔';
+
+            }
+
+
+            return {
 
               id: a.id,
 
-              mensaje: a.mensaje,
+              mensaje:
+                a.mensaje,
 
               fecha:
                 new Date(a.created_at),
 
-              leida: false,
+              leida:
+                false,
 
               prioridad:
                 a.prioridad,
@@ -400,27 +488,36 @@ export class TopbarComponent implements OnInit, OnDestroy {
               tipo:
                 a.tipo,
 
-              vehiculo:
-                a.vehiculo?.placa || 'N/A'
+              categoria:
+                a.categoria,
 
-            }));
+              titulo:
+                a.titulo,
 
-        },
+              activo,
 
-        error: (err) => {
+              tipoActivo,
 
-          console.error(
-            'Error cargando alertas',
-            err
-          );
+              icono
 
-        }
+            };
 
-      });
+          });
 
-  }
+      },
 
+      error: (err) => {
 
+        console.error(
+          'Error cargando alertas',
+          err
+        );
+
+      }
+
+    });
+
+}
   // =========================================
   // 🔔 NO LEÍDAS
   // =========================================

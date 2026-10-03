@@ -87,17 +87,11 @@
 
       <div class="notification-wrapper" *ngIf="!esOperador">
 
-        <button
-          (click)="toggleNotifications()"
-          class="notification-btn"
-          type="button"
-          aria-label="Notificaciones">
+        <button (click)="toggleNotifications()" class="notification-btn" type="button" aria-label="Notificaciones">
 
           <i class="fas fa-bell"></i>
 
-          <span
-            *ngIf="notificacionesNoLeidas > 0"
-            class="notification-badge">
+          <span *ngIf="notificacionesNoLeidas > 0" class="notification-badge">
 
             {{ notificacionesNoLeidas }}
 
@@ -108,9 +102,7 @@
 
         <!-- DROPDOWN -->
 
-        <div
-          *ngIf="showNotifications"
-          class="notifications-dropdown">
+        <div *ngIf="showNotifications" class="notifications-dropdown">
 
           <div class="dropdown-header">
 
@@ -126,10 +118,7 @@
 
             </div>
 
-            <button
-              (click)="marcarTodas()"
-              class="mark-all-btn"
-              type="button">
+            <button (click)="marcarTodas()" class="mark-all-btn" type="button">
 
               Marcar todas
 
@@ -142,30 +131,96 @@
 
           <div class="notifications-list">
 
-            <div
-              *ngFor="let n of notificaciones"
-              (click)="marcarComoLeida(n)"
-              class="notification-item"
+            <div *ngFor="let n of notificaciones" (click)="marcarComoLeida(n)" class="notification-item"
               [class.read]="n.leida">
+
+              <!-- ========================================= -->
+              <!-- ENCABEZADO -->
+              <!-- ========================================= -->
 
               <div class="notification-top">
 
-                <span
-                  class="priority-badge"
-                  [ngClass]="getClasePrioridad(n.prioridad)">
+                <div class="notification-type">
 
-                  {{ n.prioridad || 'INFO' }}
+                  <span class="notification-icon">
+                    {{ n.icono }}
+                  </span>
 
-                </span>
+                  <span class="notification-category">
+                    {{ n.tipoActivo }}
+                  </span>
 
-                <span class="notification-time">
+                </div>
 
-                  {{ n.fecha | date:'shortTime' }}
 
-                </span>
+                <div class="notification-meta">
+
+                  <span class="priority-badge" [ngClass]="getClasePrioridad(n.prioridad)">
+
+                    {{ n.prioridad || 'INFO' }}
+
+                  </span>
+
+                  <span class="notification-time">
+
+                    {{ n.fecha | date:'shortTime' }}
+
+                  </span>
+
+                </div>
 
               </div>
 
+
+              <!-- ========================================= -->
+              <!-- ACTIVO -->
+              <!-- ========================================= -->
+
+              <div class="notification-asset">
+
+                <div class="asset-icon">
+
+                  <i *ngIf="n.tipoActivo === 'VEHÍCULO'" class="fas fa-truck">
+                  </i>
+
+                  <i *ngIf="n.tipoActivo === 'MAQUINARIA'" class="fas fa-tractor">
+                  </i>
+
+                  <i *ngIf="n.tipoActivo === 'SISTEMA'" class="fas fa-bell">
+                  </i>
+
+                </div>
+
+
+                <div class="asset-info">
+
+                  <span class="asset-label">
+                    ACTIVO
+                  </span>
+
+                  <strong>
+                    {{ n.activo }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <!-- ========================================= -->
+              <!-- TÍTULO -->
+              <!-- ========================================= -->
+
+              <div *ngIf="n.titulo" class="notification-title">
+
+                {{ n.titulo }}
+
+              </div>
+
+
+              <!-- ========================================= -->
+              <!-- MENSAJE -->
+              <!-- ========================================= -->
 
               <div class="notification-message">
 
@@ -174,15 +229,27 @@
               </div>
 
 
+              <!-- ========================================= -->
+              <!-- PIE -->
+              <!-- ========================================= -->
+
               <div class="notification-footer">
 
                 <span>
-                  <i class="fas fa-truck"></i>
-                  {{ n.vehiculo }}
+
+                  <i class="fas fa-tag"></i>
+
+                  {{ n.categoria || n.tipo }}
+
                 </span>
 
+
                 <span>
-                  {{ n.tipo }}
+
+                  <i class="far fa-clock"></i>
+
+                  {{ n.fecha | date:'dd/MM/yyyy HH:mm' }}
+
                 </span>
 
               </div>
@@ -190,17 +257,21 @@
             </div>
 
 
+            <!-- ========================================= -->
             <!-- VACÍO -->
+            <!-- ========================================= -->
 
-            <div
-              *ngIf="notificaciones.length === 0"
-              class="notifications-empty">
+            <div *ngIf="notificaciones.length === 0" class="notifications-empty">
 
               <i class="fas fa-bell-slash"></i>
 
               <p>
                 Sin notificaciones
               </p>
+
+              <span>
+                No hay alertas activas en este momento
+              </span>
 
             </div>
 
@@ -233,10 +304,7 @@
         </div>
 
 
-        <button
-          (click)="logout()"
-          class="logout-btn"
-          type="button">
+        <button (click)="logout()" class="logout-btn" type="button">
 
           <i class="fas fa-sign-out-alt"></i>
 

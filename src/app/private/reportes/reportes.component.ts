@@ -325,16 +325,16 @@ export class ReportesComponent implements OnInit {
       .subscribe({
 
         next: (resp: any) => {
+          console.log('ALERTAS ORIGINALES =>', resp);
 
-          console.log(
-            'ALERTAS =>',
-            resp
-          );
+          this.alertas = resp.filter((alerta: any) => {
+            // Excluir alertas de documentos de operadores
+            return !(alerta.tipo === 'DOCUMENTO' && !alerta.vehiculo);
+          });
 
-          this.alertas = resp;
+          console.log('ALERTAS MOSTRADAS =>', this.alertas);
 
           this.loading = false;
-
         },
 
         error: (err) => {

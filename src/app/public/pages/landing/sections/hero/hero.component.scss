@@ -3133,3 +3133,143 @@ border: rgba(255, 255, 255, 0.09);
   }
 
 }
+
+
+/* =========================================================
+   CONTROLES DEL CARRUSEL
+========================================================= */
+
+.featured-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+
+/* =========================================================
+   FLECHAS
+========================================================= */
+
+.featured-arrow {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(180, 145, 55, 0.45);
+  border-radius: 50%;
+
+  background: rgba(8, 24, 45, 0.95);
+  color: #c9a646;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+
+  i {
+    font-size: 14px;
+    transition: transform 0.25s ease;
+  }
+
+  &:hover {
+    background: #c9a646;
+    color: #071a2f;
+
+    border-color: #c9a646;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+      0 8px 20px rgba(0, 0, 0, 0.18);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #c9a646;
+    outline-offset: 4px;
+  }
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE LAS FLECHAS
+========================================================= */
+
+.featured-arrow:first-child:hover i {
+  transform: translateX(-3px);
+}
+
+.featured-arrow:last-child:hover i {
+  transform: translateX(3px);
+}
+
+
+/* =========================================================
+   INDICADORES
+========================================================= */
+
+.featured-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.featured-dot {
+  width: 7px;
+  height: 7px;
+
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(8, 24, 45, 0.25);
+
+  cursor: pointer;
+
+  transition:
+    width 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease;
+
+  &.active {
+    width: 24px;
+    border-radius: 10px;
+    background: #c9a646;
+  }
+
+  &:hover {
+    transform: scale(1.2);
+    background: #c9a646;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .featured-controls {
+    margin-top: 24px;
+    gap: 18px;
+  }
+
+  .featured-arrow {
+    width: 42px;
+    height: 42px;
+  }
+
+}
