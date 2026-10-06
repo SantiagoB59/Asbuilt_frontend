@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 
 @Component({
@@ -11,17 +10,13 @@ export class SolicitarDemoComponent {
   enviando = false;
 
   formulario = {
-
     nombre: '',
     empresa: '',
+    cargo: '',
     email: '',
     telefono: '',
-    cantidad: null as number | null,
-    tipoOperacion: '',
     mensaje: ''
-
   };
-
 
   enviarSolicitud(): void {
 
@@ -29,32 +24,26 @@ export class SolicitarDemoComponent {
       return;
     }
 
+    if (
+      !this.formulario.nombre ||
+      !this.formulario.empresa ||
+      !this.formulario.email ||
+      !this.formulario.telefono
+    ) {
+      console.warn('Faltan campos obligatorios.');
+      return;
+    }
+
     this.enviando = true;
 
+    console.log('SOLICITUD DE DEMOSTRACIÓN');
+    console.log(this.formulario);
 
-    /*
-     * TEMPORAL
-     *
-     * Aquí posteriormente conectaremos
-     * el formulario con el backend Flask.
-     */
-
-    console.log(
-      'Solicitud de demostración:',
-      this.formulario
-    );
-
+    // Aquí posteriormente conectamos el formulario
+    // con el backend de IntelliFeet.
 
     setTimeout(() => {
-
       this.enviando = false;
-
-      console.log(
-        'Solicitud preparada correctamente.'
-      );
-
     }, 1000);
-
   }
-
 }
