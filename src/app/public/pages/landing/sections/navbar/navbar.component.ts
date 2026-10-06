@@ -6,5 +6,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
+  
+  menuMobileAbierto = false;
 
+  toggleMenuMobile(): void {
+    this.menuMobileAbierto = !this.menuMobileAbierto;
+  }
+
+  cerrarMenuMobile(): void {
+    this.menuMobileAbierto = false;
+  }
 }

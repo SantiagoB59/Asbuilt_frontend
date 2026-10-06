@@ -50,19 +50,31 @@ a {
 
 .scroll-progress {
   position: fixed;
+
   top: 0;
   left: 0;
+
   z-index: 2000;
+
   width: 100%;
   height: 3px;
+
   pointer-events: none;
 }
 
 .scroll-progress-bar {
   width: 0%;
   height: 100%;
-  background: linear-gradient(90deg, $orange, $amber-bright);
-  box-shadow: 0 0 14px rgba(245, 163, 0, .7);
+
+  background: linear-gradient(
+    90deg,
+    $orange,
+    $amber-bright
+  );
+
+  box-shadow:
+    0 0 14px rgba(245, 163, 0, .7);
+
   transition: width .1s linear;
 }
 
@@ -73,14 +85,19 @@ a {
 
 .navbar {
   position: fixed;
+
   top: 0;
   left: 0;
+
   width: 100%;
   height: 74px;
+
   z-index: 1000;
 
   background: rgba(11, 12, 14, .92);
-  border-bottom: 1px solid rgba(245, 163, 0, .14);
+
+  border-bottom:
+    1px solid rgba(245, 163, 0, .14);
 
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
@@ -91,13 +108,19 @@ a {
     box-shadow .3s ease;
 }
 
-/* Línea ámbar inferior */
+
+/* =========================================================
+   LÍNEA ÁMBAR INFERIOR
+========================================================= */
 
 .navbar::after {
   content: "";
+
   position: absolute;
+
   left: 0;
   bottom: -1px;
+
   width: 100%;
   height: 2px;
 
@@ -113,52 +136,96 @@ a {
   opacity: .85;
 }
 
+
+/* =========================================================
+   NAVBAR CONTAINER
+========================================================= */
+
 .navbar-container {
-  width: min(1240px, calc(100% - 48px));
+  width: min(
+    1240px,
+    calc(100% - 48px)
+  );
+
   height: 100%;
+
   margin: 0 auto;
 
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   gap: 30px;
 }
 
 
 /* =========================================================
-   BRAND / WORDMARK
+   BRAND
 ========================================================= */
 
 .brand {
   display: flex;
+
   align-items: center;
+
   gap: 12px;
+
   flex-shrink: 0;
 }
+
+
+/* =========================================================
+   BRAND CUBE
+========================================================= */
 
 .brand-cube {
   width: 14px;
   height: 14px;
+
   flex-shrink: 0;
 
-  background: linear-gradient(135deg, $amber-bright, $orange);
+  background:
+    linear-gradient(
+      135deg,
+      $amber-bright,
+      $orange
+    );
 
-  clip-path: polygon(0 0, 100% 0, 100% 68%, 68% 100%, 0 100%);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 68%,
+    68% 100%,
+    0 100%
+  );
 
-  box-shadow: 0 0 14px rgba(245, 163, 0, .45);
+  box-shadow:
+    0 0 14px rgba(245, 163, 0, .45);
 
-  transition: transform .3s ease;
+  transition:
+    transform .3s ease;
 }
 
 .brand:hover .brand-cube {
   transform: rotate(90deg);
 }
 
+
+/* =========================================================
+   WORDMARK
+========================================================= */
+
 .wordmark {
   color: $text;
+
   font-family: $font-display;
+
   font-size: 20px;
+
   font-weight: 900;
+
   letter-spacing: 1.5px;
 }
 
@@ -173,29 +240,49 @@ a {
 
 .navbar-menu {
   display: flex;
+
   align-items: center;
+
   gap: 5px;
 }
+
+
+/* =========================================================
+   NAV LINKS
+========================================================= */
 
 .nav-link {
   position: relative;
 
   padding: 9px 13px;
 
-  color: rgba(244, 242, 236, .55);
+  color:
+    rgba(244, 242, 236, .55);
 
   font-family: $font-display;
+
   font-size: 11px;
+
   font-weight: 700;
+
   letter-spacing: 1.4px;
+
   text-transform: uppercase;
 
-  transition: color .25s ease;
+  transition:
+    color .25s ease;
 }
+
+
+/* =========================================================
+   NAV LINK LINE
+========================================================= */
 
 .nav-link::after {
   content: "";
+
   position: absolute;
+
   left: 50%;
   bottom: 1px;
 
@@ -203,16 +290,30 @@ a {
   height: 2px;
 
   background: $amber;
-  box-shadow: 0 0 10px rgba(245, 163, 0, .6);
 
-  transform: translateX(-50%);
+  box-shadow:
+    0 0 10px rgba(245, 163, 0, .6);
 
-  transition: width .25s ease;
+  transform:
+    translateX(-50%);
+
+  transition:
+    width .25s ease;
 }
+
+
+/* =========================================================
+   NAV LINK HOVER
+========================================================= */
 
 .nav-link:hover {
   color: $text;
 }
+
+
+/* =========================================================
+   NAV LINK ACTIVE
+========================================================= */
 
 .nav-link.active {
   color: $amber-bright;
@@ -224,27 +325,44 @@ a {
 
 
 /* =========================================================
-   NAV ACTIONS
+   NAV ACTIONS DESKTOP
 ========================================================= */
 
 .navbar-actions {
   display: flex;
+
   align-items: center;
+
   gap: 10px;
+
+  flex-shrink: 0;
 }
+
+
+/* =========================================================
+   LOGIN DESKTOP
+========================================================= */
 
 .btn-login {
   padding: 9px 13px;
 
-  color: rgba(244, 242, 236, .7);
+  color:
+    rgba(244, 242, 236, .7);
 
   font-family: $font-display;
+
   font-size: 11px;
+
   font-weight: 700;
+
   letter-spacing: 1.4px;
+
   text-transform: uppercase;
 
-  transition: color .2s ease;
+  white-space: nowrap;
+
+  transition:
+    color .2s ease;
 }
 
 .btn-login:hover {
@@ -253,31 +371,83 @@ a {
 
 
 /* =========================================================
-   BOTÓN DEMO (hero-button primary)
+   LOGIN MOBILE
+========================================================= */
+
+.btn-login-mobile {
+  display: none;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 8px 10px;
+
+  color:
+    rgba(244, 242, 236, .85);
+
+  font-family: $font-display;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.3px;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+
+  transition:
+    color .2s ease;
+}
+
+.btn-login-mobile:hover {
+  color: $amber-bright;
+}
+
+
+/* =========================================================
+   HERO BUTTON / COTIZACIÓN
 ========================================================= */
 
 .hero-button.primary {
   position: relative;
 
   display: inline-flex;
+
   align-items: center;
+
   justify-content: center;
+
   gap: 9px;
 
   min-height: 42px;
+
   padding: 0 18px;
 
   border: none;
 
-  background: linear-gradient(135deg, $amber-bright, $orange);
+  background:
+    linear-gradient(
+      135deg,
+      $amber-bright,
+      $orange
+    );
 
   color: #17130a;
 
   font-family: $font-display;
+
   font-size: 11px;
+
   font-weight: 800;
+
   letter-spacing: 1.4px;
+
   text-transform: uppercase;
+
+  white-space: nowrap;
 
   clip-path: polygon(
     0 0,
@@ -288,25 +458,53 @@ a {
     0 calc(100% - 10px)
   );
 
-  box-shadow: 0 10px 26px rgba(245, 163, 0, .22);
+  box-shadow:
+    0 10px 26px
+    rgba(245, 163, 0, .22);
 
   transition:
     transform .2s ease,
     box-shadow .2s ease;
 }
 
+
+/* =========================================================
+   HERO BUTTON HOVER
+========================================================= */
+
 .hero-button.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 32px rgba(245, 163, 0, .38);
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 14px 32px
+    rgba(245, 163, 0, .38);
 }
+
+
+/* =========================================================
+   HERO BUTTON ICON
+========================================================= */
 
 .hero-button.primary i {
   font-size: 10px;
-  transition: transform .2s ease;
+
+  transition:
+    transform .2s ease;
 }
 
 .hero-button.primary:hover i {
-  transform: translateX(3px);
+  transform:
+    translateX(3px);
+}
+
+
+/* =========================================================
+   MOBILE MENU ACTIONS
+========================================================= */
+
+.mobile-menu-actions {
+  display: none;
 }
 
 
@@ -320,14 +518,44 @@ a {
   width: 40px;
   height: 40px;
 
-  border: 1px solid rgba(244, 242, 236, .14);
+  flex-shrink: 0;
+
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid
+    rgba(244, 242, 236, .14);
+
   border-radius: 4px;
 
-  background: rgba(21, 24, 29, .8);
+  background:
+    rgba(21, 24, 29, .8);
 
-  color: rgba(244, 242, 236, .85);
+  color:
+    rgba(244, 242, 236, .85);
 
   cursor: pointer;
+
+  transition:
+    border-color .2s ease,
+    color .2s ease,
+    background .2s ease;
+}
+
+
+/* =========================================================
+   MOBILE BUTTON HOVER
+========================================================= */
+
+.mobile-menu-button:hover {
+  color: $amber-bright;
+
+  border-color:
+    rgba(245, 163, 0, .35);
+
+  background:
+    rgba(245, 163, 0, .08);
 }
 
 
@@ -337,17 +565,30 @@ a {
 
 @media (max-width: 1050px) {
 
+  .navbar-container {
+    gap: 15px;
+  }
+
   .navbar-menu {
     gap: 0;
   }
 
   .nav-link {
     padding: 9px 8px;
+
     font-size: 10px;
   }
 
   .navbar-actions {
     gap: 4px;
+  }
+
+  .btn-login {
+    padding: 9px 8px;
+  }
+
+  .hero-button.primary {
+    padding: 0 13px;
   }
 
 }
@@ -359,27 +600,237 @@ a {
 
 @media (max-width: 768px) {
 
+  /* =======================================================
+     NAVBAR
+  ======================================================== */
+
   .navbar {
     height: 66px;
   }
 
+
+  /* =======================================================
+     CONTAINER
+  ======================================================== */
+
   .navbar-container {
-    width: calc(100% - 30px);
+    width:
+      calc(100% - 30px);
+
+    gap: 8px;
   }
 
-  .navbar-menu,
+
+  /* =======================================================
+     LOGO
+  ======================================================== */
+
+  .wordmark {
+    font-size: 17px;
+  }
+
+
+  /* =======================================================
+     DESKTOP MENU
+  ======================================================== */
+
+  .navbar-menu {
+
+    position: absolute;
+
+    top: 66px;
+
+    left: 15px;
+    right: 15px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 0;
+
+    padding: 12px;
+
+    background:
+      rgba(11, 12, 14, .98);
+
+    border:
+      1px solid
+      rgba(245, 163, 0, .18);
+
+    box-shadow:
+      0 20px 45px
+      rgba(0, 0, 0, .45);
+
+    backdrop-filter: blur(18px);
+
+    -webkit-backdrop-filter: blur(18px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform:
+      translateY(-10px);
+
+    pointer-events: none;
+
+    transition:
+      opacity .25s ease,
+      transform .25s ease,
+      visibility .25s ease;
+  }
+
+
+  /* =======================================================
+     MENU OPEN
+  ======================================================== */
+
+  .navbar-menu.mobile-open {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform:
+      translateY(0);
+
+    pointer-events: auto;
+  }
+
+
+  /* =======================================================
+     MOBILE LINKS
+  ======================================================== */
+
+  .navbar-menu .nav-link {
+
+    display: flex;
+
+    align-items: center;
+
+    width: 100%;
+
+    padding: 14px 15px;
+
+    border-bottom:
+      1px solid
+      rgba(244, 242, 236, .07);
+
+    font-size: 11px;
+  }
+
+
+  /* =======================================================
+     REMOVE DESKTOP ACTIVE LINE
+  ======================================================== */
+
+  .navbar-menu .nav-link::after {
+    display: none;
+  }
+
+
+  /* =======================================================
+     MOBILE LINK HOVER
+  ======================================================== */
+
+  .navbar-menu .nav-link:hover {
+
+    background:
+      rgba(245, 163, 0, .07);
+
+    color: $amber-bright;
+  }
+
+
+  /* =======================================================
+     MOBILE COTIZACIÓN
+  ======================================================== */
+
+  .mobile-menu-actions {
+
+    display: block;
+
+    padding-top: 12px;
+  }
+
+
+  .mobile-menu-actions .hero-button {
+
+    width: 100%;
+  }
+
+
+  /* =======================================================
+     HIDE DESKTOP ACTIONS
+  ======================================================== */
+
   .navbar-actions {
     display: none;
   }
 
+
+  /* =======================================================
+     SHOW MOBILE LOGIN
+  ======================================================== */
+
+  .btn-login-mobile {
+
+    display: inline-flex;
+
+    margin-left: auto;
+  }
+
+
+  /* =======================================================
+     SHOW MOBILE BUTTON
+  ======================================================== */
+
   .mobile-menu-button {
+
     display: flex;
-    align-items: center;
-    justify-content: center;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .navbar-container {
+    width:
+      calc(100% - 20px);
+  }
+
+  .brand {
+    gap: 9px;
+  }
+
+  .brand-cube {
+    width: 12px;
+    height: 12px;
   }
 
   .wordmark {
-    font-size: 17px;
+    font-size: 16px;
+    letter-spacing: 1.2px;
+  }
+
+  .btn-login-mobile {
+    padding-left: 6px;
+    padding-right: 6px;
+
+    font-size: 9px;
+  }
+
+  .mobile-menu-button {
+    width: 38px;
+    height: 38px;
   }
 
 }

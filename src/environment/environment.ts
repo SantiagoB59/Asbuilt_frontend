@@ -2,7 +2,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:5000'
+  apiUrl: 'https://asbuilt.sbtechgroup.com'
 };
 // export const environment = {
 //   production: false,
@@ -14,3 +14,4 @@ export const environment = {
 //   production: true,
 //   apiUrl: 'https://transmenasmart.com'
 // };
+

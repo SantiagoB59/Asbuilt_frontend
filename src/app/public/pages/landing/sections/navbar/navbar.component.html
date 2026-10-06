@@ -1,93 +1,112 @@
-<div class="landing-page">
+<!-- =======================================================
+     NAVBAR
+======================================================== -->
 
-  <!-- =======================================================
-       NAVBAR
-  ======================================================== -->
+<nav class="navbar">
 
-  <nav class="navbar">
+  <div class="navbar-container">
 
-    <div class="navbar-container">
+    <!-- ===================================================
+         LOGO
+    ==================================================== -->
 
-      <!-- LOGO -->
+    <a
+      class="brand"
+      href="#inicio"
+      aria-label="AS-BUILT - Inicio"
+    >
+
+      <span class="brand-cube"></span>
+
+      <span class="wordmark">
+        AS-<span>BUILT</span>
+      </span>
+
+    </a>
+
+
+    <!-- ===================================================
+         MENU
+    ==================================================== -->
+
+    <div
+      class="navbar-menu"
+      [class.mobile-open]="menuMobileAbierto"
+    >
+
+      <!-- INICIO -->
 
       <a
-        class="brand"
         href="#inicio"
-        aria-label="As-Built - Inicio"
+        class="nav-link"
+        data-section="inicio"
+        (click)="cerrarMenuMobile()"
       >
-
-        <span class="brand-cube"></span>
-
-        <span class="wordmark">
-          AS-<span>BUILT</span>
-        </span>
-
+        Inicio
       </a>
 
 
-      <!-- MENU -->
+      <!-- SERVICIOS -->
 
-      <div class="navbar-menu">
-
-        <a
-          href="#inicio"
-          class="nav-link active"
-          data-section="inicio"
-        >
-          Inicio
-        </a>
-
-        <a
-          href="#soluciones"
-          class="nav-link"
-          data-section="soluciones"
-        >
-          Servicios
-        </a>
-
-        <a
-          href="#beneficios"
-          class="nav-link"
-          data-section="beneficios"
-        >
-          Beneficios
-        </a>
-
-        <a
-          href="#nosotros"
-          class="nav-link"
-          data-section="nosotros"
-        >
-          Nosotros
-        </a>
-
-        <a
-          href="#contacto"
-          class="nav-link"
-          data-section="contacto"
-        >
-          Contacto
-        </a>
-
-      </div>
+      <a
+        href="#servicios"
+        class="nav-link"
+        data-section="servicios"
+        (click)="cerrarMenuMobile()"
+      >
+        Servicios
+      </a>
 
 
-      <!-- ACTIONS -->
+      <!-- PROYECTOS -->
 
-      <div class="navbar-actions">
+      <a
+        href="#proyectos"
+        class="nav-link"
+        data-section="proyectos"
+        (click)="cerrarMenuMobile()"
+      >
+        Proyectos
+      </a>
 
-        <a
-          routerLink="/login"
-          class="btn-login"
-        >
-          Ingresar
-        </a>
+
+      <!-- CAPACIDAD -->
+
+      <a
+        href="#capacidad"
+        class="nav-link"
+        data-section="capacidad"
+        (click)="cerrarMenuMobile()"
+      >
+        Capacidad
+      </a>
+
+
+      <!-- NOSOTROS -->
+
+      <a
+        href="#nosotros"
+        class="nav-link"
+        data-section="nosotros"
+        (click)="cerrarMenuMobile()"
+      >
+        Nosotros
+      </a>
+
+
+      <!-- =================================================
+           COTIZACIÓN MOBILE
+      ================================================== -->
+
+      <div class="mobile-menu-actions">
 
         <a
           routerLink="/solicitar-demo"
           class="hero-button primary"
+          (click)="cerrarMenuMobile()"
         >
-          Cotizar proyecto
+
+          Solicitar cotización
 
           <i class="fas fa-arrow-right"></i>
 
@@ -95,33 +114,83 @@
 
       </div>
 
+    </div>
 
-      <!-- MOBILE -->
 
-      <button
-        class="mobile-menu-button"
-        type="button"
-        aria-label="Abrir menú"
-        aria-expanded="false"
+    <!-- ===================================================
+         ACTIONS DESKTOP
+    ==================================================== -->
+
+    <div class="navbar-actions">
+
+      <!-- INGRESAR -->
+
+      <a
+        routerLink="/login"
+        class="btn-login"
+      >
+        Ingresar
+      </a>
+
+
+      <!-- COTIZACIÓN -->
+
+      <a
+        routerLink="/solicitar-demo"
+        class="hero-button primary"
       >
 
-        <i class="fas fa-bars"></i>
+        Solicitar cotización
 
-      </button>
+        <i class="fas fa-arrow-right"></i>
+
+      </a>
 
     </div>
 
-  </nav>
+
+    <!-- ===================================================
+         INGRESAR MOBILE
+    ==================================================== -->
+
+    <a
+      routerLink="/login"
+      class="btn-login-mobile"
+    >
+      Ingresar
+    </a>
 
 
-  <!-- =======================================================
-       SCROLL PROGRESS
-  ======================================================== -->
+    <!-- ===================================================
+         MOBILE MENU BUTTON
+    ==================================================== -->
 
-  <div class="scroll-progress">
+    <button
+      class="mobile-menu-button"
+      type="button"
+      aria-label="Abrir menú"
+      [attr.aria-expanded]="menuMobileAbierto"
+      (click)="toggleMenuMobile()"
+    >
 
-    <div class="scroll-progress-bar"></div>
+      <i
+        class="fas"
+        [ngClass]="menuMobileAbierto ? 'fa-times' : 'fa-bars'"
+      ></i>
+
+    </button>
 
   </div>
+
+</nav>
+
+
+<!-- =======================================================
+     SCROLL PROGRESS
+======================================================== -->
+
+<div class="scroll-progress">
+
+  <div class="scroll-progress-bar"></div>
 
 </div>
