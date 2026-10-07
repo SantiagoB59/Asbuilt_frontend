@@ -265,6 +265,13 @@ setActiveByUrl(url: string) {
           icon: 'fas fa-list',
           route: '/dashboard/plan-items',
           roles: ['admin']
+        },
+        {
+          key: 'usuarios',
+          label: 'Crear Usuarios',
+          icon: 'fas fa-users',
+          route: '/dashboard/usuarios',
+          roles: ['admin']
         }
       ]
     },
@@ -286,13 +293,6 @@ setActiveByUrl(url: string) {
           label: 'Asignar operadores',
           icon: 'fas fa-user-cog',
           route: '/dashboard/activo-operador',
-          roles: ['admin']
-        },
-        {
-          key: 'usuarios',
-          label: 'Crear Operador',
-          icon: 'fas fa-users',
-          route: '/dashboard/usuarios',
           roles: ['admin']
         },
         {
