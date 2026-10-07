@@ -521,20 +521,18 @@ export class UsuariosComponent implements OnInit {
 
     }
 
-
     this.cargandoDocumentos = true;
 
-
-    let pendientes =
-      this.documentos.length;
-
+    let pendientes = this.documentos.length;
     let huboError = false;
-
 
     this.documentos.forEach(
       (documento: any) => {
 
         const data = {
+
+          documento_tipo_id:
+            documento.documento_tipo_id,
 
           fecha_vencimiento:
             documento.fecha_vencimiento || null,
@@ -547,72 +545,155 @@ export class UsuariosComponent implements OnInit {
 
         };
 
+        // =====================================================
+        // DOCUMENTO EXISTENTE → ACTUALIZAR
+        // =====================================================
 
-        this.usuarioDocumentoService
+        if (documento.id) {
 
-          .actualizarDocumento(
-            documento.id,
-            data
-          )
+          this.usuarioDocumentoService
+            .actualizarDocumento(
+              documento.id,
+              {
+                fecha_vencimiento:
+                  documento.fecha_vencimiento || null,
 
-          .subscribe({
+                archivo_url:
+                  documento.archivo_url || null,
 
-            next: () => {
-
-              pendientes--;
-
-              if (pendientes === 0) {
-
-                this.cargandoDocumentos = false;
-
-                this.finalizarGuardado(
-                  'Usuario y documentos actualizados correctamente.'
-                );
-
+                activo:
+                  documento.activo !== false
               }
+            )
+            .subscribe({
 
-            },
+              next: () => {
 
-            error: (err) => {
+                pendientes--;
 
-              console.error(
-                'ERROR ACTUALIZANDO DOCUMENTO',
-                err
-              );
+                if (pendientes === 0) {
 
-              huboError = true;
-
-              pendientes--;
-
-              if (pendientes === 0) {
-
-                this.cargandoDocumentos = false;
-
-                if (huboError) {
-
-                  this.finalizarGuardado(
-                    'Usuario actualizado, pero algunos documentos no pudieron guardarse.'
+                  this.finalizarProcesoDocumentos(
+                    huboError
                   );
 
-                } else {
+                }
 
-                  this.finalizarGuardado(
-                    'Usuario y documentos actualizados correctamente.'
+              },
+
+              error: (err) => {
+
+                console.error(
+                  'ERROR ACTUALIZANDO DOCUMENTO',
+                  err
+                );
+
+                huboError = true;
+
+                pendientes--;
+
+                if (pendientes === 0) {
+
+                  this.finalizarProcesoDocumentos(
+                    huboError
                   );
 
                 }
 
               }
 
-            }
+            });
 
-          });
+        }
+
+        // =====================================================
+        // DOCUMENTO NUEVO → CREAR
+        // =====================================================
+
+        else {
+
+          this.usuarioDocumentoService
+            .crearDocumento(
+              this.form.id,
+              data
+            )
+            .subscribe({
+
+              next: (resp: any) => {
+
+                console.log(
+                  'DOCUMENTO CREADO:',
+                  resp
+                );
+
+                pendientes--;
+
+                if (pendientes === 0) {
+
+                  this.finalizarProcesoDocumentos(
+                    huboError
+                  );
+
+                }
+
+              },
+
+              error: (err) => {
+
+                console.error(
+                  'ERROR CREANDO DOCUMENTO',
+                  err
+                );
+
+                huboError = true;
+
+                pendientes--;
+
+                if (pendientes === 0) {
+
+                  this.finalizarProcesoDocumentos(
+                    huboError
+                  );
+
+                }
+
+              }
+
+            });
+
+        }
 
       }
 
     );
 
   }
+  // =====================================================
+  // FINALIZAR PROCESO DE DOCUMENTOS
+  // =====================================================
+
+  finalizarProcesoDocumentos(
+    huboError: boolean
+  ): void {
+
+    this.cargandoDocumentos = false;
+
+    if (huboError) {
+
+      this.finalizarGuardado(
+        'Usuario actualizado, pero algunos documentos no pudieron guardarse.'
+      );
+
+      return;
+
+    }
+
+    this.finalizarGuardado(
+      'Usuario y documentos actualizados correctamente.'
+    );
+
+  }
+
 
 
   // =====================================================
