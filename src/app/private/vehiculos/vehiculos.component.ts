@@ -228,7 +228,14 @@ export class VehiculosComponent implements OnInit {
     this.modalMode = 'editar';
 
     this.svc.getByPlaca(v.placa).subscribe(full => {
-
+      console.log(
+        'Fecha recibida del backend:',
+        full.campos_dinamicos?.filter(
+          (campo: any) =>
+            ['linea_vida', 'tabla_aforo', 'prueba_hidrostatica']
+              .includes(campo.nombre)
+        )
+      );
       this.vehiculoSeleccionado = full;
 
       // ==========================
@@ -674,7 +681,20 @@ export class VehiculosComponent implements OnInit {
 
   formatDate(date?: string | null): string {
     if (!date) return '';
-    const d = new Date(date);
+
+    // Si ya viene en formato YYYY-MM-DD, conservarlo sin convertirlo.
+    const fecha = String(date).trim();
+    const match = fecha.match(/^(\d{4})-(\d{2})-(\d{2})/);
+
+    if (match) {
+      return `${match[1]}-${match[2]}-${match[3]}`;
+    }
+
+    // Compatibilidad con fechas que vienen en otro formato.
+    const d = new Date(fecha);
+
+    if (Number.isNaN(d.getTime())) return '';
+
     return d.toISOString().split('T')[0];
   }
 
