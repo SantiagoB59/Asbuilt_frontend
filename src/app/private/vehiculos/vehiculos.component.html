@@ -6,7 +6,7 @@
         <div class="page-header">
             <div>
                 <h2 class="page-title">Vehículos automotores y no automotores</h2>
-                <p class="page-subtitle">Administración de cabezotes, Camionetas, Cama alta, Cama alta, tanques y otros
+                <p class="page-subtitle">Administración de cabezotes, Camionetas, Cama alta, Cama alta, remolques y otros
                 </p>
             </div>
             <button class="btn-primary" (click)="abrirCrear()">
@@ -38,7 +38,7 @@
         <div class="filters-bar">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="Buscar placa, marca, conductor…" [(ngModel)]="searchTerm"
+                <input type="text" placeholder="Buscar placa, marca, línea, conductor…" [(ngModel)]="searchTerm"
                     [ngModelOptions]="{standalone: true}" (input)="cargarDatos()">
             </div>
 
@@ -113,6 +113,8 @@
 
                             <th>Información</th>
 
+                            <th>Línea</th>
+
                             <th>Conductor</th>
 
                             <th>Kilometraje</th>
@@ -137,7 +139,7 @@
 
                         <tr *ngIf="loading">
 
-                            <td colspan="7" class="loading-row">
+                            <td colspan="8" class="loading-row">
 
                                 <div class="spinner"></div>
 
@@ -151,7 +153,7 @@
 
                         <tr *ngIf="!loading && vehiculos.length==0">
 
-                            <td colspan="7" class="empty-row">
+                            <td colspan="8" class="empty-row">
 
                                 <h3 class="text-xl font-bold text-gray-700 mt-4">
 
@@ -218,6 +220,14 @@
                                     {{v.marca}}
 
                                 </div>
+
+                            </td>
+
+                            <!-- LÍNEA -->
+
+                            <td>
+
+                                {{v.linea || '—'}}
 
                             </td>
 
@@ -366,6 +376,11 @@
                         <div class="form-field">
                             <label>Modelo</label>
                             <input formControlName="modelo">
+                        </div>
+
+                        <div class="form-field">
+                            <label>Línea</label>
+                            <input formControlName="linea">
                         </div>
 
                         <div class="form-field">

@@ -80,6 +80,7 @@ export class VehiculosComponent implements OnInit {
 
       marca: [''],
       modelo: [''],
+      linea: [''],
       color: [''],
 
       vin: [''],
@@ -171,7 +172,7 @@ export class VehiculosComponent implements OnInit {
   }
   private isStaticField(field: string): boolean {
     const baseFields = [
-      'placa', 'tipo_vehiculo_id', 'marca', 'modelo', 'color',
+      'placa', 'tipo_vehiculo_id', 'marca', 'modelo', 'linea', 'color',
       'vin', 'numero_chasis', 'numero_motor',
       'propietario', 'cc_propietario',
       'conductor', 'cc_conductor',
@@ -246,6 +247,7 @@ export class VehiculosComponent implements OnInit {
         tipo_vehiculo_id: full.tipo_vehiculo_id,
         marca: full.marca,
         modelo: full.modelo,
+        linea: full.linea,
         color: full.color,
         propietario: full.propietario,
         cc_propietario: full.cc_propietario,
@@ -358,6 +360,7 @@ export class VehiculosComponent implements OnInit {
         tipo_vehiculo_id: full.tipo_vehiculo_id,
         marca: full.marca,
         modelo: full.modelo,
+        linea: full.linea,
         color: full.color,
         propietario: full.propietario,
         cc_propietario: full.cc_propietario,

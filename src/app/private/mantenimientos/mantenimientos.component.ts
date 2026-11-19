@@ -95,7 +95,7 @@ export class MantenimientosComponent implements OnInit {
 
     this.mantenimientoService.listar({
       placa: this.placa,
-      tipo: this.tipo,
+      tipo: this.tipo ? this.normalizarTipo(this.tipo) : undefined,
       desde: this.desde,
       hasta: this.hasta
     }).subscribe({
@@ -128,22 +128,32 @@ export class MantenimientosComponent implements OnInit {
   // =========================
   // BADGES
   // =========================
+  private normalizarTipo(tipo?: string | null): string {
+    const mapa: { [key: string]: string } = {
+      'PR': 'PR', 'PREVENTIVO': 'PR', 'PREVENTIVA': 'PR',
+      'CR': 'CR', 'CORRECTIVO': 'CR', 'CORRECTIVA': 'CR',
+      'I': 'I', 'INSPECCION': 'I', 'INSPECCIÓN': 'I',
+      'C': 'C', 'CAMBIO': 'C'
+    };
+    return mapa[String(tipo || '').trim().toUpperCase()] || 'PR';
+  }
+
   getTipoClass(tipo: string): string {
-    switch (tipo) {
-      case 'Preventivo': return 'badge-operativo';
-      case 'Correctivo': return 'badge-inactivo';
-      case 'Inspección': return 'badge-info';
-      case 'Cambio': return 'badge-taller';
+    switch (this.normalizarTipo(tipo)) {
+      case 'PR': return 'badge-operativo';
+      case 'CR': return 'badge-inactivo';
+      case 'I': return 'badge-info';
+      case 'C': return 'badge-taller';
       default: return 'badge-default';
     }
   }
 
   getTipoTexto(tipo: string): string {
-    switch (tipo) {
-      case 'Preventivo': return 'Preventivo';
-      case 'Correctivo': return 'Correctivo';
-      case 'Inspección': return 'Inspección';
-      case 'Cambio': return 'Cambio';
+    switch (this.normalizarTipo(tipo)) {
+      case 'PR': return 'Preventivo';
+      case 'CR': return 'Correctivo';
+      case 'I': return 'Inspección';
+      case 'C': return 'Cambio';
       default: return tipo;
     }
   }
@@ -254,7 +264,9 @@ export class MantenimientosComponent implements OnInit {
 
     this.nuevo.vehiculo_plan_item_id = p.vehiculo_plan_item_id;
 
-    this.nuevo.tipo = p.plan_item?.tipo_mantenimiento || 'PR';
+    this.nuevo.tipo = this.normalizarTipo(
+      p.plan_item?.tipo_mantenimiento
+    );
 
     this.busquedaPlan = p.plan_item?.nombre || p.plan_item?.descripcion || '';
   }

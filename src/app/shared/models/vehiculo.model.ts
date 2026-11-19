@@ -8,6 +8,7 @@ export interface Vehiculo {
 
   marca?: string;
   modelo?: string;
+  linea?: string;
   color?: string;
 
   propietario?: string;

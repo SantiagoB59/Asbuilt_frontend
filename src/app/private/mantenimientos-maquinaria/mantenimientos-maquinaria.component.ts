@@ -96,7 +96,7 @@ export class MantenimientosMaquinariaComponent implements OnInit {
 
       maquinaria_id: this.maquinaria_id,
 
-      tipo: this.tipo,
+      tipo: this.tipo ? this.normalizarTipo(this.tipo) : undefined,
 
       desde: this.desde,
 
@@ -230,9 +230,19 @@ export class MantenimientosMaquinariaComponent implements OnInit {
   // =========================
   // BADGES
   // =========================
+  private normalizarTipo(tipo?: string | null): string {
+    const mapa: { [key: string]: string } = {
+      'PR': 'PR', 'PREVENTIVO': 'PR', 'PREVENTIVA': 'PR',
+      'CR': 'CR', 'CORRECTIVO': 'CR', 'CORRECTIVA': 'CR',
+      'I': 'I', 'INSPECCION': 'I', 'INSPECCIÓN': 'I',
+      'C': 'C', 'CAMBIO': 'C'
+    };
+    return mapa[String(tipo || '').trim().toUpperCase()] || 'PR';
+  }
+
   getTipoClass(tipo: string): string {
 
-    switch (tipo) {
+    switch (this.normalizarTipo(tipo)) {
 
       case 'PR':
         return 'badge-operativo';
@@ -255,7 +265,7 @@ export class MantenimientosMaquinariaComponent implements OnInit {
 
   getTipoTexto(tipo: string): string {
 
-    switch (tipo) {
+    switch (this.normalizarTipo(tipo)) {
 
       case 'PR':
         return 'Preventivo';
@@ -370,31 +380,9 @@ seleccionarPlan(p: any): void {
   this.nuevo.maquinaria_plan_item_id =
     p.maquinaria_plan_item_id;
 
-  const tipo =
-    p.plan_item?.tipo_mantenimiento;
-
-  switch (tipo) {
-
-    case 'PREVENTIVO':
-      this.nuevo.tipo = 'PR';
-      break;
-
-    case 'CORRECTIVO':
-      this.nuevo.tipo = 'CR';
-      break;
-
-    case 'INSPECCION':
-      this.nuevo.tipo = 'I';
-      break;
-
-    case 'CAMBIO':
-      this.nuevo.tipo = 'C';
-      break;
-
-    default:
-      this.nuevo.tipo = 'PR';
-
-  }
+  this.nuevo.tipo = this.normalizarTipo(
+    p.plan_item?.tipo_mantenimiento
+  );
 
 }
 
