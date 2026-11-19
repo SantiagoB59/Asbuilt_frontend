@@ -550,7 +550,7 @@
             *ngFor="let p of planItems"
             [value]="p.id">
 
-            {{ (p.sistema + ' - ' + p.nombre) | slice:0:70 }}
+            {{ p.sistema + ' - ' + p.nombre }}
 
           </option>
 
