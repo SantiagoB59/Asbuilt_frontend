@@ -26,6 +26,7 @@ import { ReportesPreoperacionalesComponent } from './reportes-preoperacionales/r
 import { AnaliticaComponent } from './analitica/analitica.component';
 import { ControlDiarioComponent } from './control-diario/control-diario.component';
 import { ControlDiarioAdminComponent } from './control-diario-admin/control-diario-admin.component';
+import { TanqueoComponent } from './tanqueo/tanqueo.component';
 
 const routes: Routes = [
   {
@@ -57,7 +58,9 @@ const routes: Routes = [
       {path: 'reportes-preoperacionales', component: ReportesPreoperacionalesComponent},
       {path: 'analitica', component: AnaliticaComponent},
       {path: 'control-diario', component: ControlDiarioComponent},
-      {path: 'control-diario-admin',component: ControlDiarioAdminComponent}
+      {path: 'control-diario-admin',component: ControlDiarioAdminComponent},
+      {path: 'tanqueo', component: TanqueoComponent},
+      {path: 'tanqueo-admin', component: TanqueoComponent}
     ]
   }
 ];

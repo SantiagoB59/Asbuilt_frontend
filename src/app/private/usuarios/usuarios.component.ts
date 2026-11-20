@@ -23,6 +23,12 @@ export class UsuariosComponent implements OnInit {
 
   mostrarEliminar = false;
 
+  modoEliminacion: 'desactivar' | 'eliminar' = 'desactivar';
+
+  impactoEliminacion: any = null;
+
+  cargandoImpacto = false;
+
   mensajeVisible = false;
 
   mensaje = '';
@@ -90,8 +96,12 @@ export class UsuariosComponent implements OnInit {
 
         next: (resp: any) => {
 
+          // La tabla solo muestra operadores.
           this.usuarios =
-            resp.data?.usuarios || [];
+            (resp.data?.usuarios || []).filter(
+              (usuario: any) =>
+                this.esOperadorRegistro(usuario)
+            );
 
           this.roles =
             resp.data?.roles || [];
@@ -869,16 +879,85 @@ export class UsuariosComponent implements OnInit {
 
 
   // =====================================================
-  // ELIMINAR
+  // DESACTIVAR
   // =====================================================
 
-  eliminar(usuario: any): void {
+  desactivar(usuario: any): void {
 
-    this.registroEliminar =
-      usuario;
+    this.modoEliminacion = 'desactivar';
 
-    this.mostrarEliminar =
-      true;
+    this.impactoEliminacion = null;
+
+    this.registroEliminar = usuario;
+
+    this.mostrarEliminar = true;
+
+  }
+
+
+  // =====================================================
+  // ELIMINAR DEFINITIVAMENTE
+  // =====================================================
+
+  eliminarDefinitivamente(usuario: any): void {
+
+    this.modoEliminacion = 'eliminar';
+
+    this.impactoEliminacion = null;
+
+    this.registroEliminar = usuario;
+
+    this.mostrarEliminar = true;
+
+    this.cargandoImpacto = true;
+
+    this.usuarioService
+      .impactoEliminacion(usuario.id)
+      .pipe(
+        finalize(() => {
+          this.cargandoImpacto = false;
+        })
+      )
+      .subscribe({
+
+        next: (resp: any) => {
+
+          this.impactoEliminacion = resp.data || null;
+
+        },
+
+        error: (err) => {
+
+          console.error(err);
+
+          alert(
+            err.error?.message ??
+            'No fue posible consultar el impacto de la eliminación.'
+          );
+
+          this.mostrarEliminar = false;
+
+          this.registroEliminar = null;
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // ¿ES OPERADOR?
+  // =====================================================
+
+  esOperadorRegistro(usuario: any): boolean {
+
+    const rol =
+      typeof usuario?.rol === 'object'
+        ? usuario?.rol?.nombre
+        : usuario?.rol;
+
+    return String(rol || '').toLowerCase() === 'operador';
 
   }
 
@@ -893,23 +972,24 @@ export class UsuariosComponent implements OnInit {
 
     }
 
+    const modo = this.modoEliminacion;
 
-    this.eliminando =
-      true;
+    const id = this.registroEliminar.id;
+
+    const peticion =
+      modo === 'eliminar'
+        ? this.usuarioService.eliminarDefinitivamente(id)
+        : this.usuarioService.desactivar(id);
 
 
-    this.usuarioService
+    this.eliminando = true;
 
-      .eliminar(
-        this.registroEliminar.id
-      )
-
+    peticion
       .pipe(
 
         finalize(() => {
 
-          this.eliminando =
-            false;
+          this.eliminando = false;
 
         })
 
@@ -919,18 +999,20 @@ export class UsuariosComponent implements OnInit {
 
         next: (resp: any) => {
 
-          this.mostrarEliminar =
-            false;
+          this.mostrarEliminar = false;
 
-          this.registroEliminar =
-            null;
+          this.registroEliminar = null;
+
+          this.impactoEliminacion = null;
 
           this.cargarDatos();
 
           this.mostrarMensaje(
 
             resp.message ??
-            'Usuario desactivado correctamente.'
+            (modo === 'eliminar'
+              ? 'Operador eliminado definitivamente.'
+              : 'Usuario desactivado correctamente.')
 
           );
 
@@ -944,7 +1026,7 @@ export class UsuariosComponent implements OnInit {
 
             err.error?.message ??
 
-            'No fue posible eliminar.'
+            'No fue posible completar la acción.'
 
           );
 

@@ -82,7 +82,7 @@ export class UsuarioService {
   }
 
   // ─────────────────────────────────────────────
-  // 🗑️ ELIMINAR
+  // 🗑️ ELIMINAR (COMPATIBILIDAD: ANTES DESACTIVABA)
   // ─────────────────────────────────────────────
 
   eliminar(
@@ -91,6 +91,49 @@ export class UsuarioService {
 
     return this.http.delete<any>(
       `${this.base}/${id}`
+    );
+
+  }
+
+  // ─────────────────────────────────────────────
+  // 🚫 DESACTIVAR
+  // ─────────────────────────────────────────────
+
+  desactivar(
+    id: number
+  ): Observable<any> {
+
+    return this.http.put<any>(
+      `${this.base}/${id}/desactivar`,
+      {}
+    );
+
+  }
+
+  // ─────────────────────────────────────────────
+  // ⚠️ IMPACTO DE ELIMINACIÓN
+  // ─────────────────────────────────────────────
+
+  impactoEliminacion(
+    id: number
+  ): Observable<any> {
+
+    return this.http.get<any>(
+      `${this.base}/${id}/impacto-eliminacion`
+    );
+
+  }
+
+  // ─────────────────────────────────────────────
+  // 🧨 ELIMINAR DEFINITIVAMENTE
+  // ─────────────────────────────────────────────
+
+  eliminarDefinitivamente(
+    id: number
+  ): Observable<any> {
+
+    return this.http.delete<any>(
+      `${this.base}/${id}/eliminar`
     );
 
   }

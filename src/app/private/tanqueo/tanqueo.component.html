@@ -1,0 +1,488 @@
+<div class="tanqueo-page">
+
+  <!-- ===================================================== -->
+  <!-- HEADER -->
+  <!-- ===================================================== -->
+
+  <header class="page-header">
+    <div class="header-content">
+      <span class="eyebrow">OPERACIÓN · COMBUSTIBLE</span>
+
+      <h1>
+        {{ esAdmin ? 'Control de tanqueos' : 'Tanquear' }}
+      </h1>
+
+      <p>
+        {{
+          esAdmin
+            ? 'Consulta los reportes de combustible y el rendimiento real de la flota.'
+            : 'Reporta cuántos galones tanqueaste y adjunta la imagen del soporte.'
+        }}
+      </p>
+    </div>
+  </header>
+
+  <!-- ===================================================== -->
+  <!-- MENSAJES -->
+  <!-- ===================================================== -->
+
+  <div *ngIf="mensaje" class="message success">
+    {{ mensaje }}
+  </div>
+
+  <div *ngIf="error" class="message error">
+    {{ error }}
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- MÉTRICAS -->
+  <!-- ===================================================== -->
+
+  <section class="metrics-section" *ngIf="metricas as m">
+
+    <div class="metric-card">
+      <span class="metric-label">Galones reportados</span>
+      <strong>{{ m.resumen.total_galones | number:'1.2-2' }}</strong>
+      <small>galones</small>
+    </div>
+
+    <div class="metric-card">
+      <span class="metric-label">Costo total</span>
+      <strong>${{ m.resumen.total_costo | number:'1.0-0' }}</strong>
+      <small>según precio registrado</small>
+    </div>
+
+    <div class="metric-card">
+      <span class="metric-label">Rendimiento promedio</span>
+      <strong>
+        {{
+          m.resumen.rendimiento_promedio !== null
+            ? (m.resumen.rendimiento_promedio | number:'1.2-2')
+            : '—'
+        }}
+      </strong>
+      <small>km u horas por galón</small>
+    </div>
+
+    <div class="metric-card">
+      <span class="metric-label">Tanqueos</span>
+      <strong>{{ m.resumen.tanqueos }}</strong>
+      <small>{{ m.resumen.activos }} activos</small>
+    </div>
+
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- FORMULARIO OPERADOR -->
+  <!-- ===================================================== -->
+
+  <section class="card form-card" *ngIf="!esAdmin">
+
+    <div class="card-header">
+      <div>
+        <h2>Nuevo tanqueo</h2>
+        <p>Complete los datos y adjunte la foto o factura.</p>
+      </div>
+    </div>
+
+    <div class="form-grid">
+
+      <!-- FECHA -->
+      <div class="field">
+        <label>Fecha</label>
+        <input type="date" [(ngModel)]="fecha" />
+      </div>
+
+      <!-- ACTIVO -->
+      <div class="field">
+        <label>Vehículo / maquinaria</label>
+        <select
+          [(ngModel)]="activoSeleccionado"
+          (ngModelChange)="onActivoChange()">
+          <option value="">Seleccione un activo</option>
+
+          <option
+            *ngFor="let activo of activos"
+            [value]="activo.tipo + '-' + activo.id">
+            {{ activo.tipo === 'VEHICULO' ? 'Vehículo' : 'Maquinaria' }}
+            -
+            {{ activo.nombre }}
+          </option>
+        </select>
+        <small *ngIf="activos.length === 0">
+          No hay activos asignados a su usuario.
+        </small>
+      </div>
+
+      <!-- GALONES -->
+      <div class="field">
+        <label>Galones tanqueados</label>
+        <input
+          type="number"
+          min="0.01"
+          step="0.01"
+          placeholder="Ej. 45.5"
+          [(ngModel)]="galones" />
+      </div>
+
+      <!-- PRECIO -->
+      <div class="field">
+        <label>Precio por galón (opcional)</label>
+        <input
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="Ej. 5800"
+          [(ngModel)]="precioGalon" />
+      </div>
+
+      <!-- TIPO COMBUSTIBLE -->
+      <div class="field">
+        <label>Tipo de combustible</label>
+        <select [(ngModel)]="tipoCombustible">
+          <option *ngFor="let tipo of tiposCombustible" [value]="tipo">
+            {{ tipo }}
+          </option>
+        </select>
+      </div>
+
+      <!-- ESTACIÓN -->
+      <div class="field">
+        <label>Estación / proveedor</label>
+        <input
+          type="text"
+          placeholder="Ej. Estación Elollo"
+          [(ngModel)]="estacion" />
+      </div>
+
+      <!-- FACTURA -->
+      <div class="field">
+        <label>N.º factura (opcional)</label>
+        <input
+          type="text"
+          placeholder="Ej. F-001234"
+          [(ngModel)]="numeroFactura" />
+      </div>
+
+      <!-- LECTURA KM -->
+      <div class="field" *ngIf="activoSeleccionadoObj()?.unidad !== 'HORAS'">
+        <label>Kilometraje al tanquear</label>
+        <input
+          type="number"
+          min="0"
+          step="0.1"
+          [(ngModel)]="kmActual" />
+      </div>
+
+      <!-- LECTURA HORÓMETRO -->
+      <div class="field" *ngIf="activoSeleccionadoObj()?.unidad === 'HORAS'">
+        <label>Horómetro al tanquear</label>
+        <input
+          type="number"
+          min="0"
+          step="0.1"
+          [(ngModel)]="horometroActual" />
+      </div>
+
+      <!-- OBSERVACIONES -->
+      <div class="field full">
+        <label>Observaciones (opcional)</label>
+        <textarea
+          rows="2"
+          placeholder="Ej. Tanqueo en ruta, factura a nombre de la empresa..."
+          [(ngModel)]="observaciones"></textarea>
+      </div>
+
+      <!-- SOPORTE -->
+      <div class="field full">
+        <label>Soporte / imagen del tanqueo *</label>
+
+        <div class="evidence-actions">
+
+          <button
+            type="button"
+            class="btn-camera"
+            (click)="abrirCamara()">
+            📷 Tomar foto
+          </button>
+
+          <label class="btn-file">
+            🖼️ Seleccionar imagen
+            <input
+              type="file"
+              accept="image/*,application/pdf"
+              (change)="seleccionarArchivo($event)" />
+          </label>
+
+        </div>
+
+        <div *ngIf="archivo && fotoPreview" class="photo-preview">
+          <img [src]="fotoPreview" alt="Vista previa del soporte" />
+
+          <div class="photo-actions">
+            <span>{{ archivo.name }}</span>
+            <button type="button" (click)="eliminarFoto()">
+              Quitar
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="archivo && !fotoPreview" class="file-selected">
+          {{ archivo.name }}
+          <button type="button" (click)="eliminarFoto()">
+            Quitar
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="card-actions">
+      <button
+        type="button"
+        class="btn-primary"
+        [disabled]="cargando"
+        (click)="guardar()">
+        {{ cargando ? 'Guardando...' : 'Registrar tanqueo' }}
+      </button>
+    </div>
+
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- FILTROS -->
+  <!-- ===================================================== -->
+
+  <section class="card filters-card">
+    <div class="filters-grid">
+
+      <div class="field">
+        <label>Desde</label>
+        <input type="date" [(ngModel)]="fechaDesde" />
+      </div>
+
+      <div class="field">
+        <label>Hasta</label>
+        <input type="date" [(ngModel)]="fechaHasta" />
+      </div>
+
+      <div class="field" *ngIf="esAdmin">
+        <label>Estado</label>
+        <select [(ngModel)]="estadoFiltro">
+          <option value="">Todos</option>
+          <option value="REGISTRADO">Registrado</option>
+          <option value="VALIDADO">Validado</option>
+          <option value="RECHAZADO">Rechazado</option>
+        </select>
+      </div>
+
+      <div class="filter-actions">
+        <button type="button" class="btn-secondary" (click)="aplicarFiltros()">
+          Aplicar
+        </button>
+        <button type="button" class="btn-link" (click)="limpiarFiltros()">
+          Limpiar
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- HISTORIAL -->
+  <!-- ===================================================== -->
+
+  <section class="card table-card">
+
+    <div class="card-header">
+      <div>
+        <h2>
+          {{ esAdmin ? 'Todos los tanqueos' : 'Mis tanqueos' }}
+        </h2>
+        <p>Registros reportados con su soporte.</p>
+      </div>
+    </div>
+
+    <div *ngIf="cargandoDatos" class="loading">
+      Cargando información...
+    </div>
+
+    <div *ngIf="!cargandoDatos && tanqueos.length === 0" class="empty">
+      No hay tanqueos registrados con los filtros seleccionados.
+    </div>
+
+    <div class="table-responsive" *ngIf="tanqueos.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Activo</th>
+            <th *ngIf="esAdmin">Operador</th>
+            <th>Galones</th>
+            <th>Lectura</th>
+            <th>Costo</th>
+            <th>Soporte</th>
+            <th>Estado</th>
+            <th *ngIf="esAdmin">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tanqueo of tanqueos">
+
+            <td>{{ tanqueo.fecha | date:'dd/MM/yyyy' }}</td>
+
+            <td>
+              <strong>{{ tanqueo.activo_nombre || '—' }}</strong>
+              <small>{{ tanqueo.tipo_activo }}</small>
+            </td>
+
+            <td *ngIf="esAdmin">
+              {{ tanqueo.usuario || '—' }}
+            </td>
+
+            <td>
+              <strong>{{ tanqueo.galones | number:'1.2-2' }}</strong>
+            </td>
+
+            <td>
+              {{
+                tanqueo.lectura !== null && tanqueo.lectura !== undefined
+                  ? (tanqueo.lectura | number:'1.1-1')
+                  : '—'
+              }}
+              <small>{{ tanqueo.unidad }}</small>
+            </td>
+
+            <td>
+              {{
+                tanqueo.valor_total
+                  ? ('$' + (tanqueo.valor_total | number:'1.0-0'))
+                  : '—'
+              }}
+            </td>
+
+            <td>
+              <button
+                type="button"
+                class="btn-evidence"
+                (click)="verSoporte(tanqueo)">
+                Ver imagen
+              </button>
+            </td>
+
+            <td>
+              <span class="estado" [ngClass]="estadoClass(tanqueo.estado)">
+                {{ tanqueo.estado }}
+              </span>
+            </td>
+
+            <td *ngIf="esAdmin">
+              <div class="row-actions">
+                <button
+                  type="button"
+                  class="btn-validar"
+                  (click)="validar(tanqueo)">
+                  Validar
+                </button>
+                <button
+                  type="button"
+                  class="btn-rechazar"
+                  (click)="rechazar(tanqueo)">
+                  Rechazar
+                </button>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- RANKING -->
+  <!-- ===================================================== -->
+
+  <section class="card ranking-card" *ngIf="metricas?.por_activo?.length">
+
+    <div class="card-header">
+      <div>
+        <h2>Rendimiento por activo</h2>
+        <p>
+          Calculado con la lectura capturada entre tanqueos.
+        </p>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Activo</th>
+            <th>Tanqueos</th>
+            <th>Galones</th>
+            <th>Recorrido / horas</th>
+            <th>Rendimiento</th>
+            <th>Costo por unidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of metricas?.por_activo">
+            <td>
+              <strong>{{ item.activo_nombre }}</strong>
+              <small>{{ item.unidad }}</small>
+            </td>
+            <td>{{ item.tanqueos }}</td>
+            <td>{{ item.total_galones | number:'1.2-2' }}</td>
+            <td>{{ item.recorrido | number:'1.1-1' }}</td>
+            <td>
+              <strong>
+                {{
+                  item.rendimiento !== null
+                    ? (item.rendimiento | number:'1.2-2')
+                    : '—'
+                }}
+              </strong>
+              <small>{{ item.unidad === 'KM' ? 'km/gal' : 'h/gal' }}</small>
+            </td>
+            <td>
+              {{
+                item.costo_por_unidad !== null
+                  ? ('$' + (item.costo_por_unidad | number:'1.0-0'))
+                  : '—'
+              }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================================================== -->
+  <!-- MODAL CÁMARA -->
+  <!-- ===================================================== -->
+
+  <div class="camera-modal" *ngIf="mostrarCamara">
+    <div class="camera-content">
+
+      <div class="camera-header">
+        <h3>Tomar foto del soporte</h3>
+        <button type="button" (click)="cerrarCamara()">×</button>
+      </div>
+
+      <video #videoCamara autoplay playsinline></video>
+
+      <div class="camera-actions">
+        <button type="button" class="btn-primary" (click)="tomarFoto()">
+          📷 Capturar
+        </button>
+        <button type="button" class="btn-secondary" (click)="cerrarCamara()">
+          Cancelar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

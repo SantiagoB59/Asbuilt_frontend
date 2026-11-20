@@ -35,6 +35,7 @@ import { AnaliticaComponent } from './analitica/analitica.component';
 import { AlertasFlotantesComponent } from './alertas-flotantes/alertas-flotantes.component';
 import { ControlDiarioComponent } from './control-diario/control-diario.component';
 import { ControlDiarioAdminComponent } from './control-diario-admin/control-diario-admin.component';
+import { TanqueoComponent } from './tanqueo/tanqueo.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { ControlDiarioAdminComponent } from './control-diario-admin/control-diar
     AnaliticaComponent,
     AlertasFlotantesComponent,
     ControlDiarioComponent,
-    ControlDiarioAdminComponent
+    ControlDiarioAdminComponent,
+    TanqueoComponent
   ],
   imports: [
     CommonModule,

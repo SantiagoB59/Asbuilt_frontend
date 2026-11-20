@@ -335,7 +335,20 @@ setActiveByUrl(url: string) {
       route: '/dashboard/control-diario-admin',
       roles: ['admin']
     },
-    
+    {
+      key: 'tanqueo',
+      label: 'Tanquear',
+      icon: 'fas fa-gas-pump',
+      route: '/dashboard/tanqueo',
+      roles: ['operador']
+    },
+    {
+      key: 'tanqueo-admin',
+      label: 'Control de tanqueos',
+      icon: 'fas fa-gas-pump',
+      route: '/dashboard/tanqueo-admin',
+      roles: ['admin', 'supervisor']
+    }
   ];
   // =========================
   // ESTILOS ACTIVO
@@ -395,6 +408,9 @@ setActiveByUrl(url: string) {
       case 'activo-operador':
         return `${base} bg-blue-50 text-blue-700 ring-blue-200`;
       case 'control-diario':
+        return `${base} bg-blue-50 text-blue-700 ring-blue-200`;
+      case 'tanqueo':
+      case 'tanqueo-admin':
         return `${base} bg-blue-50 text-blue-700 ring-blue-200`;
 
       default:

@@ -69,16 +69,16 @@
                         <div>
                             <h2 class="table-title">
                                 <i class="fas fa-users"></i>
-                                Usuarios registrados
+                                Operadores registrados
                             </h2>
 
                             <p class="table-subtitle">
-                                Gestión de usuarios y permisos del sistema.
+                                Gestión de operadores del sistema.
                             </p>
                         </div>
 
                         <div class="table-counter">
-                            {{ usuarios.length }} usuarios
+                            {{ usuarios.length }} operadores
                         </div>
 
                     </div>
@@ -167,10 +167,20 @@
 
                                             </button>
 
-                                            <button type="button" class="action-btn action-btn--delete"
-                                                (click)="eliminar(usuario)" title="Desactivar">
+                                            <button type="button" class="action-btn action-btn--disable"
+                                                *ngIf="usuario.activo"
+                                                (click)="desactivar(usuario)" title="Desactivar">
 
-                                                <i class="fas fa-trash"></i>
+                                                <i class="fas fa-ban"></i>
+
+                                            </button>
+
+                                            <button type="button" class="action-btn action-btn--delete"
+                                                *ngIf="esOperadorRegistro(usuario)"
+                                                (click)="eliminarDefinitivamente(usuario)"
+                                                title="Eliminar definitivamente">
+
+                                                <i class="fas fa-trash-alt"></i>
 
                                             </button>
 
@@ -196,7 +206,7 @@
                                             </div>
 
                                             <div class="empty-title">
-                                                No existen usuarios registrados
+                                                No existen operadores registrados
                                             </div>
 
                                             <div class="empty-description">
@@ -691,7 +701,7 @@
 
 
 <!-- ===================================================== -->
-<!-- MODAL DESACTIVAR -->
+<!-- MODAL DESACTIVAR / ELIMINAR -->
 <!-- ===================================================== -->
 
 <div *ngIf="mostrarEliminar" class="modal-backdrop delete-user-backdrop">
@@ -703,17 +713,19 @@
         <div class="delete-modal-header">
 
             <div class="delete-header-icon">
-                <i class="fas fa-trash-alt"></i>
+                <i class="fas" [ngClass]="modoEliminacion === 'eliminar' ? 'fa-trash-alt' : 'fa-ban'"></i>
             </div>
 
             <div>
 
                 <h2>
-                    Desactivar usuario
+                    {{ modoEliminacion === 'eliminar' ? 'Eliminar definitivamente' : 'Desactivar usuario' }}
                 </h2>
 
                 <p>
-                    Esta acción no eliminará el registro de la base de datos.
+                    {{ modoEliminacion === 'eliminar'
+                        ? 'Esta acción borrará el operador y su información asociada.'
+                        : 'Esta acción no eliminará el registro de la base de datos.' }}
                 </p>
 
             </div>
@@ -738,10 +750,12 @@
             </div>
 
             <h3>
-                ¿Desea desactivar este usuario?
+                {{ modoEliminacion === 'eliminar'
+                    ? '¿Eliminar definitivamente este operador?'
+                    : '¿Desea desactivar este usuario?' }}
             </h3>
 
-            <p>
+            <p *ngIf="modoEliminacion === 'desactivar'">
 
                 <strong>
                     {{ registroEliminar?.nombre }}
@@ -751,6 +765,52 @@
                 permanecerá almacenada.
 
             </p>
+
+            <p *ngIf="modoEliminacion === 'eliminar'">
+
+                <strong>
+                    {{ registroEliminar?.nombre }}
+                </strong>
+
+                será eliminado de forma permanente junto con los registros
+                que aparecen a continuación.
+
+            </p>
+
+            <div *ngIf="modoEliminacion === 'eliminar'" class="delete-impact">
+
+                <div *ngIf="cargandoImpacto" class="delete-impact-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Calculando impacto...
+                </div>
+
+                <ng-container *ngIf="!cargandoImpacto && impactoEliminacion">
+
+                    <p class="delete-impact-title">Registros que se eliminarán</p>
+
+                    <div class="delete-impact-grid">
+                        <span><strong>{{ impactoEliminacion.eliminar.documentos }}</strong> documentos</span>
+                        <span><strong>{{ impactoEliminacion.eliminar.asignaciones }}</strong> asignaciones</span>
+                        <span><strong>{{ impactoEliminacion.eliminar.inspecciones }}</strong> inspecciones</span>
+                        <span><strong>{{ impactoEliminacion.eliminar.anomalias }}</strong> anomalías</span>
+                        <span><strong>{{ impactoEliminacion.eliminar.controles_diarios }}</strong> controles diarios</span>
+                        <span><strong>{{ impactoEliminacion.eliminar.tanqueos }}</strong> tanqueos</span>
+                    </div>
+
+                    <p class="delete-impact-title">Referencias que quedarán sin operador</p>
+
+                    <div class="delete-impact-grid">
+                        <span><strong>{{ impactoEliminacion.desvincular.alertas }}</strong> alertas</span>
+                        <span><strong>{{ impactoEliminacion.desvincular.revisiones_inspeccion }}</strong> revisiones de inspección</span>
+                        <span><strong>{{ impactoEliminacion.desvincular.validaciones_control }}</strong> validaciones de control</span>
+                        <span><strong>{{ impactoEliminacion.desvincular.validaciones_tanqueo }}</strong> validaciones de tanqueo</span>
+                    </div>
+
+                    <p class="delete-impact-note">Esta acción no se puede deshacer.</p>
+
+                </ng-container>
+
+            </div>
 
         </div>
 
@@ -768,19 +828,19 @@
             </button>
 
             <button type="button" class="modal-button modal-button-delete" (click)="confirmarEliminar()"
-                [disabled]="eliminando">
+                [disabled]="eliminando || (modoEliminacion === 'eliminar' && cargandoImpacto)">
 
                 <span *ngIf="!eliminando">
 
-                    <i class="fas fa-trash"></i>
-                    <span>Desactivar</span>
+                    <i class="fas" [ngClass]="modoEliminacion === 'eliminar' ? 'fa-trash-alt' : 'fa-ban'"></i>
+                    <span>{{ modoEliminacion === 'eliminar' ? 'Eliminar definitivamente' : 'Desactivar' }}</span>
 
                 </span>
 
                 <span *ngIf="eliminando" class="button-loading">
 
                     <i class="fas fa-spinner fa-spin"></i>
-                    <span>Desactivando...</span>
+                    <span>{{ modoEliminacion === 'eliminar' ? 'Eliminando...' : 'Desactivando...' }}</span>
 
                 </span>
 
