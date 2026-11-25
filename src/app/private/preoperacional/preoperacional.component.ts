@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
+import { AuthService } from 'src/app/services/auth.service';
 import { PreoperacionalService } from 'src/app/services/preoperacional.service';
 
 @Component({
@@ -13,6 +14,11 @@ export class PreoperacionalComponent implements OnInit {
     cargando = true;
 
     activo: any = null;
+
+    // Los roles administrativos pueden elegir entre varios activos.
+    esAdmin = false;
+    activos: any[] = [];
+    activoSeleccionado = '';
 
     plantilla: any = null;
 
@@ -94,27 +100,80 @@ export class PreoperacionalComponent implements OnInit {
 
 
     constructor(
-        private inspeccionService: PreoperacionalService
+        private inspeccionService: PreoperacionalService,
+        private authService: AuthService
     ) { }
 
     ngOnInit(): void {
         console.log('==============================');
         console.log('PREOPERACIONAL INICIANDO');
         console.log('==============================');
+
+        const usuario = this.authService.getUser();
+        const rol = (
+            usuario?.rol || ''
+        ).toString().toLowerCase().trim();
+
+        this.esAdmin = [
+            'admin',
+            'administrador',
+            'supervisor'
+        ].includes(rol);
+
+        if (this.esAdmin) {
+            this.cargarActivos();
+        }
+
         this.cargarPlantilla();
 
+    }
+
+    // ==========================================
+    // ACTIVOS DEL ADMINISTRADOR
+    // ==========================================
+
+    cargarActivos(): void {
+
+        this.inspeccionService
+            .obtenerMisActivos()
+            .subscribe({
+                next: (resp: any) => {
+                    this.activos = resp?.data || [];
+                },
+                error: (err) => {
+                    console.error(
+                        'Error cargando activos:',
+                        err
+                    );
+                    this.activos = [];
+                }
+            });
+    }
+
+    onActivoChange(): void {
+
+        if (!this.activoSeleccionado) {
+            return;
+        }
+
+        const [tipo, id] = this.activoSeleccionado.split('-');
+
+        this.cargarPlantilla(tipo, Number(id));
     }
 
     // ==========================================
     // CARGAR PLANTILLA DEL OPERADOR
     // ==========================================
 
-    cargarPlantilla(): void {
+    cargarPlantilla(
+        tipoActivo?: string,
+        activoId?: number
+    ): void {
 
         this.cargando = true;
 
         this.inspeccionService
-            .obtenerMiPlantilla()
+            .obtenerMiPlantilla(tipoActivo, activoId)
             .pipe(
                 finalize(() => {
                     this.cargando = false;
@@ -130,6 +189,15 @@ export class PreoperacionalComponent implements OnInit {
 
                     this.activo = resp.activo;
                     this.plantilla = resp.plantilla;
+
+                    if (resp?.activos_disponibles) {
+                        this.activos = resp.activos_disponibles;
+                    }
+
+                    if (this.activo) {
+                        this.activoSeleccionado =
+                            `${this.activo.tipo}-${this.activo.id}`;
+                    }
 
                     this.yaRealizada = resp.ya_realizada;
                     this.inspeccionHoy = resp.inspeccion_hoy;
@@ -407,8 +475,17 @@ export class PreoperacionalComponent implements OnInit {
 
     iniciarInspeccion(): void {
 
+        let tipoActivo: string | undefined;
+        let activoId: number | undefined;
+
+        if (this.esAdmin && this.activoSeleccionado) {
+            const [tipo, id] = this.activoSeleccionado.split('-');
+            tipoActivo = tipo;
+            activoId = Number(id);
+        }
+
         this.inspeccionService
-            .iniciarInspeccion()
+            .iniciarInspeccion(tipoActivo, activoId)
             .subscribe({
 
                 next: (resp: any) => {

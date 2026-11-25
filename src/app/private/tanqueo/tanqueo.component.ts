@@ -131,9 +131,9 @@ export class TanqueoComponent implements OnInit, OnDestroy {
   cargarDatos(): void {
     this.cargandoDatos = true;
 
-    if (!this.esAdmin) {
-      this.cargarActivos();
-    }
+    // Los roles administrativos también pueden tanquear:
+    // cargamos sus activos para que escojan cuál tanquear.
+    this.cargarActivos();
 
     this.cargarTanqueos();
     this.cargarMetricas();

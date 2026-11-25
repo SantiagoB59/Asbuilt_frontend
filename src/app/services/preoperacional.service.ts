@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from 'src/environment/environment';
@@ -16,13 +16,37 @@ export class PreoperacionalService {
   ) { }
 
   // ===========================
-  // PLANTILLA DEL OPERADOR
+  // ACTIVOS DISPONIBLES
   // ===========================
 
-  obtenerMiPlantilla(): Observable<any> {
+  obtenerMisActivos(): Observable<any> {
 
     return this.http.get(
-      `${this.apiUrl}/mi-plantilla`
+      `${this.apiUrl}/mis-activos`
+    );
+
+  }
+
+  // ===========================
+  // PLANTILLA DEL OPERADOR / ADMIN
+  // ===========================
+
+  obtenerMiPlantilla(
+    tipoActivo?: string,
+    activoId?: number | string
+  ): Observable<any> {
+
+    let params = new HttpParams();
+
+    if (tipoActivo && activoId != null) {
+      params = params
+        .set('tipo_activo', tipoActivo)
+        .set('activo_id', String(activoId));
+    }
+
+    return this.http.get(
+      `${this.apiUrl}/mi-plantilla`,
+      { params }
     );
 
   }
@@ -31,11 +55,21 @@ export class PreoperacionalService {
   // INICIAR INSPECCIÓN
   // ===========================
 
-  iniciarInspeccion(): Observable<any> {
+  iniciarInspeccion(
+    tipoActivo?: string,
+    activoId?: number | string
+  ): Observable<any> {
+
+    const body: any = {};
+
+    if (tipoActivo && activoId != null) {
+      body.tipo_activo = tipoActivo;
+      body.activo_id = activoId;
+    }
 
     return this.http.post(
       `${this.apiUrl}/iniciar`,
-      {}
+      body
     );
 
   }

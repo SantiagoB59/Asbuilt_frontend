@@ -276,10 +276,42 @@ setActiveByUrl(url: string) {
       ]
     },
     {
-      key: 'activo-operador',
-      label: 'Preoperacional',
+      // Flujos que se ejecutan "como operador": se elige un
+      // vehículo asignado y se preopera / factura / tanquea.
+      key: 'operacionDiaria',
+      label: 'Operación diaria',
+      icon: 'fas fa-clipboard-check',
+      roles: ['operador', 'admin', 'administrador', 'supervisor'],
+      children: [
+        {
+          key: 'preoperacional',
+          label: 'Preoperacional',
+          icon: 'fas fa-clipboard-check',
+          route: '/dashboard/preoperacional',
+          roles: ['operador', 'admin', 'administrador', 'supervisor']
+        },
+        {
+          key: 'control-diario',
+          label: 'Facturero',
+          icon: 'fas fa-map-marked-alt',
+          route: '/dashboard/control-diario',
+          roles: ['operador', 'admin', 'administrador', 'supervisor']
+        },
+        {
+          key: 'tanqueo',
+          label: 'Tanquear',
+          icon: 'fas fa-gas-pump',
+          route: '/dashboard/tanqueo',
+          roles: ['operador', 'admin', 'administrador', 'supervisor']
+        }
+      ]
+    },
+    {
+      // Paneles de revisión y configuración: solo administración.
+      key: 'controlAdministrativo',
+      label: 'Control administrativo',
       icon: 'fas fa-user-cog',
-      roles: ['admin'],
+      roles: ['admin', 'supervisor'],
       children: [
         {
           key: 'panel_preoperacional',
@@ -290,7 +322,7 @@ setActiveByUrl(url: string) {
         },
         {
           key: 'operadores',
-          label: 'Asignar operadores',
+          label: 'Asignar vehículos / operadores',
           icon: 'fas fa-user-cog',
           route: '/dashboard/activo-operador',
           roles: ['admin']
@@ -301,10 +333,21 @@ setActiveByUrl(url: string) {
           icon: 'fas fa-file-alt',
           route: '/dashboard/reportes-preoperacionales',
           roles: ['admin']
+        },
+        {
+          key: 'control-diario-admin',
+          label: 'Control del Facturero',
+          icon: 'fas fa-map-marked-alt',
+          route: '/dashboard/control-diario-admin',
+          roles: ['admin']
+        },
+        {
+          key: 'tanqueo-admin',
+          label: 'Control de tanqueos',
+          icon: 'fas fa-gas-pump',
+          route: '/dashboard/tanqueo-admin',
+          roles: ['admin', 'supervisor']
         }
-        
-        
-        
       ]
     },
     {
@@ -312,41 +355,6 @@ setActiveByUrl(url: string) {
       label: 'Reportes',
       icon: 'fas fa-file-excel',
       route: '/dashboard/reportes',
-      roles: ['admin', 'supervisor']
-    },
-    {
-      key: 'preoperacional',
-      label: 'Preoperacional',
-      icon: 'fas fa-clipboard-check',
-      route: '/dashboard/preoperacional',
-      roles: ['operador']
-    },
-    {
-      key: 'control-diario',
-      label: 'Facturero',
-      icon: 'fas fa-map-marked-alt',
-      route: '/dashboard/control-diario',
-      roles: ['operador']
-    },
-    {
-      key: 'control-diario-admin',
-      label: 'Facturero',
-      icon: 'fas fa-map-marked-alt',
-      route: '/dashboard/control-diario-admin',
-      roles: ['admin']
-    },
-    {
-      key: 'tanqueo',
-      label: 'Tanquear',
-      icon: 'fas fa-gas-pump',
-      route: '/dashboard/tanqueo',
-      roles: ['operador']
-    },
-    {
-      key: 'tanqueo-admin',
-      label: 'Control de tanqueos',
-      icon: 'fas fa-gas-pump',
-      route: '/dashboard/tanqueo-admin',
       roles: ['admin', 'supervisor']
     }
   ];

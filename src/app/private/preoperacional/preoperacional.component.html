@@ -70,8 +70,15 @@
 
                         <br><br>
 
-                        Solicita al administrador o supervisor que vincule
-                        un activo a tu usuario.
+                        <ng-container *ngIf="esAdmin; else sinActivoOperador">
+                            Solicita que se vinculen vehículos a tu usuario
+                            desde «Asignar vehículos / operadores».
+                        </ng-container>
+
+                        <ng-template #sinActivoOperador>
+                            Solicita al administrador o supervisor que vincule
+                            un activo a tu usuario.
+                        </ng-template>
 
                     </p>
 
@@ -212,6 +219,38 @@
                     </div>
 
                 </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- SELECTOR DE ACTIVO (ROLES ADMINISTRATIVOS)        -->
+            <!-- ================================================= -->
+
+            <div *ngIf="esAdmin && activos.length > 0"
+                class="mt-4 bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
+
+                <label for="activoPreoperacional" class="text-blue-100 uppercase text-xs">
+                    Vehículo / maquinaria a inspeccionar
+                </label>
+
+                <select id="activoPreoperacional"
+                    [(ngModel)]="activoSeleccionado"
+                    (ngModelChange)="onActivoChange()"
+                    class="mt-2 w-full rounded-xl px-3 py-2 text-slate-800">
+
+                    <option *ngFor="let item of activos"
+                        [value]="item.tipo + '-' + item.id">
+                        {{ item.tipo === 'VEHICULO' ? 'Vehículo' : 'Maquinaria' }} -
+                        {{ item.placa || item.codigo }}
+                        <ng-container *ngIf="item.tipo_nombre"> · {{ item.tipo_nombre }}</ng-container>
+                    </option>
+
+                </select>
+
+                <p class="text-blue-100 text-xs mt-2">
+                    Puedes cambiar de activo cuando lo necesites. La inspección se registra para el activo seleccionado.
+                </p>
 
             </div>
 

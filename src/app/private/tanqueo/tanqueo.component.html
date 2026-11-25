@@ -9,15 +9,13 @@
       <span class="eyebrow">OPERACIÓN · COMBUSTIBLE</span>
 
       <h1>
-        {{ esAdmin ? 'Control de tanqueos' : 'Tanquear' }}
+        Tanqueo y control de combustible
       </h1>
 
       <p>
-        {{
-          esAdmin
-            ? 'Consulta los reportes de combustible y el rendimiento real de la flota.'
-            : 'Reporta cuántos galones tanqueaste y adjunta la imagen del soporte.'
-        }}
+        Selecciona el activo que vas a tanquear, registra los galones y
+        adjunta el soporte. También puedes consultar los reportes y el
+        rendimiento real de la flota.
       </p>
     </div>
   </header>
@@ -73,10 +71,10 @@
   </section>
 
   <!-- ===================================================== -->
-  <!-- FORMULARIO OPERADOR -->
+  <!-- FORMULARIO (OPERADORES Y ROLES ADMINISTRATIVOS)       -->
   <!-- ===================================================== -->
 
-  <section class="card form-card" *ngIf="!esAdmin">
+  <section class="card form-card">
 
     <div class="card-header">
       <div>
