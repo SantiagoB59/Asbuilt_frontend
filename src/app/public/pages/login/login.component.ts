@@ -94,13 +94,13 @@ currentYear = new Date().getFullYear();
             case 'supervisor':
 
               this.router.navigate(['/dashboard']);
-              this.verificarKmPendientes();
+              // this.verificarKmPendientes();
               break;
 
             case 'admin':
 
               this.router.navigate(['/dashboard']);
-              this.verificarKmPendientes();
+              // this.verificarKmPendientes();
               break;
 
             default:
